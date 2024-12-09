@@ -495,9 +495,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 2
-  minHorizontalRotation: -106.6
-  maxHorizontalRotation: 28.4
-  minVerticalRotation: -17.9
+  minHorizontalRotation: 0
+  maxHorizontalRotation: 63.3
+  minVerticalRotation: -32.2
   maxVerticalRotation: 90
 --- !u!81 &1599716462
 AudioListener:
@@ -849,7 +849,6 @@ Transform:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
-  - {fileID: 963194228}
   - {fileID: 705507995}
   - {fileID: 2134938725}
   - {fileID: 1369580863}

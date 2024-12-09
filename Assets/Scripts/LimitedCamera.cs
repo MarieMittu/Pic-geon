@@ -26,21 +26,6 @@ public class LimitedCamera : MonoBehaviour
         referenceHorizontalRotation = cameraHorizontalRotation;
         referenceVerticalRotation = cameraVerticalRotation;
 
-        //absolute values
-        float minHRot = referenceHorizontalRotation + minHorizontalRotation;
-        float maxHRot = referenceHorizontalRotation + maxHorizontalRotation;
-        float minVRot = referenceVerticalRotation + minVerticalRotation;
-        float maxVRot = referenceVerticalRotation + maxVerticalRotation;
-
-        Vector3 cornerDirLU = new Vector3(Mathf.Cos(minHRot) * Mathf.Cos(minVRot), Mathf.Sin(minHRot) * Mathf.Cos(minVRot), Mathf.Sin(minVRot)) * 100;
-        Debug.DrawRay(transform.position, cornerDirLU, Color.red, float.PositiveInfinity);
-        Vector3 cornerDirRU = new Vector3(Mathf.Cos(maxHRot) * Mathf.Cos(minVRot), Mathf.Sin(maxHRot) * Mathf.Cos(minVRot), Mathf.Sin(minVRot)) * 100;
-        Debug.DrawRay(transform.position, cornerDirRU, Color.red, float.PositiveInfinity);
-        Vector3 cornerDirLD = new Vector3(Mathf.Cos(minHRot) * Mathf.Cos(maxVRot), Mathf.Sin(minHRot) * Mathf.Cos(maxVRot), Mathf.Sin(maxVRot)) * 100;
-        Debug.DrawRay(transform.position, cornerDirLD, Color.red, float.PositiveInfinity);
-        Vector3 cornerDirRD = new Vector3(Mathf.Cos(maxHRot) * Mathf.Cos(maxVRot), Mathf.Sin(maxHRot) * Mathf.Cos(maxVRot), Mathf.Sin(maxVRot)) * 100;
-        Debug.DrawRay(transform.position, cornerDirRD, Color.red, float.PositiveInfinity);
-
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
     }
 
@@ -61,5 +46,28 @@ public class LimitedCamera : MonoBehaviour
         cameraHorizontalRotation += inputX;
         cameraHorizontalRotation = Mathf.Clamp(cameraHorizontalRotation, minHRot, maxHRot);
         transform.localEulerAngles = Vector3.right * cameraVerticalRotation + Vector3.up * cameraHorizontalRotation;
+    }
+
+    private void OnDrawGizmos()
+    {
+        //absolute values
+        float minHRot = referenceHorizontalRotation + minHorizontalRotation;
+        float maxHRot = referenceHorizontalRotation + maxHorizontalRotation;
+        float minVRot = referenceVerticalRotation + minVerticalRotation;
+        float maxVRot = referenceVerticalRotation + maxVerticalRotation;
+
+        //Vector3 cornerDirLU = Quaternion.Euler(minVRot, minHRot, 0) * Vector3.right;
+        //Gizmos.DrawRay(transform.position, cornerDirLU, Color.red, float.PositiveInfinity);
+
+        float fovVert = maxVRot - minVRot;
+        float fovHori = maxHRot - minHRot;
+        float aspect  = fovHori / fovVert;
+
+        float centralDirV = maxVRot - minVRot / 2;
+        float centralDirH = maxHRot - minHRot / 2;
+        float dirDiffV = centralDirV - referenceVerticalRotation;
+        float dirDiffH = centralDirH - referenceHorizontalRotation;
+
+        Gizmos.DrawFrustum(transform.position, fovVert, 10, 1, aspect);
     }
 }
