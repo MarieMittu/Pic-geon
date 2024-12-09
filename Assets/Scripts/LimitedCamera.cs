@@ -15,10 +15,10 @@ public class LimitedCamera : MonoBehaviour
     float referenceVerticalRotation;
 
     // relative to reference rotation
-    [Range(-0.1f, -90f)] public float minHorizontalRotation;
-    [Range(0.1f, 90f)] public float maxHorizontalRotation;
-    [Range(-0.1f, -90f)] public float minVerticalRotation;
-    [Range(0.1f, 90f)] public float maxVerticalRotation;
+    [Range(-0.0f, -90f)] public float minHorizontalRotation;
+    [Range(0.0f, 90f)] public float maxHorizontalRotation;
+    [Range(-0.0f, -90f)] public float minVerticalRotation;
+    [Range(0.0f, 90f)] public float maxVerticalRotation;
     
     // Start is called before the first frame update
     void Start()
@@ -53,10 +53,10 @@ public class LimitedCamera : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         // absolute values
-        float minHRot = transform.localEulerAngles.y + minHorizontalRotation;
-        float maxHRot = transform.localEulerAngles.y + maxHorizontalRotation;
-        float minVRot = transform.localEulerAngles.x + minVerticalRotation;
-        float maxVRot = transform.localEulerAngles.x + maxVerticalRotation;
+        float minHRot = (Application.isPlaying ? referenceHorizontalRotation : transform.localEulerAngles.y) + minHorizontalRotation;
+        float maxHRot = (Application.isPlaying ? referenceHorizontalRotation : transform.localEulerAngles.y) + maxHorizontalRotation;
+        float minVRot = (Application.isPlaying ? referenceVerticalRotation : transform.localEulerAngles.x) + minVerticalRotation;
+        float maxVRot = (Application.isPlaying ? referenceVerticalRotation : transform.localEulerAngles.x) + maxVerticalRotation;
 
         float fovVert = maxVRot - minVRot;
         float fovHori = maxHRot - minHRot;
@@ -73,8 +73,22 @@ public class LimitedCamera : MonoBehaviour
         float dirDiffV = centralDirV - referenceVerticalRotation;
         float dirDiffH = centralDirH - referenceHorizontalRotation;
 
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.Euler(centralDirV, centralDirH, 0), transform.localScale);
         Gizmos.color = Color.red;
-        Gizmos.DrawFrustum(Vector3.zero, fovVert, 100, 1, aspect);
+        Vector3 vLU = Quaternion.Euler(new Vector3(minVRot - cam.fieldOfView/2, minHRot - cam.aspect*cam.fieldOfView*0.5f, 0)) * Vector3.forward;
+        Gizmos.DrawLine(transform.position, transform.position + vLU * 1000);
+        Vector3 vLD = Quaternion.Euler(new Vector3(maxVRot + cam.fieldOfView / 2, minHRot - cam.aspect * cam.fieldOfView * 0.5f, 0)) * Vector3.forward;
+        Gizmos.DrawLine(transform.position, transform.position + vLD * 1000);
+        Vector3 vRU = Quaternion.Euler(new Vector3(minVRot - cam.fieldOfView / 2, maxHRot + cam.aspect * cam.fieldOfView * 0.5f, 0)) * Vector3.forward;
+        Gizmos.DrawLine(transform.position, transform.position + vRU * 1000);
+        Vector3 vRD = Quaternion.Euler(new Vector3(maxVRot + cam.fieldOfView / 2, maxHRot + cam.aspect * cam.fieldOfView * 0.5f, 0)) * Vector3.forward;
+        Gizmos.DrawLine(transform.position, transform.position + vRD * 1000);
+
+        //Gizmos.DrawLine(transform.position + vRD * 10, transform.position + vRU * 10);
+        //Gizmos.DrawLine(transform.position + vLD * 10, transform.position + vLU * 10);
+        //Gizmos.DrawLine(transform.position + vRD * 10, transform.position + vLD * 10);
+        //Gizmos.DrawLine(transform.position + vLU *10, transform.position + vRU *10);
+
+        //Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.Euler(centralDirV, centralDirH, 0), transform.localScale);
+        //Gizmos.DrawFrustum(Vector3.zero, fovVert, 100, 1, aspect);
     }
 }
