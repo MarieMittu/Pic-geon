@@ -495,10 +495,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mouseSensitivity: 2
-  minHorizontalRotation: 0
-  maxHorizontalRotation: 63.3
-  minVerticalRotation: -32.2
-  maxVerticalRotation: 90
+  minHorizontalRotation: -0.1
+  maxHorizontalRotation: 0.1
+  minVerticalRotation: -0.1
+  maxVerticalRotation: 0.1
 --- !u!81 &1599716462
 AudioListener:
   m_ObjectHideFlags: 0
@@ -540,7 +540,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 0.9
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
