@@ -14,10 +14,7 @@ public class ObjectPool : MonoBehaviour
     void Awake()
     {
         SharedInstance = this;
-    }
 
-    void Start()
-    {
         pooledBirds = new List<GameObject>();
         for (int i = 0; i < birdsAmountToPool; i++)
         {
