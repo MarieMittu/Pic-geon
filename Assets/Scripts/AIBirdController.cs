@@ -8,7 +8,7 @@ public class AIBirdController : MonoBehaviour
     public float finalRange;
 
     private float actionTime; //waiting time between start of random actions
-    delegate void RandomActions();
+    public delegate void RandomActions();
 
     private void Start()
     {
@@ -17,16 +17,21 @@ public class AIBirdController : MonoBehaviour
 
     private void Update()
     {
+        PerformActionsSequence();
+    }
+
+    public void PerformActionsSequence()
+    {
         actionTime -= Time.deltaTime;
         if (actionTime <= 0)
         {
             PerformRandomAction();
             actionTime = Random.Range(startRange, finalRange);
-            
+
         }
     }
 
-    public void PerformRandomAction()
+    public virtual void PerformRandomAction()
     {
         List<RandomActions> randomActions = new List<RandomActions>
         {
