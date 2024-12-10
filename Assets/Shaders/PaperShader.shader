@@ -54,12 +54,12 @@ Shader "Hidden/PaperShader"
                UnityStereoScreenSpaceUVAdjust(
                i.texcoord, _MainTex_ST));
 
-            float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.position.xyz);
+            //float3 viewDir = normalize(_WorldSpaceCameraPos.xyz - i.position.xyz);
             //float3 viewDir = WorldSpaceViewDir(i.position);
 
             float4 paperColor = tex2D(_PaperTex, 
                UnityStereoScreenSpaceUVAdjust(
-               i.texcoord + viewDir.xy*1, _PaperTex_ST));
+               i.texcoord, _PaperTex_ST));
             // for (int i = 0; i < 3, i++)
             // {
             //     paperColor[i] = (paperColor[i] + _Intensity) / (1.0 + _Intensity);
