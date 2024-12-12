@@ -5,11 +5,13 @@ using UnityEngine;
 public class BirdsSpawner : MonoBehaviour
 {
     public Transform[] birdsPositions;
+    public Transform[] robotsPositions;
 
     // Start is called before the first frame update
     void Start()
     {
         SpawnBirds();
+        SpawnRobots();
     }
 
     // Update is called once per frame
@@ -32,5 +34,20 @@ public class BirdsSpawner : MonoBehaviour
             Debug.Log("num of birds");
         }
         
+    }
+
+    void SpawnRobots()
+    {
+
+
+        for (int i = 0; i < robotsPositions.Length; i++)
+        {
+            GameObject selectedRobot = ObjectPool.SharedInstance.GetPooledRobot();
+            selectedRobot.transform.position = robotsPositions[i].position;
+            selectedRobot.transform.rotation = robotsPositions[i].rotation;
+
+            selectedRobot.SetActive(true);
+        }
+
     }
 }
