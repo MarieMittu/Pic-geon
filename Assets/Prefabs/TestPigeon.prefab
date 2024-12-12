@@ -124,4 +124,4 @@ MonoBehaviour:
   growFactor: 0.001
   waitTime: 4
   y: 0.005
-  speed: 2
+  speed: 1

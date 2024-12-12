@@ -54,20 +54,20 @@ public class AIBirdController : MonoBehaviour
 
     public void PerformChirp()
     {
-        Debug.Log("Chirp! Chirp!");
-        StartCoroutine(Scale());
+        //Debug.Log("Chirp! Chirp!");
+        //StartCoroutine(Scale());
 
     }
 
     public void PerformShit()
     {
-        Debug.Log("Poops ahoy!");
-        TestJump();
+        //Debug.Log("Poops ahoy!");
+        //TestJump();
     }
 
     public void PerformEat()
     {
-        Debug.Log("I am eating!");
+        //Debug.Log("I am eating!");
         StartCoroutine(Spin());
     }
 
@@ -105,11 +105,11 @@ public class AIBirdController : MonoBehaviour
 
     void TestJump()
     {
-        if (y >= 3)
+        if (y >= -0.15f)
         {
             y = y - speed * Time.deltaTime;
         }
-        if (y < 3)
+        if (y < -0.15f)
         {
             y = y + speed * Time.deltaTime;
         }

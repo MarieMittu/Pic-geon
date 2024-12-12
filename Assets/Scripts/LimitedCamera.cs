@@ -60,9 +60,13 @@ public class LimitedCamera : MonoBehaviour
             GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
             foreach (GameObject rb in roboBirds)
             {
-                if (rb.GetComponent<MeshRenderer>().isVisible) //add check if performing sus action
+                var robotScript = rb.GetComponent<AIRobotController>();
+                if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying) //add check if performing sus action
                 {
                     Debug.Log("sus bird on photo");
+                } else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
+                {
+                    Debug.Log("wrong timing");
                 }
             }
         }
