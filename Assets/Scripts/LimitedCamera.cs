@@ -48,6 +48,25 @@ public class LimitedCamera : MonoBehaviour
         cameraHorizontalRotation += inputX;
         cameraHorizontalRotation = Mathf.Clamp(cameraHorizontalRotation, minHRot, maxHRot);
         transform.localEulerAngles = Vector3.right * cameraVerticalRotation + Vector3.up * cameraHorizontalRotation;
+
+        if (Input.mouseScrollDelta != Vector2.zero)
+        {
+            GetComponent<Camera>().fieldOfView -= Input.mouseScrollDelta.y;
+        }
+
+        // photo
+        if (Input.GetMouseButtonDown(0))
+        {
+            GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
+            foreach (GameObject rb in roboBirds)
+            {
+                if (rb.GetComponent<MeshRenderer>().isVisible) //add check if performing sus action
+                {
+                    Debug.Log("sus bird on photo");
+                }
+            }
+        }
+
     }
 
     private void OnDrawGizmosSelected()
