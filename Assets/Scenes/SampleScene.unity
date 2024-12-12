@@ -667,6 +667,8 @@ MonoBehaviour:
   maxHorizontalRotation: 16.1
   minVerticalRotation: -20.1
   maxVerticalRotation: 24.1
+  minFOV: 10
+  maxFOV: 60
 --- !u!81 &1599716462
 AudioListener:
   m_ObjectHideFlags: 0
@@ -869,6 +871,8 @@ MonoBehaviour:
   maxHorizontalRotation: 65.9
   minVerticalRotation: -20.9
   maxVerticalRotation: 15.6
+  minFOV: 5
+  maxFOV: 30.4
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

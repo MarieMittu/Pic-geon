@@ -19,7 +19,10 @@ public class LimitedCamera : MonoBehaviour
     [Range(0.0f, 90f)] public float maxHorizontalRotation;
     [Range(-0.0f, -90f)] public float minVerticalRotation;
     [Range(0.0f, 90f)] public float maxVerticalRotation;
-    
+
+    [Range(0.0f, 90f)] public float minFOV = 10.0f;
+    [Range(0.0f, 90f)] public float maxFOV = 60.0f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -51,7 +54,9 @@ public class LimitedCamera : MonoBehaviour
 
         if (Input.mouseScrollDelta != Vector2.zero)
         {
-            GetComponent<Camera>().fieldOfView -= Input.mouseScrollDelta.y;
+            Camera cam = GetComponent<Camera>();
+            cam.fieldOfView -= Input.mouseScrollDelta.y;
+            cam.fieldOfView = Math.Clamp(cam.fieldOfView, minFOV, maxFOV);
         }
 
         // photo
