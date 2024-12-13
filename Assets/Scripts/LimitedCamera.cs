@@ -66,9 +66,15 @@ public class LimitedCamera : MonoBehaviour
             foreach (GameObject rb in roboBirds)
             {
                 var robotScript = rb.GetComponent<AIRobotController>();
-                if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying) //add check if performing sus action
+                if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying)
                 {
-                    Debug.Log("sus bird on photo");
+                    Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
+                    {
+                        Debug.Log("sus bird on photo");
+                    }
+                    else Debug.Log("sus bird obstructed");
                 } else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
                 {
                     Debug.Log("wrong timing");
