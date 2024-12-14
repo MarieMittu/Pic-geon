@@ -10,17 +10,28 @@ public class AIBirdController : MonoBehaviour
     private float actionTime; //waiting time between start of random actions
     public delegate void RandomActions();
 
-    // for testing
-    public float maxSize;
-    public float growFactor;
-    public float waitTime;
+    Rigidbody rb;
 
-    public float y;
-    public float speed;
+    // for testing
+    public float pulseScale;
+    public float pulseDuration;
+    public int pulseCount;
+
+    private Vector3 originalScale;
+
+    public float velocity;
+    public int maxJumps;
+    private int currentJumps = 0;
+    private bool isJumping = false;
 
     private void Start()
     {
         actionTime = 1;
+        rb = gameObject.GetComponent<Rigidbody>();
+        originalScale = transform.localScale;
+
+        var cubeRenderer = GetComponent<Renderer>();
+        cubeRenderer.material.SetColor("_Color", Color.blue);
     }
 
     private void Update()
@@ -55,14 +66,17 @@ public class AIBirdController : MonoBehaviour
     public void PerformChirp()
     {
         //Debug.Log("Chirp! Chirp!");
-        //StartCoroutine(Scale());
+        StartCoroutine(Pulse());
 
     }
 
     public void PerformShit()
     {
         //Debug.Log("Poops ahoy!");
-        //TestJump();
+        if (!isJumping)
+        {
+            StartCoroutine(TestJump());
+        }
     }
 
     public void PerformEat()
@@ -72,62 +86,68 @@ public class AIBirdController : MonoBehaviour
     }
 
     // test actions
+
+    IEnumerator Pulse()
+    {
+        for (int i = 0; i < pulseCount; i++)
+        {
+            yield return Scale();
+        }
+    }
+
     IEnumerator Scale()
     {
-        float timer = 0;
+        float elapsedTime = 0f;
 
-        while (true) // this could also be a condition indicating "alive or dead"
+        while (elapsedTime < pulseDuration / 2)
         {
-            // we scale all axis, so they will have the same value, 
-            // so we can work with a float instead of comparing vectors
-            while (maxSize > transform.localScale.x)
-            {
-                timer += Time.deltaTime;
-                transform.localScale += new Vector3(1, 1, 1) * Time.deltaTime * growFactor;
-                yield return null;
-            }
-            // reset the timer
-
-            yield return new WaitForSeconds(waitTime);
-
-            timer = 0;
-            while (1 < transform.localScale.x)
-            {
-                timer += Time.deltaTime;
-                transform.localScale -= new Vector3(1, 1, 1) * Time.deltaTime * growFactor;
-                yield return null;
-            }
-
-            timer = 0;
-            yield return new WaitForSeconds(waitTime);
+            transform.localScale = Vector3.Lerp(originalScale, originalScale * pulseScale, elapsedTime / (pulseDuration / 2));
+            elapsedTime += Time.deltaTime;
+            yield return null; 
         }
+
+        transform.localScale = originalScale * pulseScale;
+
+        elapsedTime = 0f;
+        while (elapsedTime < pulseDuration / 2)
+        {
+            transform.localScale = Vector3.Lerp(originalScale * pulseScale, originalScale, elapsedTime / (pulseDuration / 2));
+            elapsedTime += Time.deltaTime;
+            yield return null; 
+        }
+
+        transform.localScale = originalScale;
     }
 
-    void TestJump()
+    IEnumerator TestJump()
     {
-        if (y >= -0.15f)
+        isJumping = true; 
+        currentJumps = 0;
+
+        while (currentJumps < maxJumps)
         {
-            y = y - speed * Time.deltaTime;
+            rb.velocity = Vector3.zero;
+            rb.AddForce(0, velocity, 0);
+            currentJumps++;
+
+            yield return new WaitForSeconds(0.5f);
         }
-        if (y < -0.15f)
-        {
-            y = y + speed * Time.deltaTime;
-        }
-        transform.position = new Vector3(0, y, 0);
+        isJumping = false;
     }
+
 
     IEnumerator Spin()
     {
-        while (true)
+        float spinDuration = 3f; 
+        float timer = 0f;
+
+        while (timer < spinDuration)
         {
-            yield return new WaitForSeconds(2.0f);
-            float timer = 0f;
-            while (timer < 1)
-            {
+            
                 transform.Rotate(0, 0, 180 * Time.deltaTime);
-                timer = timer + Time.deltaTime;
+                timer += Time.deltaTime;
                 yield return null;
-            }
+            
         }
     }
 }

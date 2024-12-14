@@ -37,56 +37,28 @@ public class AIRobotController : AIBirdController
     IEnumerator ChangeColor()
     {
         var cubeRenderer = GetComponent<Renderer>();
+        float colorDuration = 3f; 
+        float timer = 0f;
 
-        while (true)
+        while (timer < colorDuration)
         {
-            cubeRenderer.material.SetColor("_Color", Color.blue);
-            isSpying = false;
-            yield return new WaitForSeconds(1.0f);
-            float timer = 0f;
-            while (timer < 2)
-            {
+            
                 cubeRenderer.material.SetColor("_Color", Color.red);
                 isSpying = true;
-                timer = timer + Time.deltaTime;
+                timer += Time.deltaTime;
                 yield return null;
-            }
+            
 
-            cubeRenderer.material.SetColor("_Color", Color.blue);
-            isSpying = false;
+            
         }
+        cubeRenderer.material.SetColor("_Color", Color.blue);
+        isSpying = false;
+
+    }
+
+    //IEnumerator MakeSmall()
+    //{
         
-    }
-
-    IEnumerator MakeSmall()
-    {
-        float timer = 0;
-
-        while (true) // this could also be a condition indicating "alive or dead"
-        {
-            // we scale all axis, so they will have the same value, 
-            // so we can work with a float instead of comparing vectors
-            while (minSize < transform.localScale.x)
-            {
-                timer += Time.deltaTime;
-                transform.localScale -= new Vector3(0.3f, 0.3f, 0.3f) * Time.deltaTime * growFactor;
-                yield return null;
-            }
-            // reset the timer
-
-            yield return new WaitForSeconds(waitTime);
-
-            timer = 0;
-            while (1 > transform.localScale.x)
-            {
-                timer += Time.deltaTime;
-                transform.localScale += new Vector3(0.3f, 0.3f, 0.3f) * Time.deltaTime * growFactor;
-                yield return null;
-            }
-
-            timer = 0;
-            yield return new WaitForSeconds(waitTime);
-        }
-    }
+    //}
 
 }
