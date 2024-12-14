@@ -20,8 +20,10 @@ public class LimitedCamera : MonoBehaviour
     [Range(-0.0f, -90f)] public float minVerticalRotation;
     [Range(0.0f, 90f)] public float maxVerticalRotation;
 
-    [Range(0.0f, 90f)] public float minFOV = 10.0f;
-    [Range(0.0f, 90f)] public float maxFOV = 60.0f;
+    //[Range(0.0f, 90f)] public float minFOV = 10.0f;
+    //[Range(0.0f, 90f)] public float maxFOV = 60.0f;
+    [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
+    int currentZoomLevel = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -39,7 +41,28 @@ public class LimitedCamera : MonoBehaviour
     {
         float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
         float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+        ProcessCameraMovement(inputX, inputY);
 
+        if (Input.mouseScrollDelta != Vector2.zero)
+        {
+            Camera cam = GetComponent<Camera>();
+            currentZoomLevel += Math.Sign(Input.mouseScrollDelta.y);
+            currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
+            cam.fieldOfView = zoomLevels[currentZoomLevel];
+            //cam.fieldOfView -= Input.mouseScrollDelta.y;
+            //cam.fieldOfView = Math.Clamp(cam.fieldOfView, minFOV, maxFOV);
+        }
+
+        // photo
+        if (Input.GetMouseButtonDown(0))
+        {
+            DetectBirdsOnPhoto();
+        }
+
+    }
+
+    void ProcessCameraMovement(float inputX, float inputY)
+    {
         //absolute values
         float minHRot = referenceHorizontalRotation + minHorizontalRotation;
         float maxHRot = referenceHorizontalRotation + maxHorizontalRotation;
@@ -51,37 +74,29 @@ public class LimitedCamera : MonoBehaviour
         cameraHorizontalRotation += inputX;
         cameraHorizontalRotation = Mathf.Clamp(cameraHorizontalRotation, minHRot, maxHRot);
         transform.localEulerAngles = Vector3.right * cameraVerticalRotation + Vector3.up * cameraHorizontalRotation;
+    }
 
-        if (Input.mouseScrollDelta != Vector2.zero)
+    void DetectBirdsOnPhoto()
+    {
+        GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
+        foreach (GameObject rb in roboBirds)
         {
-            Camera cam = GetComponent<Camera>();
-            cam.fieldOfView -= Input.mouseScrollDelta.y;
-            cam.fieldOfView = Math.Clamp(cam.fieldOfView, minFOV, maxFOV);
-        }
-
-        // photo
-        if (Input.GetMouseButtonDown(0))
-        {
-            GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
-            foreach (GameObject rb in roboBirds)
+            var robotScript = rb.GetComponent<AIRobotController>();
+            if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying)
             {
-                var robotScript = rb.GetComponent<AIRobotController>();
-                if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying)
+                Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
+                RaycastHit hit;
+                if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
                 {
-                    Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
-                    RaycastHit hit;
-                    if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
-                    {
-                        Debug.Log("sus bird on photo");
-                    }
-                    else Debug.Log("sus bird obstructed");
-                } else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
-                {
-                    Debug.Log("wrong timing");
+                    Debug.Log("sus bird on photo");
                 }
+                else Debug.Log("sus bird obstructed");
+            }
+            else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
+            {
+                Debug.Log("wrong timing");
             }
         }
-
     }
 
     private void OnDrawGizmosSelected()
