@@ -13,9 +13,10 @@ public class AIRobotController : AIBirdController
         {
             PerformChirp,
             PerformShit,
-            PerformEat,     
-            PerformSpyAct,  
-            ShowAntennae    
+            PerformEat,
+            PerformSpyAct,
+            ShowAntennae,
+            WalkAround
         };
 
         randomActions[Random.Range(0, randomActions.Count)]();
