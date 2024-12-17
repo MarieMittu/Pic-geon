@@ -16,7 +16,8 @@ public class AIRobotController : AIBirdController
             PerformEat,
             PerformSpyAct,
             ShowAntennae,
-            WalkAround
+            WalkAround,
+            Fly
         };
 
         randomActions[Random.Range(0, randomActions.Count)]();

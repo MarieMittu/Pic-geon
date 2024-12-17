@@ -31,10 +31,6 @@ public class GameManager : MonoBehaviour
             secondTimer -= 1f;
         }
         
-        if (missionDuration <= 0)
-        {
-            TriggerNextLevel(); //TODO: add condition for % of correct photos if not all used, PlayerPrefs for saving?
-        }
     }
 
     public void TriggerGameOver()
