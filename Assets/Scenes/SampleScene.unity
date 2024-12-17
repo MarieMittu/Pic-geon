@@ -1230,7 +1230,8 @@ MonoBehaviour:
   - 30
   - 10
 <<<<<<< HEAD
-
+  tapeLimit: 3
+  correctPercentage: 0.5
 =======
   tapeLimit: 4
 >>>>>>> 80e0de9 (changed correct photo condition to 1)
