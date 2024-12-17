@@ -826,7 +826,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc216ea137fb04a1f994d3b288190011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionDuration: 300
+  missionDuration: 120
   startMissionDuration: 0
 --- !u!114 &1041570249
 MonoBehaviour:
@@ -981,7 +981,6 @@ MonoBehaviour:
   maxVerticalRotation: 24.1
   zoomLevels: []
   tapeLimit: 0
-  correctPercentage: 0
 --- !u!81 &1599716462
 AudioListener:
   m_ObjectHideFlags: 0
@@ -1230,8 +1229,12 @@ MonoBehaviour:
   - 60
   - 30
   - 10
+<<<<<<< HEAD
   tapeLimit: 3
   correctPercentage: 0.5
+=======
+  tapeLimit: 4
+>>>>>>> 80e0de9 (changed correct photo condition to 1)
 --- !u!4 &2130950370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4645809790760630739, guid: 5f453400c5afe48289991cc409bbbc84, type: 3}
