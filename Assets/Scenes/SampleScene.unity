@@ -766,6 +766,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1041570246}
   - component: {fileID: 1041570247}
+  - component: {fileID: 1041570248}
+  - component: {fileID: 1041570249}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -808,6 +810,32 @@ MonoBehaviour:
   robotsToPool:
   - {fileID: 4417359888453199722, guid: 6b63c3b5d9a9942ed89c4bd237804d22, type: 3}
   robotsAmountToPool: 10
+--- !u!114 &1041570248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041570245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cc216ea137fb04a1f994d3b288190011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missionDuration: 5
+  startMissionDuration: 0
+--- !u!114 &1041570249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1041570245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81ece478030264fe09f228b106ef34fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1071146047
 GameObject:
   m_ObjectHideFlags: 0
