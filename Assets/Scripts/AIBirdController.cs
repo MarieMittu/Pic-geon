@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TreeEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Splines;
@@ -67,10 +68,6 @@ public class AIBirdController : MonoBehaviour
             PerformShit,
             PerformEat,
             WalkAround,
-            Fly,
-            Fly,
-            Fly,
-            Fly,
             Fly
         };
 
@@ -219,7 +216,7 @@ public class AIBirdController : MonoBehaviour
 
     IEnumerator GetToFlightPathAndStartFlight(SplineContainer splineContainer)
     {
-        float maxDuration = 3f;
+        float maxDuration = 20;
         float timer = 0f;
 
         // wait until destination is reached or timer runs out
