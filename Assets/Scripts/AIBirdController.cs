@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Splines;
 
 public class AIBirdController : MonoBehaviour
 {
@@ -65,7 +66,12 @@ public class AIBirdController : MonoBehaviour
             PerformChirp,
             PerformShit,
             PerformEat,
-            WalkAround
+            WalkAround,
+            Fly,
+            Fly,
+            Fly,
+            Fly,
+            Fly
         };
 
 
@@ -188,5 +194,50 @@ public class AIBirdController : MonoBehaviour
 
         result = Vector3.zero;
         return false;
+    }
+
+    public void Fly()
+    {
+        // check if a flight path spline starts near this bird
+        GameObject[] flightPaths = GameObject.FindGameObjectsWithTag("FlightPath");
+        foreach (GameObject flightPath in flightPaths)
+        {
+            SplineContainer sc = flightPath.GetComponent<SplineContainer>();
+            Vector3 startPos = sc.EvaluatePosition(0, 0f);
+            if (Vector3.Distance(startPos, transform.position) < 0.5) // this number may need to change once in a real scene
+            {
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(startPos, out hit, 1.0f, NavMesh.AllAreas))
+                {
+                    Debug.DrawRay(hit.position, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
+                    agent.SetDestination(hit.position);
+                    StartCoroutine(GetToFlightPathAndStartFlight(sc));
+                }
+            }
+        }
+    }
+
+    IEnumerator GetToFlightPathAndStartFlight(SplineContainer splineContainer)
+    {
+        float maxDuration = 3f;
+        float timer = 0f;
+
+        // wait until destination is reached or timer runs out
+        while (timer < maxDuration && Vector3.Distance(agent.destination, transform.position) >= 0.1)
+        {
+
+            timer += Time.deltaTime;
+            yield return null;
+
+        }
+
+        // if destination was reached, start flight
+        if (Vector3.Distance(agent.destination, transform.position) <= 0.1)
+        {
+            SplineAnimate splineAnim = GetComponent<SplineAnimate>();
+            splineAnim.Container = splineContainer;
+            splineAnim.enabled = true;
+            splineAnim.Play();
+        }
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - RobotBird
   - Ground
+  - FlightPath
   layers:
   - Default
   - TransparentFX
