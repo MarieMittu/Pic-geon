@@ -84,7 +84,7 @@ public class AIBirdController : MonoBehaviour
         //Debug.Log("Poops ahoy!");
         if (!isJumping)
         {
-            //StartCoroutine(TestJump());
+            StartCoroutine(TestJump());
         }
     }
 
