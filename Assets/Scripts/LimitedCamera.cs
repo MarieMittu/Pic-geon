@@ -26,6 +26,9 @@ public class LimitedCamera : MonoBehaviour
     int currentZoomLevel = 0;
 
     public int tapeLimit;
+    private int initialTapeLimit;
+    private int correctPhotosAmount = 0;
+    public float correctPercentage; // must be less or equal than 1, e.g. 0.5 (50%)
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +37,8 @@ public class LimitedCamera : MonoBehaviour
         cameraVerticalRotation = transform.localEulerAngles.x;
         referenceHorizontalRotation = cameraHorizontalRotation;
         referenceVerticalRotation = cameraVerticalRotation;
+
+        initialTapeLimit = tapeLimit;
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
     }
@@ -91,9 +96,10 @@ public class LimitedCamera : MonoBehaviour
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
                 {
-                    Debug.Log("sus bird on photo");
+                    correctPhotosAmount++;
+                    Debug.Log("sus bird on photo " + correctPhotosAmount / initialTapeLimit);  
                 }
-                else Debug.Log("sus bird obstructed");
+                else Debug.Log("sus bird obstructed ");
             }
             else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
             {
@@ -105,10 +111,19 @@ public class LimitedCamera : MonoBehaviour
     void TrackTapeAmount()
     {
         tapeLimit--;
+        Debug.Log("TapeLimit current " + tapeLimit);
 
         if (tapeLimit <= 0)
         {
-            GameManager.sharedInstance.FinishCurrentGame();
+            var percent = (float)correctPhotosAmount / (float)initialTapeLimit;
+            if (percent >= correctPercentage)
+            {
+                GameManager.sharedInstance.TriggerNextLevel();
+            } else
+            {
+                GameManager.sharedInstance.TriggerGameOver();
+            }
+            Debug.Log("TapeLimit end " + tapeLimit + "init " + initialTapeLimit + "correct " + correctPhotosAmount + "% " + percent);
         }
     }
 

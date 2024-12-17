@@ -33,12 +33,17 @@ public class GameManager : MonoBehaviour
         
         if (missionDuration <= 0)
         {
-            FinishCurrentGame();
+            TriggerNextLevel(); //TODO: add condition for % of correct photos if not all used, PlayerPrefs for saving?
         }
     }
 
-    public void FinishCurrentGame()
+    public void TriggerGameOver()
     {
         FindObjectOfType<ScenesController>().GameOver();
+    }
+
+    public void TriggerNextLevel()
+    {
+        FindObjectOfType<ScenesController>().OpenIntermediateScene();
     }
 }

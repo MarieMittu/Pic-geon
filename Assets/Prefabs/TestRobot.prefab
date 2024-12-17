@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 5280837012354514404}
   - component: {fileID: 2546897168421417171}
   - component: {fileID: 618365271140473883}
-  - component: {fileID: 5361418294642044038}
   - component: {fileID: 6759729605132827713}
   m_Layer: 0
   m_Name: TestRobot
@@ -131,33 +130,6 @@ MonoBehaviour:
   maxJumps: 3
   minSize: 0.001
   isSpying: 0
---- !u!54 &5361418294642044038
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4417359888453199722}
-  serializedVersion: 4
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
 --- !u!195 &6759729605132827713
 NavMeshAgent:
   m_ObjectHideFlags: 0
