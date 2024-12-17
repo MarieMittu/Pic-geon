@@ -4,10 +4,16 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager sharedInstance;
 
     public float missionDuration;
     public float startMissionDuration;
     float secondTimer = 0f;
+
+    private void Awake()
+    {
+        sharedInstance = this;
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -27,7 +33,12 @@ public class GameManager : MonoBehaviour
         
         if (missionDuration <= 0)
         {
-            FindObjectOfType<ScenesController>().GameOver();
+            FinishCurrentGame();
         }
+    }
+
+    public void FinishCurrentGame()
+    {
+        FindObjectOfType<ScenesController>().GameOver();
     }
 }

@@ -25,6 +25,8 @@ public class LimitedCamera : MonoBehaviour
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
     int currentZoomLevel = 0;
 
+    public int tapeLimit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -57,6 +59,7 @@ public class LimitedCamera : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             DetectBirdsOnPhoto();
+            TrackTapeAmount();
         }
 
     }
@@ -96,6 +99,16 @@ public class LimitedCamera : MonoBehaviour
             {
                 Debug.Log("wrong timing");
             }
+        }
+    }
+
+    void TrackTapeAmount()
+    {
+        tapeLimit--;
+
+        if (tapeLimit <= 0)
+        {
+            GameManager.sharedInstance.FinishCurrentGame();
         }
     }
 
