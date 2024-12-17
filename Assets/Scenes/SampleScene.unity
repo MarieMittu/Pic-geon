@@ -1230,7 +1230,7 @@ MonoBehaviour:
   - 60
   - 30
   - 10
-  tapeLimit: 4
+  tapeLimit: 3
   correctPercentage: 0.5
 --- !u!4 &2130950370 stripped
 Transform:
