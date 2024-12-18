@@ -24,6 +24,7 @@ public class LimitedCamera : MonoBehaviour
     //[Range(0.0f, 90f)] public float maxFOV = 60.0f;
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
     int currentZoomLevel = 0;
+    public bool isScrollEnabled = true;
 
     public int tapeLimit;
     private int correctPhotosAmount = 0;
@@ -46,15 +47,19 @@ public class LimitedCamera : MonoBehaviour
         float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
         ProcessCameraMovement(inputX, inputY);
 
-        if (Input.mouseScrollDelta != Vector2.zero)
+        if (isScrollEnabled)
         {
-            Camera cam = GetComponent<Camera>();
-            currentZoomLevel += Math.Sign(Input.mouseScrollDelta.y);
-            currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
-            cam.fieldOfView = zoomLevels[currentZoomLevel];
-            //cam.fieldOfView -= Input.mouseScrollDelta.y;
-            //cam.fieldOfView = Math.Clamp(cam.fieldOfView, minFOV, maxFOV);
+            if (Input.mouseScrollDelta != Vector2.zero)
+            {
+                Camera cam = GetComponent<Camera>();
+                currentZoomLevel += Math.Sign(Input.mouseScrollDelta.y);
+                currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
+                cam.fieldOfView = zoomLevels[currentZoomLevel];
+                //cam.fieldOfView -= Input.mouseScrollDelta.y;
+                //cam.fieldOfView = Math.Clamp(cam.fieldOfView, minFOV, maxFOV);
+            }
         }
+        
 
         // photo
         if (Input.GetMouseButtonDown(0))
@@ -63,6 +68,16 @@ public class LimitedCamera : MonoBehaviour
             TrackTapeAmount();
         }
         TrackTime();
+
+        if (GameManager.sharedInstance.isGamePaused)
+        {
+            mouseSensitivity = 0;
+            isScrollEnabled = false;
+        } else
+        {
+            mouseSensitivity = 2f;
+            isScrollEnabled = true;
+        }
     }
 
     void ProcessCameraMovement(float inputX, float inputY)

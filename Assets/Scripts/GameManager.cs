@@ -10,6 +10,8 @@ public class GameManager : MonoBehaviour
     public float startMissionDuration;
     float secondTimer = 0f;
 
+    public bool isGamePaused;
+
     private void Awake()
     {
         sharedInstance = this;
@@ -18,19 +20,33 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        startMissionDuration = missionDuration;   
+        startMissionDuration = missionDuration;
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        isGamePaused = FindObjectOfType<ScenesController>().isPaused;
+
         secondTimer += Time.deltaTime;
         if (secondTimer >= 1f)
         {
             missionDuration--;
             secondTimer -= 1f;
         }
-        
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (FindObjectOfType<ScenesController>().isPaused)
+            {
+                FindObjectOfType<ScenesController>().Resume();
+                Cursor.lockState = CursorLockMode.Locked;
+            } else
+            {
+                FindObjectOfType<ScenesController>().Pause();
+            }
+        }
     }
 
     public void TriggerGameOver()

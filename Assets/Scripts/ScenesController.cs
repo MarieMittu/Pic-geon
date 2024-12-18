@@ -5,33 +5,61 @@ using UnityEngine.SceneManagement;
 
 public class ScenesController : MonoBehaviour
 {
+
+    [SerializeField] GameObject pauseMenu;
+
+    public bool isPaused = false;
+
     public void StartGame()
     {
         SceneManager.LoadScene("SampleScene");
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void GoToMenu()
     {
         SceneManager.LoadScene("MainMenu");
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void LoadNextLevel()
     {
         SceneManager.LoadScene("SampleScene"); // TODO: add camera selection
-        UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     public void OpenIntermediateScene()
     {
         SceneManager.LoadScene("NextLevelScene");
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.None;
     }
 
     public void GameOver()
     {
         SceneManager.LoadScene("GameOverScene");
-        UnityEngine.Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void Pause()
+    {
+        pauseMenu.SetActive(true);
+        Time.timeScale = 0f;
+        isPaused = true;
+
+        Cursor.lockState = CursorLockMode.None;
+    }
+
+    public void Resume()
+    {
+        pauseMenu.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = false;
+        Cursor.lockState = CursorLockMode.Locked;
+    }
+
+    public void Exit()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainMenu");
     }
 }
