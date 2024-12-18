@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     public float missionDuration;
     public float startMissionDuration;
     float secondTimer = 0f;
+    public Image timer;
 
     public bool isGamePaused;
 
@@ -21,7 +23,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         startMissionDuration = missionDuration;
-        
+        if (timer != null)
+        {
+            timer.fillAmount = 1f;
+        }
+
     }
 
     // Update is called once per frame
@@ -34,6 +40,11 @@ public class GameManager : MonoBehaviour
         {
             missionDuration--;
             secondTimer -= 1f;
+
+            if (timer != null)
+            {
+                timer.fillAmount = missionDuration / startMissionDuration;
+            }
         }
 
         if (Input.GetKeyDown(KeyCode.Escape))

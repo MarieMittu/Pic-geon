@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class LimitedCamera : MonoBehaviour
 {
@@ -27,7 +28,10 @@ public class LimitedCamera : MonoBehaviour
     public bool isScrollEnabled = true;
 
     public int tapeLimit;
+    private int originalTapeLimit;
+    private int usedTape = 0;
     private int correctPhotosAmount = 0;
+    public Text tapeText;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +42,9 @@ public class LimitedCamera : MonoBehaviour
         referenceVerticalRotation = cameraVerticalRotation;
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+
+        originalTapeLimit = tapeLimit;
+        tapeText.text = usedTape + "/" + tapeLimit + " tape used";
     }
 
     // Update is called once per frame
@@ -122,6 +129,8 @@ public class LimitedCamera : MonoBehaviour
     void TrackTapeAmount()
     {
         tapeLimit--;
+        usedTape++;
+        tapeText.text = usedTape + "/" + originalTapeLimit + " tape used";
         Debug.Log("TapeLimit current " + tapeLimit);
 
         if (tapeLimit <= 0)
