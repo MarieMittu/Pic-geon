@@ -65,7 +65,7 @@ public class AIBirdController : MonoBehaviour
         List<RandomActions> randomActions = new List<RandomActions>
         {
             PerformChirp,
-            PerformShit,
+            //PerformShit,
             PerformEat,
             WalkAround,
             Fly

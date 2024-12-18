@@ -12,21 +12,14 @@ public class AIRobotController : AIBirdController
         List<RandomActions> randomActions = new List<RandomActions>
         {
             PerformChirp,
-            PerformShit,
+            //PerformShit,
             PerformEat,
-            PerformSpyAct,
             ShowAntennae,
             WalkAround,
             Fly
         };
 
         randomActions[Random.Range(0, randomActions.Count)]();
-    }
-
-    public void PerformSpyAct()
-    {
-        //Debug.Log("I am watching u!");
-        //StartCoroutine(MakeSmall());
     }
 
     public void ShowAntennae()
@@ -39,7 +32,7 @@ public class AIRobotController : AIBirdController
     IEnumerator ChangeColor()
     {
         var cubeRenderer = GetComponent<Renderer>();
-        float colorDuration = 3f; 
+        float colorDuration = 2f; 
         float timer = 0f;
 
         while (timer < colorDuration)
@@ -57,10 +50,5 @@ public class AIRobotController : AIBirdController
         isSpying = false;
 
     }
-
-    //IEnumerator MakeSmall()
-    //{
-        
-    //}
 
 }

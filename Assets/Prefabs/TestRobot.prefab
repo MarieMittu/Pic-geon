@@ -151,7 +151,7 @@ MonoBehaviour:
   pulseScale: 1.5
   pulseDuration: 0.7
   pulseCount: 3
-  jumpVelocity: 0
+  jumpVelocity: 50
   maxJumps: 3
   minSize: 0.001
   isSpying: 0
