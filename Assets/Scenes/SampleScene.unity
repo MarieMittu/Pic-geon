@@ -2678,6 +2678,7 @@ GameObject:
   - component: {fileID: 1485097121}
   - component: {fileID: 1485097120}
   - component: {fileID: 1485097119}
+  - component: {fileID: 1485097123}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -2770,6 +2771,21 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1485097123
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1485097118}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cfcc41e23b0c4cecaf34d9ace13a70c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tapeLimit: 4
+  tapeText: {fileID: 869195475}
+  reachedLimit: 0
 --- !u!1 &1599716460
 GameObject:
   m_ObjectHideFlags: 0
@@ -2809,8 +2825,6 @@ MonoBehaviour:
   maxVerticalRotation: 24.1
   zoomLevels: []
   isScrollEnabled: 1
-  tapeLimit: 0
-  tapeText: {fileID: 0}
 --- !u!81 &1599716462
 AudioListener:
   m_ObjectHideFlags: 0
@@ -3479,8 +3493,6 @@ MonoBehaviour:
   - 30
   - 10
   isScrollEnabled: 1
-  tapeLimit: 4
-  tapeText: {fileID: 869195475}
 --- !u!4 &2130950370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4645809790760630739, guid: 5f453400c5afe48289991cc409bbbc84, type: 3}

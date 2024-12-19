@@ -27,11 +27,7 @@ public class LimitedCamera : MonoBehaviour
     int currentZoomLevel = 0;
     public bool isScrollEnabled = true;
 
-    public int tapeLimit;
-    private int originalTapeLimit;
-    private int usedTape = 0;
     private int correctPhotosAmount = 0;
-    public Text tapeText;
 
     // Start is called before the first frame update
     void Start()
@@ -43,8 +39,6 @@ public class LimitedCamera : MonoBehaviour
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
-        originalTapeLimit = tapeLimit;
-        tapeText.text = usedTape + "/" + tapeLimit + " tape used";
     }
 
     // Update is called once per frame
@@ -134,11 +128,9 @@ public class LimitedCamera : MonoBehaviour
 
     void TrackTapeAmount()
     {
-        usedTape++; //TODO: save in player prefs or sth for next levels
-        tapeText.text = usedTape + "/" + originalTapeLimit + " tape used";
-        Debug.Log("TapeLimit current " + tapeLimit);
+        TapeManager.instance.AddUsedTape();
 
-        if (usedTape == tapeLimit)
+        if (TapeManager.instance.reachedLimit)
         {
             //ControlCorrectPhotos(); TODO: only in the last level, add level check
             GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
