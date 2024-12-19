@@ -137,6 +137,11 @@ public class LimitedCamera : MonoBehaviour
         tapeText.text = usedTape + "/" + originalTapeLimit + " tape used";
         Debug.Log("TapeLimit current " + tapeLimit);
 
+        if (usedTape > 0)
+        {
+            GameManager.sharedInstance.hasEvidence = true;
+        }
+
         if (tapeLimit <= 0)
         {
             ControlCorrectPhotos();
