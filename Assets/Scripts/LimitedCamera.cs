@@ -9,6 +9,7 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class LimitedCamera : MonoBehaviour
 {
+    [Header("Camera Rotation")]
     public float mouseSensitivity = 2f;
     float cameraVerticalRotation = 0f;
     float cameraHorizontalRotation = 0f;
@@ -24,13 +25,16 @@ public class LimitedCamera : MonoBehaviour
 
     //[Range(0.0f, 90f)] public float minFOV = 10.0f;
     //[Range(0.0f, 90f)] public float maxFOV = 60.0f;
+    [Header("Zoom and Focus")]
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
     [Range(0, 90)] public float[] zoomLevelsFocalLength = { 40, 60, 80 };
     public float minFocusDistance = 0;
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
-    public bool isScrollEnabled = true;
+    public float focusDistanceSpeed = 1f;
 
+    [Header("Other")]
+    public bool isScrollEnabled = true;
     public int tapeLimit;
     private int originalTapeLimit;
     private int usedTape = 0;
@@ -61,23 +65,25 @@ public class LimitedCamera : MonoBehaviour
         if (isScrollEnabled)
         {
             DepthOfField dph = GetDepthOfField();
+            // scroll = change fov zoom level and apply respective focal length
             if (Input.mouseScrollDelta != Vector2.zero)
             {
                 Camera cam = GetComponent<Camera>();
                 currentZoomLevel += Math.Sign(Input.mouseScrollDelta.y);
                 currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
+
                 cam.fieldOfView = zoomLevels[currentZoomLevel];
-                //cam.fieldOfView -= Input.mouseScrollDelta.y;
-                //cam.fieldOfView = Math.Clamp(cam.fieldOfView, minFOV, maxFOV);
                 dph.focalLength.value = zoomLevelsFocalLength[currentZoomLevel];
             }
 
+            // W/S = change focus distance
             int focalDepthDirection = 0;
             if (Input.GetKey(KeyCode.W)) focalDepthDirection += 1;
             if (Input.GetKey(KeyCode.S)) focalDepthDirection -= 1;
-            dph.focusDistance.value += focalDepthDirection * (zoomLevels[currentZoomLevel] / 100f) * 1.0f * Time.deltaTime;
+            dph.focusDistance.value += focalDepthDirection * focusDistanceSpeed * Time.deltaTime;
+            //* (zoomLevels[currentZoomLevel] / 100f)
         }
-        
+
 
         // photo
         if (!GameManager.sharedInstance.isGamePaused)
