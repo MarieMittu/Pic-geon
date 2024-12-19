@@ -102,6 +102,16 @@ public class LimitedCamera : MonoBehaviour
         }
     }
 
+    private bool IsWithinFocusedArea(GameObject gameObject)
+    {
+        DepthOfField depthOfField = GetDepthOfField();
+        float distance = Vector3.Distance(gameObject.transform.position, transform.position);
+        float nearFocusDistance = depthOfField.focusDistance.value - (depthOfField.focusDistance.value / depthOfField.aperture.value);
+        float farFocusDistance = depthOfField.focusDistance.value + (depthOfField.focusDistance.value / depthOfField.aperture.value);
+
+        return distance >= nearFocusDistance && distance <= farFocusDistance;
+    }
+
     private DepthOfField GetDepthOfField()
     {
         List<PostProcessVolume> volList = new List<PostProcessVolume>();
@@ -139,13 +149,21 @@ public class LimitedCamera : MonoBehaviour
         GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
         foreach (GameObject rb in roboBirds)
         {
+            // is a visible pigeon showing suspicious behaviour?
             var robotScript = rb.GetComponent<AIRobotController>();
             if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying)
             {
+                // test if pigeon is obstructed
                 Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
                 RaycastHit hit;
                 if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
                 {
+                    // test if pigeon is in focus
+                    DepthOfField dph = GetDepthOfField();
+                    float distFromFocus= Math.Abs(Vector3.Distance(rb.transform.position, transform.position) - dph.focusDistance.value);
+                    //TODO complete
+
+
                     correctPhotosAmount++;
                     Debug.Log("sus bird on photo " + correctPhotosAmount);  
                 }
