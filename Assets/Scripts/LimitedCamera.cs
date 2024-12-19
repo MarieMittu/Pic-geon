@@ -134,12 +134,11 @@ public class LimitedCamera : MonoBehaviour
 
     void TrackTapeAmount()
     {
-        tapeLimit--;
         usedTape++; //TODO: save in player prefs or sth for next levels
         tapeText.text = usedTape + "/" + originalTapeLimit + " tape used";
         Debug.Log("TapeLimit current " + tapeLimit);
 
-        if (tapeLimit <= 0)
+        if (usedTape == tapeLimit)
         {
             //ControlCorrectPhotos(); TODO: only in the last level, add level check
             GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
