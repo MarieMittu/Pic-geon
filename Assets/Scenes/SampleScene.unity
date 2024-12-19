@@ -2167,6 +2167,13 @@ MonoBehaviour:
   minVerticalRotation: -20.1
   maxVerticalRotation: 24.1
   zoomLevels: []
+  zoomLevelsFocalLength:
+  - 40
+  - 60
+  - 80
+  minFocusDistance: 0
+  maxFocusDistance: 3
+  focusDistanceSpeed: 1
   isScrollEnabled: 1
   tapeLimit: 0
   tapeText: {fileID: 0}
@@ -2680,6 +2687,13 @@ MonoBehaviour:
   - 60
   - 30
   - 10
+  zoomLevelsFocalLength:
+  - 40
+  - 60
+  - 80
+  minFocusDistance: 0
+  maxFocusDistance: 3
+  focusDistanceSpeed: 1
   isScrollEnabled: 1
   tapeLimit: 4
   tapeText: {fileID: 869195475}

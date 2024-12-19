@@ -162,7 +162,9 @@ public class LimitedCamera : MonoBehaviour
                 // test if pigeon is obstructed
                 Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
+                bool didHit = Physics.Raycast(ray, out hit);
+                Debug.DrawLine(ray.origin, hit.point, Color.cyan, float.MaxValue);
+                if (didHit && hit.collider.gameObject.tag == "RobotBird")
                 {
                     // test if pigeon is in focus
                     if (IsWithinFocusedArea(rb))
@@ -176,7 +178,10 @@ public class LimitedCamera : MonoBehaviour
                     }
 
                 }
-                else Debug.Log("sus bird obstructed ");
+                else {
+                    Debug.Log("sus bird obstructed ");
+                    Debug.Log(hit.collider.name);
+                }
             }
             else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
             {
