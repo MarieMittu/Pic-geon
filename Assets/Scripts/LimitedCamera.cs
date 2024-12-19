@@ -159,13 +159,16 @@ public class LimitedCamera : MonoBehaviour
                 if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
                 {
                     // test if pigeon is in focus
-                    DepthOfField dph = GetDepthOfField();
-                    float distFromFocus= Math.Abs(Vector3.Distance(rb.transform.position, transform.position) - dph.focusDistance.value);
-                    //TODO complete
+                    if (IsWithinFocusedArea(rb))
+                    {
+                        correctPhotosAmount++;
+                        Debug.Log("sus bird on photo " + correctPhotosAmount);
+                    }
+                    else
+                    {
+                        Debug.Log("sus bird out of focus");
+                    }
 
-
-                    correctPhotosAmount++;
-                    Debug.Log("sus bird on photo " + correctPhotosAmount);  
                 }
                 else Debug.Log("sus bird obstructed ");
             }
