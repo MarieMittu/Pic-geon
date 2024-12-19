@@ -163,6 +163,11 @@ public class LimitedCamera : MonoBehaviour
                 Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
                 RaycastHit hit;
                 bool didHit = Physics.Raycast(ray, out hit);
+                RaycastHit[] hits = Physics.RaycastAll(ray);
+                foreach (var h in hits)
+                {
+                    Debug.Log(h.collider.gameObject.name);
+                }
                 Debug.DrawLine(ray.origin, hit.point, Color.cyan, float.MaxValue);
                 if (didHit && hit.collider.gameObject.tag == "RobotBird")
                 {
