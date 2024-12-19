@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
+using UnityEngine.Rendering.PostProcessing;
 
 public class LimitedCamera : MonoBehaviour
 {
@@ -24,6 +25,9 @@ public class LimitedCamera : MonoBehaviour
     //[Range(0.0f, 90f)] public float minFOV = 10.0f;
     //[Range(0.0f, 90f)] public float maxFOV = 60.0f;
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
+    [Range(0, 90)] public float[] zoomLevelsFocalLength = { 40, 60, 80 };
+    public float minFocusDistance = 0;
+    public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
     public bool isScrollEnabled = true;
 
@@ -56,6 +60,7 @@ public class LimitedCamera : MonoBehaviour
 
         if (isScrollEnabled)
         {
+            DepthOfField dph = GetDepthOfField();
             if (Input.mouseScrollDelta != Vector2.zero)
             {
                 Camera cam = GetComponent<Camera>();
@@ -64,7 +69,13 @@ public class LimitedCamera : MonoBehaviour
                 cam.fieldOfView = zoomLevels[currentZoomLevel];
                 //cam.fieldOfView -= Input.mouseScrollDelta.y;
                 //cam.fieldOfView = Math.Clamp(cam.fieldOfView, minFOV, maxFOV);
+                dph.focalLength.value = zoomLevelsFocalLength[currentZoomLevel];
             }
+
+            int focalDepthDirection = 0;
+            if (Input.GetKey(KeyCode.W)) focalDepthDirection += 1;
+            if (Input.GetKey(KeyCode.S)) focalDepthDirection -= 1;
+            dph.focusDistance.value += focalDepthDirection * (zoomLevels[currentZoomLevel] / 100f) * 1.0f * Time.deltaTime;
         }
         
 
@@ -89,6 +100,23 @@ public class LimitedCamera : MonoBehaviour
             mouseSensitivity = 2f;
             isScrollEnabled = true;
         }
+    }
+
+    private DepthOfField GetDepthOfField()
+    {
+        List<PostProcessVolume> volList = new List<PostProcessVolume>();
+        PostProcessManager.instance.GetActiveVolumes(GetComponent<PostProcessLayer>(), volList, true, true);
+        DepthOfField dph;
+        foreach (PostProcessVolume vol in volList)
+        {
+            PostProcessProfile ppp = vol.profile;
+            if (ppp)
+            {
+                ppp.TryGetSettings<DepthOfField>(out dph);
+                return dph;
+            }
+        }
+        return null;
     }
 
     void ProcessCameraMovement(float inputX, float inputY)
