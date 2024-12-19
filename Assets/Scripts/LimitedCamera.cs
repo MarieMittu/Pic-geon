@@ -75,6 +75,7 @@ public class LimitedCamera : MonoBehaviour
             {
                 DetectBirdsOnPhoto();
                 TrackTapeAmount();
+                GameManager.sharedInstance.hasEvidence = true;
             }
         }
         
@@ -119,6 +120,7 @@ public class LimitedCamera : MonoBehaviour
                 if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
                 {
                     correctPhotosAmount++;
+                    GameManager.sharedInstance.hasCorrectPhotos = true;
                     Debug.Log("sus bird on photo " + correctPhotosAmount);  
                 }
                 else Debug.Log("sus bird obstructed ");
@@ -133,18 +135,14 @@ public class LimitedCamera : MonoBehaviour
     void TrackTapeAmount()
     {
         tapeLimit--;
-        usedTape++;
+        usedTape++; //TODO: save in player prefs or sth for next levels
         tapeText.text = usedTape + "/" + originalTapeLimit + " tape used";
         Debug.Log("TapeLimit current " + tapeLimit);
 
-        if (usedTape > 0)
-        {
-            GameManager.sharedInstance.hasEvidence = true;
-        }
-
         if (tapeLimit <= 0)
         {
-            ControlCorrectPhotos();
+            //ControlCorrectPhotos(); TODO: only in the last level, add level check
+            GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
         }
     }
 
@@ -152,7 +150,7 @@ public class LimitedCamera : MonoBehaviour
     {
         if (GameManager.sharedInstance.missionDuration <= 0)
         {
-            ControlCorrectPhotos();
+            ControlCorrectPhotos(); 
         }
     }
 

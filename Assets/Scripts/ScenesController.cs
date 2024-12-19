@@ -16,6 +16,7 @@ public class ScenesController : MonoBehaviour
     {
         SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
     }
 
     public void GoToMenu()

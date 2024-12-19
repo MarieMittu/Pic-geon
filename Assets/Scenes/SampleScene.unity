@@ -1824,9 +1824,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1041570249}
-        m_TargetAssemblyTypeName: ScenesController, Assembly-CSharp
-        m_MethodName: OpenIntermediateScene
+      - m_Target: {fileID: 1041570248}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ControlEvidence
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2257,6 +2257,7 @@ MonoBehaviour:
   timer: {fileID: 1802748458}
   isGamePaused: 0
   hasEvidence: 0
+  hasCorrectPhotos: 0
 --- !u!114 &1041570249
 MonoBehaviour:
   m_ObjectHideFlags: 0
