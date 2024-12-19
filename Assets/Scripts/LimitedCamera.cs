@@ -69,11 +69,15 @@ public class LimitedCamera : MonoBehaviour
         
 
         // photo
-        if (Input.GetMouseButtonDown(0))
+        if (!GameManager.sharedInstance.isGamePaused)
         {
-            DetectBirdsOnPhoto();
-            TrackTapeAmount();
+            if (Input.GetMouseButtonDown(0))
+            {
+                DetectBirdsOnPhoto();
+                TrackTapeAmount();
+            }
         }
+        
         TrackTime();
 
         if (GameManager.sharedInstance.isGamePaused)
