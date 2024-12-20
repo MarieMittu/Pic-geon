@@ -41,6 +41,8 @@ public class LimitedCamera : MonoBehaviour
     private int correctPhotosAmount = 0;
     public Text tapeText;
 
+    public float circleOfConfusion = 0.03f;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -106,17 +108,60 @@ public class LimitedCamera : MonoBehaviour
             mouseSensitivity = 2f;
             isScrollEnabled = true;
         }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            // DOF test
+            DepthOfField dofEffect = GetDepthOfField();
+            float focalLength = dofEffect.focalLength.value;
+            float aperture = dofEffect.aperture.value;
+            float focusDistance = dofEffect.focusDistance.value;
+            //float dof = calcDOF(focusDistance, aperture,focalLength, circleOfConfusion);
+            float hyperfocal = calcHyperfocalDistance(focalLength, (focalLength / aperture), circleOfConfusion);
+            float nearPoint = calcNearDistance(focusDistance, hyperfocal, focalLength); //dofEffect.focusDistance - dof / 2;
+            float farPoint = calcFarDistance(focusDistance, hyperfocal, focalLength); //dofEffect.focusDistance + dof / 2;
+
+            Debug.Log($"Depth of Field starts at: {nearPoint} meters");
+            Debug.Log($"Depth of Field ends at: {farPoint} meters");
+        }
     }
 
     private bool IsWithinFocusedArea(GameObject gameObject)
     {
-        DepthOfField depthOfField = GetDepthOfField();
         float distance = Vector3.Distance(gameObject.transform.position, transform.position);
-        float nearFocusDistance = depthOfField.focusDistance.value - (depthOfField.focusDistance.value / depthOfField.aperture.value);
-        float farFocusDistance = depthOfField.focusDistance.value + (depthOfField.focusDistance.value / depthOfField.aperture.value);
 
-        return distance >= nearFocusDistance && distance <= farFocusDistance;
+        DepthOfField dofEffect = GetDepthOfField();
+        float focalLength = dofEffect.focalLength.value;
+        float aperture = dofEffect.aperture.value;
+        float focusDistance = dofEffect.focusDistance.value;
+        float hyperfocal = calcHyperfocalDistance(focalLength, (focalLength / aperture), circleOfConfusion);
+        float nearPoint = calcNearDistance(focusDistance, hyperfocal, focalLength);
+        float farPoint = calcFarDistance(focusDistance, hyperfocal, focalLength);
+
+        return distance >= nearPoint && distance <= farPoint;
     }
+
+    // calculate the depth of field, the distance between the nearest and farthes objects that are in acceptable focus
+    // the CoC (circle of confusion) depends on how sharp/unsharp still counts as acceptable
+    private float calcDOF(float focusDistance, float aperture, float focalLength, float CoC)
+    {
+        return (2 * focusDistance * focusDistance * (focalLength / aperture) * CoC) / (focalLength * focalLength);
+    }
+
+    private float calcHyperfocalDistance(float focalLength, float fNumber, float CoC)
+    {
+        return (focalLength * focalLength) / (fNumber * CoC) + focalLength;
+    }
+    private float calcNearDistance(float focusDistance, float hyperfocal, float focalLength)
+    {
+        return (focusDistance * (hyperfocal - focalLength)) / (hyperfocal + focusDistance - 2 * focalLength);
+    }
+    private float calcFarDistance(float focusDistance, float hyperfocal, float focalLength)
+    {
+        return (focusDistance * (hyperfocal - focalLength)) / (hyperfocal - focusDistance);
+    }
+
+
 
     private DepthOfField GetDepthOfField()
     {
