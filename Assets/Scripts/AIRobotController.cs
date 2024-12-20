@@ -11,6 +11,8 @@ public class AIRobotController : AIBirdController
     {
         // Debug test
         if (Input.GetKeyDown(KeyCode.T)) ShowAntennae();
+
+        PerformActionsSequence();
     }
 
     public override void PerformRandomAction()
