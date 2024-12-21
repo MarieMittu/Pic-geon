@@ -96,7 +96,7 @@ public class LimitedCamera : MonoBehaviour
                 TrackTapeAmount();
             }
         }
-        
+
         TrackTime();
 
         if (GameManager.sharedInstance.isGamePaused)
@@ -116,10 +116,13 @@ public class LimitedCamera : MonoBehaviour
             float focalLength = dofEffect.focalLength.value;
             float aperture = dofEffect.aperture.value;
             float focusDistance = dofEffect.focusDistance.value;
-            //float dof = calcDOF(focusDistance, aperture,focalLength, circleOfConfusion);
-            float hyperfocal = calcHyperfocalDistance(focalLength, (focalLength / aperture), circleOfConfusion);
-            float nearPoint = calcNearDistance(focusDistance, hyperfocal, focalLength); //dofEffect.focusDistance - dof / 2;
-            float farPoint = calcFarDistance(focusDistance, hyperfocal, focalLength); //dofEffect.focusDistance + dof / 2;
+
+            float dof = calcDOF(focusDistance, aperture,focalLength, circleOfConfusion);
+            float nearPoint = dofEffect.focusDistance - dof / 2;
+            float farPoint = dofEffect.focusDistance + dof / 2;
+            //float hyperfocal = calcHyperfocalDistance(focalLength, (focalLength / aperture), circleOfConfusion);
+            //float nearPoint = calcNearDistance(focusDistance, aperture, focalLength, circleOfConfusion);
+            //float farPoint = calcFarDistance(focusDistance, aperture, focalLength, circleOfConfusion);
 
             Debug.Log($"Depth of Field starts at: {nearPoint} meters");
             Debug.Log($"Depth of Field ends at: {farPoint} meters");
@@ -134,9 +137,11 @@ public class LimitedCamera : MonoBehaviour
         float focalLength = dofEffect.focalLength.value;
         float aperture = dofEffect.aperture.value;
         float focusDistance = dofEffect.focusDistance.value;
-        float hyperfocal = calcHyperfocalDistance(focalLength, (focalLength / aperture), circleOfConfusion);
-        float nearPoint = calcNearDistance(focusDistance, hyperfocal, focalLength);
-        float farPoint = calcFarDistance(focusDistance, hyperfocal, focalLength);
+        //float hyperfocal = calcHyperfocalDistance(focalLength, (focalLength / aperture), circleOfConfusion);
+        //float nearPoint = calcNearDistance(focusDistance, hyperfocal, focalLength);
+        //float farPoint = calcFarDistance(focusDistance, hyperfocal, focalLength);
+        float nearPoint = calcNearDistance(focusDistance, aperture, focalLength, circleOfConfusion);
+        float farPoint = calcFarDistance(focusDistance, aperture, focalLength, circleOfConfusion);
 
         return distance >= nearPoint && distance <= farPoint;
     }
@@ -152,13 +157,20 @@ public class LimitedCamera : MonoBehaviour
     {
         return (focalLength * focalLength) / (fNumber * CoC) + focalLength;
     }
-    private float calcNearDistance(float focusDistance, float hyperfocal, float focalLength)
+    //private float calcNearDistance(float focusDistance, float hyperfocal, float focalLength)
+    //{
+    //    return (focusDistance * (hyperfocal - focalLength)) / (hyperfocal + focusDistance - 2 * focalLength);
+    //}
+    //private float calcFarDistance(float focusDistance, float hyperfocal, float focalLength)
+    //    return (focusDistance * (hyperfocal - focalLength)) / (hyperfocal - focusDistance);
+    //}
+    private float calcNearDistance(float focusDistance, float aperture, float focalLength, float CoC)
     {
-        return (focusDistance * (hyperfocal - focalLength)) / (hyperfocal + focusDistance - 2 * focalLength);
+        return (-CoC * focusDistance * focalLength + CoC * focusDistance * focusDistance) / (-CoC * focalLength + CoC * focusDistance - aperture * focalLength);
     }
-    private float calcFarDistance(float focusDistance, float hyperfocal, float focalLength)
+    private float calcFarDistance(float focusDistance, float aperture, float focalLength, float CoC)
     {
-        return (focusDistance * (hyperfocal - focalLength)) / (hyperfocal - focusDistance);
+        return (-CoC * focusDistance * focalLength + CoC * focusDistance * focusDistance) / (CoC * focalLength - CoC * focusDistance - aperture * focalLength);
     }
 
 

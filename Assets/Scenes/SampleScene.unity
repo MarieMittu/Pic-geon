@@ -7517,7 +7517,7 @@ MonoBehaviour:
   isScrollEnabled: 1
   tapeLimit: 4
   tapeText: {fileID: 869195475}
-  circleOfConfusion: 0.03
+  circleOfConfusion: 40
 --- !u!4 &2130950370 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4645809790760630739, guid: 5f453400c5afe48289991cc409bbbc84, type: 3}
