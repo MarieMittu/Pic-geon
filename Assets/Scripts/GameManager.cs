@@ -13,6 +13,8 @@ public class GameManager : MonoBehaviour
     public Image timer;
 
     public bool isGamePaused;
+    public bool hasEvidence;
+    public bool hasCorrectPhotos;
 
     private void Awake()
     {
@@ -27,7 +29,8 @@ public class GameManager : MonoBehaviour
         {
             timer.fillAmount = 1f;
         }
-
+        hasEvidence = false;
+        hasCorrectPhotos = false;
     }
 
     // Update is called once per frame
@@ -56,6 +59,10 @@ public class GameManager : MonoBehaviour
             } else
             {
                 FindObjectOfType<ScenesController>().Pause();
+                if (hasEvidence)
+                {
+                    FindObjectOfType<ScenesController>().ActivateSubButton();
+                } 
             }
         }
     }
@@ -68,5 +75,16 @@ public class GameManager : MonoBehaviour
     public void TriggerNextLevel()
     {
         FindObjectOfType<ScenesController>().OpenIntermediateScene();
+    }
+
+   public void ControlEvidence()
+    {
+        if (hasCorrectPhotos)
+        {
+            TriggerNextLevel();
+        } else
+        {
+            TriggerGameOver();
+        }
     }
 }

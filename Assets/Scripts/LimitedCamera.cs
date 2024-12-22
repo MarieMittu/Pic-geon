@@ -34,11 +34,7 @@ public class LimitedCamera : MonoBehaviour
 
     [Header("Other")]
     public bool isScrollEnabled = true;
-    public int tapeLimit;
-    private int originalTapeLimit;
-    private int usedTape = 0;
     private int correctPhotosAmount = 0;
-    public Text tapeText;
 
     // Start is called before the first frame update
     void Start()
@@ -49,9 +45,6 @@ public class LimitedCamera : MonoBehaviour
         referenceVerticalRotation = cameraVerticalRotation;
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
-
-        originalTapeLimit = tapeLimit;
-        tapeText.text = usedTape + "/" + tapeLimit + " tape used";
 
         Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
         dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
@@ -96,6 +89,7 @@ public class LimitedCamera : MonoBehaviour
             {
                 DetectBirdsOnPhoto();
                 TrackTapeAmount();
+                GameManager.sharedInstance.hasEvidence = true;
             }
         }
 
@@ -161,6 +155,7 @@ public class LimitedCamera : MonoBehaviour
                     if (IsWithinFocusedArea(rb))
                     {
                         correctPhotosAmount++;
+                        GameManager.sharedInstance.hasCorrectPhotos = true;
                         Debug.Log("sus bird on photo " + correctPhotosAmount);
                     }
                     else
@@ -183,14 +178,12 @@ public class LimitedCamera : MonoBehaviour
 
     void TrackTapeAmount()
     {
-        tapeLimit--;
-        usedTape++;
-        tapeText.text = usedTape + "/" + originalTapeLimit + " tape used";
-        Debug.Log("TapeLimit current " + tapeLimit);
+        TapeManager.instance.AddUsedTape();
 
-        if (tapeLimit <= 0)
+        if (TapeManager.instance.reachedLimit)
         {
-            ControlCorrectPhotos();
+            //ControlCorrectPhotos(); TODO: only in the last level, add level check
+            GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
         }
     }
 
@@ -198,7 +191,7 @@ public class LimitedCamera : MonoBehaviour
     {
         if (GameManager.sharedInstance.missionDuration <= 0)
         {
-            ControlCorrectPhotos();
+            ControlCorrectPhotos(); 
         }
     }
 
