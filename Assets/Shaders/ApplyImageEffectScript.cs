@@ -11,6 +11,11 @@ public class ApplyImageEffectScript : MonoBehaviour
 
     void Start()
     {
+        if (Application.isPlaying) {
+            Material mat = new Material(material);
+            material = mat;
+        }
+
         Camera cam = GetComponent<Camera>();
         cam.depthTextureMode = cam.depthTextureMode | DepthTextureMode.Depth;
 
