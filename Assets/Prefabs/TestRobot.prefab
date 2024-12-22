@@ -17,7 +17,7 @@ GameObject:
   - component: {fileID: 6759729605132827713}
   - component: {fileID: 8802996486770861090}
   - component: {fileID: -7055053127963947295}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: TestRobot
   m_TagString: RobotBird
   m_Icon: {fileID: 0}
