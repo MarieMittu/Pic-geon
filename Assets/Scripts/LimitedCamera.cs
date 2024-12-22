@@ -4,9 +4,11 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class LimitedCamera : MonoBehaviour
 {
+    [Header("Camera Rotation")]
     public float mouseSensitivity = 2f;
     float cameraVerticalRotation = 0f;
     float cameraHorizontalRotation = 0f;
@@ -22,12 +24,21 @@ public class LimitedCamera : MonoBehaviour
 
     //[Range(0.0f, 90f)] public float minFOV = 10.0f;
     //[Range(0.0f, 90f)] public float maxFOV = 60.0f;
+    [Header("Zoom and Focus")]
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
+    [Range(0, 10)] public float[] zoomLevelsDepthOfField = { 3, 2, 1 };
+    public float minFocusDistance = 0;
+    public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
-    public bool isScrollEnabled = true;
+    public float focusDistanceSpeed = 1f;
 
+    [Header("Other")]
+    public bool isScrollEnabled = true;
     public int tapeLimit;
+    private int originalTapeLimit;
+    private int usedTape = 0;
     private int correctPhotosAmount = 0;
+    public Text tapeText;
 
     // Start is called before the first frame update
     void Start()
@@ -38,6 +49,13 @@ public class LimitedCamera : MonoBehaviour
         referenceVerticalRotation = cameraVerticalRotation;
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
+
+        originalTapeLimit = tapeLimit;
+        tapeText.text = usedTape + "/" + tapeLimit + " tape used";
+
+        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+        dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
+        dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
     }
 
     // Update is called once per frame
@@ -49,24 +67,38 @@ public class LimitedCamera : MonoBehaviour
 
         if (isScrollEnabled)
         {
+            Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+            // scroll = change fov zoom level and apply respective depth of field
             if (Input.mouseScrollDelta != Vector2.zero)
             {
                 Camera cam = GetComponent<Camera>();
                 currentZoomLevel += Math.Sign(Input.mouseScrollDelta.y);
                 currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
+
                 cam.fieldOfView = zoomLevels[currentZoomLevel];
-                //cam.fieldOfView -= Input.mouseScrollDelta.y;
-                //cam.fieldOfView = Math.Clamp(cam.fieldOfView, minFOV, maxFOV);
+                dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
             }
+
+            // W/S = change focus distance
+            int focalDepthDirection = 0;
+            if (Input.GetKey(KeyCode.W)) focalDepthDirection += 1;
+            if (Input.GetKey(KeyCode.S)) focalDepthDirection -= 1;
+            float fD = dofShaderMat.GetFloat("_FocusDistance") + focalDepthDirection * focusDistanceSpeed * Time.deltaTime;
+            fD = Math.Clamp(fD, minFocusDistance, maxFocusDistance);
+            dofShaderMat.SetFloat("_FocusDistance", fD);
         }
-        
+
 
         // photo
-        if (Input.GetMouseButtonDown(0))
+        if (!GameManager.sharedInstance.isGamePaused)
         {
-            DetectBirdsOnPhoto();
-            TrackTapeAmount();
+            if (Input.GetMouseButtonDown(0))
+            {
+                DetectBirdsOnPhoto();
+                TrackTapeAmount();
+            }
         }
+
         TrackTime();
 
         if (GameManager.sharedInstance.isGamePaused)
@@ -78,6 +110,17 @@ public class LimitedCamera : MonoBehaviour
             mouseSensitivity = 2f;
             isScrollEnabled = true;
         }
+    }
+
+    private bool IsWithinFocusedArea(GameObject gameObject)
+    {
+        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+
+        float distance = Vector3.Distance(gameObject.transform.position, transform.position);
+
+        float focusDistance = dofShaderMat.GetFloat("_FocusDistance");
+        float dof = dofShaderMat.GetFloat("_DepthOfFieldSize");
+        return Math.Abs(distance - focusDistance) < dof/2;
     }
 
     void ProcessCameraMovement(float inputX, float inputY)
@@ -100,17 +143,36 @@ public class LimitedCamera : MonoBehaviour
         GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
         foreach (GameObject rb in roboBirds)
         {
+            // is a visible pigeon showing suspicious behaviour?
             var robotScript = rb.GetComponent<AIRobotController>();
             if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying)
             {
-                Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
+                // test if pigeon is obstructed
                 RaycastHit hit;
-                if (Physics.Raycast(ray, out hit) && hit.collider.gameObject.tag == "RobotBird")
+                bool didHit = Physics.Linecast(transform.position, rb.transform.position, out hit);
+                //Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
+                //bool didHit = Physics.Raycast(ray, out hit);
+                //Debug.DrawLine(ray.origin, hit.point, Color.cyan, float.MaxValue);
+                Debug.DrawLine(transform.position, didHit? hit.point : rb.transform.position, Color.cyan, float.MaxValue);
+                //if (didHit && hit.collider.gameObject.tag == "RobotBird")
+                if (!didHit)
                 {
-                    correctPhotosAmount++;
-                    Debug.Log("sus bird on photo " + correctPhotosAmount);  
+                    // test if pigeon is in focus
+                    if (IsWithinFocusedArea(rb))
+                    {
+                        correctPhotosAmount++;
+                        Debug.Log("sus bird on photo " + correctPhotosAmount);
+                    }
+                    else
+                    {
+                        Debug.Log("sus bird out of focus");
+                    }
+
                 }
-                else Debug.Log("sus bird obstructed ");
+                else {
+                    Debug.Log("sus bird obstructed ");
+                    Debug.Log(hit.collider.name);
+                }
             }
             else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
             {
@@ -122,6 +184,8 @@ public class LimitedCamera : MonoBehaviour
     void TrackTapeAmount()
     {
         tapeLimit--;
+        usedTape++;
+        tapeText.text = usedTape + "/" + originalTapeLimit + " tape used";
         Debug.Log("TapeLimit current " + tapeLimit);
 
         if (tapeLimit <= 0)

@@ -7,6 +7,14 @@ public class AIRobotController : AIBirdController
     public float minSize;
     public bool isSpying = false;
 
+    private void Update()
+    {
+        // Debug test
+        if (Input.GetKeyDown(KeyCode.T)) ShowAntennae();
+
+        PerformActionsSequence();
+    }
+
     public override void PerformRandomAction()
     {
         List<RandomActions> randomActions = new List<RandomActions>
