@@ -5,7 +5,6 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.UI;
-using UnityEngine.Rendering.PostProcessing;
 
 public class LimitedCamera : MonoBehaviour
 {
@@ -27,7 +26,7 @@ public class LimitedCamera : MonoBehaviour
     //[Range(0.0f, 90f)] public float maxFOV = 60.0f;
     [Header("Zoom and Focus")]
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
-    [Range(0, 90)] public float[] zoomLevelsFocalLength = { 40, 60, 80 };
+    [Range(0, 10)] public float[] zoomLevelsDepthOfField = { 3, 2, 1 };
     public float minFocusDistance = 0;
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
@@ -41,8 +40,6 @@ public class LimitedCamera : MonoBehaviour
     private int correctPhotosAmount = 0;
     public Text tapeText;
 
-    public float circleOfConfusion = 0.03f;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -55,6 +52,10 @@ public class LimitedCamera : MonoBehaviour
 
         originalTapeLimit = tapeLimit;
         tapeText.text = usedTape + "/" + tapeLimit + " tape used";
+
+        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+        dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
+        dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
     }
 
     // Update is called once per frame
@@ -66,8 +67,8 @@ public class LimitedCamera : MonoBehaviour
 
         if (isScrollEnabled)
         {
-            //DepthOfField dph = GetDepthOfField();
-            // scroll = change fov zoom level and apply respective focal length
+            Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+            // scroll = change fov zoom level and apply respective depth of field
             if (Input.mouseScrollDelta != Vector2.zero)
             {
                 Camera cam = GetComponent<Camera>();
@@ -75,15 +76,16 @@ public class LimitedCamera : MonoBehaviour
                 currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
 
                 cam.fieldOfView = zoomLevels[currentZoomLevel];
-                //dph.focalLength.value = zoomLevelsFocalLength[currentZoomLevel];
+                dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
             }
 
             // W/S = change focus distance
             int focalDepthDirection = 0;
             if (Input.GetKey(KeyCode.W)) focalDepthDirection += 1;
             if (Input.GetKey(KeyCode.S)) focalDepthDirection -= 1;
-            //dph.focusDistance.value += focalDepthDirection * focusDistanceSpeed * Time.deltaTime;
-            //* (zoomLevels[currentZoomLevel] / 100f)
+            float fD = dofShaderMat.GetFloat("_FocusDistance") + focalDepthDirection * focusDistanceSpeed * Time.deltaTime;
+            fD = Math.Clamp(fD, minFocusDistance, maxFocusDistance);
+            dofShaderMat.SetFloat("_FocusDistance", fD);
         }
 
 
@@ -108,89 +110,17 @@ public class LimitedCamera : MonoBehaviour
             mouseSensitivity = 2f;
             isScrollEnabled = true;
         }
-
-        if (Input.GetMouseButtonDown(1))
-        {/*
-            // DOF test
-            DepthOfField dofEffect = GetDepthOfField();
-            float focalLength = dofEffect.focalLength.value;
-            float aperture = dofEffect.aperture.value;
-            float focusDistance = dofEffect.focusDistance.value;
-
-            float dof = calcDOF(focusDistance, aperture,focalLength, circleOfConfusion);
-            float nearPoint = dofEffect.focusDistance - dof / 2;
-            float farPoint = dofEffect.focusDistance + dof / 2;
-            //float hyperfocal = calcHyperfocalDistance(focalLength, (focalLength / aperture), circleOfConfusion);
-            //float nearPoint = calcNearDistance(focusDistance, aperture, focalLength, circleOfConfusion);
-            //float farPoint = calcFarDistance(focusDistance, aperture, focalLength, circleOfConfusion);
-
-            Debug.Log($"Depth of Field starts at: {nearPoint} meters");
-            Debug.Log($"Depth of Field ends at: {farPoint} meters");*/
-        }
     }
 
     private bool IsWithinFocusedArea(GameObject gameObject)
-    {/*
+    {
+        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+
         float distance = Vector3.Distance(gameObject.transform.position, transform.position);
 
-        DepthOfField dofEffect = GetDepthOfField();
-        float focalLength = dofEffect.focalLength.value;
-        float aperture = dofEffect.aperture.value;
-        float focusDistance = dofEffect.focusDistance.value;
-        //float hyperfocal = calcHyperfocalDistance(focalLength, (focalLength / aperture), circleOfConfusion);
-        //float nearPoint = calcNearDistance(focusDistance, hyperfocal, focalLength);
-        //float farPoint = calcFarDistance(focusDistance, hyperfocal, focalLength);
-        float nearPoint = calcNearDistance(focusDistance, aperture, focalLength, circleOfConfusion);
-        float farPoint = calcFarDistance(focusDistance, aperture, focalLength, circleOfConfusion);
-
-        return distance >= nearPoint && distance <= farPoint;*/
-        return false;
-    }
-
-    // calculate the depth of field, the distance between the nearest and farthes objects that are in acceptable focus
-    // the CoC (circle of confusion) depends on how sharp/unsharp still counts as acceptable
-    private float calcDOF(float focusDistance, float aperture, float focalLength, float CoC)
-    {
-        return (2 * focusDistance * focusDistance * (focalLength / aperture) * CoC) / (focalLength * focalLength);
-    }
-
-    private float calcHyperfocalDistance(float focalLength, float fNumber, float CoC)
-    {
-        return (focalLength * focalLength) / (fNumber * CoC) + focalLength;
-    }
-    //private float calcNearDistance(float focusDistance, float hyperfocal, float focalLength)
-    //{
-    //    return (focusDistance * (hyperfocal - focalLength)) / (hyperfocal + focusDistance - 2 * focalLength);
-    //}
-    //private float calcFarDistance(float focusDistance, float hyperfocal, float focalLength)
-    //    return (focusDistance * (hyperfocal - focalLength)) / (hyperfocal - focusDistance);
-    //}
-    private float calcNearDistance(float focusDistance, float aperture, float focalLength, float CoC)
-    {
-        return (-CoC * focusDistance * focalLength + CoC * focusDistance * focusDistance) / (-CoC * focalLength + CoC * focusDistance - aperture * focalLength);
-    }
-    private float calcFarDistance(float focusDistance, float aperture, float focalLength, float CoC)
-    {
-        return (-CoC * focusDistance * focalLength + CoC * focusDistance * focusDistance) / (CoC * focalLength - CoC * focusDistance - aperture * focalLength);
-    }
-
-
-
-    private DepthOfField GetDepthOfField()
-    {
-        List<PostProcessVolume> volList = new List<PostProcessVolume>();
-        PostProcessManager.instance.GetActiveVolumes(GetComponent<PostProcessLayer>(), volList, true, true);
-        DepthOfField dph;
-        foreach (PostProcessVolume vol in volList)
-        {
-            PostProcessProfile ppp = vol.profile;
-            if (ppp)
-            {
-                ppp.TryGetSettings<DepthOfField>(out dph);
-                return dph;
-            }
-        }
-        return null;
+        float focusDistance = dofShaderMat.GetFloat("_FocusDistance");
+        float dof = dofShaderMat.GetFloat("_DepthOfFieldSize");
+        return Math.Abs(distance - focusDistance) < dof/2;
     }
 
     void ProcessCameraMovement(float inputX, float inputY)
@@ -222,11 +152,6 @@ public class LimitedCamera : MonoBehaviour
                 bool didHit = Physics.Linecast(transform.position, rb.transform.position, out hit);
                 //Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
                 //bool didHit = Physics.Raycast(ray, out hit);
-                //RaycastHit[] hits = Physics.RaycastAll(ray);
-                //foreach (var h in hits)
-                //{
-                //    Debug.Log(h.collider.gameObject.name);
-                //}
                 //Debug.DrawLine(ray.origin, hit.point, Color.cyan, float.MaxValue);
                 Debug.DrawLine(transform.position, didHit? hit.point : rb.transform.position, Color.cyan, float.MaxValue);
                 //if (didHit && hit.collider.gameObject.tag == "RobotBird")

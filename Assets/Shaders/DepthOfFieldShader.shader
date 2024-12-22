@@ -4,6 +4,9 @@ Shader "Hidden/DepthOfFieldShader"
     {
         _MainTex ("Texture", 2D) = "white" {}
         _GridSize("Grid Size", Integer) = 1
+        _FocusDistance("Focus Distance", Float) = 2
+        _DepthOfFieldSize("Depth Of Field Size", Float) = 1
+        _TransitionSize("Transition Size", Float) = 0.1
     }
     SubShader
     {
@@ -42,9 +45,34 @@ Shader "Hidden/DepthOfFieldShader"
             float4 _MainTex_TexelSize;
             sampler2D _CameraDepthTexture;
             int _GridSize;
+            float _FocusDistance;
+            float _DepthOfFieldSize;
+            float _TransitionSize;
+
+            float getBlurStrength(float distance)
+            {
+                // create this shape with 2 clamped linear functions
+                // 1 ________	     ________
+	            // 0         \______/
+                //           ^      ^
+                //         near    far    - blur transition
+                float nearTransition = _FocusDistance - _DepthOfFieldSize / 2;
+                float farTransition  = _FocusDistance + _DepthOfFieldSize / 2;
+                float falling = (nearTransition - distance) / _TransitionSize + 0.5;
+                float rising  = (-farTransition + distance) / _TransitionSize + 0.5;
+                return clamp(falling, 0, 1) + clamp(rising, 0, 1);
+            }
 
             fixed4 frag (v2f i) : SV_Target
             {
+                float depth = tex2D(_CameraDepthTexture, i.uv).r;
+                //linear depth between camera and far clipping plane
+                depth = Linear01Depth(depth);
+                //depth as distance from camera in units
+                depth = depth * _ProjectionParams.z;
+
+                float blurStrength = getBlurStrength(depth);
+
                 fixed4 col = tex2D(_MainTex, i.uv);
 
                 // blur in a Gridzize * Gridzize square around this texel
@@ -61,15 +89,9 @@ Shader "Hidden/DepthOfFieldShader"
                 blurredColor /= _GridSize * _GridSize;
 
                 
-                float depth = tex2D(_CameraDepthTexture, i.uv).r;
-                //linear depth between camera and far clipping plane
-                depth = Linear01Depth(depth);
-                //depth as distance from camera in units
-                depth = depth * _ProjectionParams.z;
 
-                if (depth < 3 && depth > 2) return col;
 
-                return float4(blurredColor, 1.0);
+                return float4(blurredColor, 1.0) * blurStrength + col * (1-blurStrength);
             }
             ENDCG
         }

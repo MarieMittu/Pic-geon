@@ -28,7 +28,10 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Ints:
-    - _GridSize: 50
-    m_Floats: []
+    - _GridSize: 20
+    m_Floats:
+    - _DepthOfFieldSize: 0.5
+    - _FocusDistance: 2.1786368
+    - _TransitionSize: 0.1
     m_Colors: []
   m_BuildTextureStacks: []
