@@ -16,9 +16,13 @@ public class GameManager : MonoBehaviour
     public bool hasEvidence;
     public bool hasCorrectPhotos;
 
+    
+
     private void Awake()
     {
-        sharedInstance = this;
+
+            sharedInstance = this;
+
     }
 
     // Start is called before the first frame update
@@ -87,4 +91,6 @@ public class GameManager : MonoBehaviour
             TriggerGameOver();
         }
     }
+
+  
 }

@@ -23,7 +23,22 @@ public class TapeManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        usedTape = PlayerPrefs.GetInt("usedtape", 0);
+   
+    }
+
+    private void OnEnable()
+    {
+        Debug.Log("mission check " + MissionManager.sharedInstance.currentMission);
+
+        if (MissionManager.sharedInstance.currentMission == 1)
+        {
+            ResetTape();
+        }
+        else
+        {
+            usedTape = PlayerPrefs.GetInt("usedtape", usedTape);
+
+        }
 
         tapeText.text = usedTape + "/" + tapeLimit + " tape used";
     }

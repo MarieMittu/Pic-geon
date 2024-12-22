@@ -27,6 +27,7 @@ public class ScenesController : MonoBehaviour
 
     public void LoadNextLevel()
     {
+        MissionManager.sharedInstance.NextMission();
         SceneManager.LoadScene("SampleScene"); // TODO: add camera selection
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
