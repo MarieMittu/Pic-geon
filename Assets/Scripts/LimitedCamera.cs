@@ -66,7 +66,7 @@ public class LimitedCamera : MonoBehaviour
 
         if (isScrollEnabled)
         {
-            DepthOfField dph = GetDepthOfField();
+            //DepthOfField dph = GetDepthOfField();
             // scroll = change fov zoom level and apply respective focal length
             if (Input.mouseScrollDelta != Vector2.zero)
             {
@@ -75,14 +75,14 @@ public class LimitedCamera : MonoBehaviour
                 currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
 
                 cam.fieldOfView = zoomLevels[currentZoomLevel];
-                dph.focalLength.value = zoomLevelsFocalLength[currentZoomLevel];
+                //dph.focalLength.value = zoomLevelsFocalLength[currentZoomLevel];
             }
 
             // W/S = change focus distance
             int focalDepthDirection = 0;
             if (Input.GetKey(KeyCode.W)) focalDepthDirection += 1;
             if (Input.GetKey(KeyCode.S)) focalDepthDirection -= 1;
-            dph.focusDistance.value += focalDepthDirection * focusDistanceSpeed * Time.deltaTime;
+            //dph.focusDistance.value += focalDepthDirection * focusDistanceSpeed * Time.deltaTime;
             //* (zoomLevels[currentZoomLevel] / 100f)
         }
 
@@ -110,7 +110,7 @@ public class LimitedCamera : MonoBehaviour
         }
 
         if (Input.GetMouseButtonDown(1))
-        {
+        {/*
             // DOF test
             DepthOfField dofEffect = GetDepthOfField();
             float focalLength = dofEffect.focalLength.value;
@@ -125,12 +125,12 @@ public class LimitedCamera : MonoBehaviour
             //float farPoint = calcFarDistance(focusDistance, aperture, focalLength, circleOfConfusion);
 
             Debug.Log($"Depth of Field starts at: {nearPoint} meters");
-            Debug.Log($"Depth of Field ends at: {farPoint} meters");
+            Debug.Log($"Depth of Field ends at: {farPoint} meters");*/
         }
     }
 
     private bool IsWithinFocusedArea(GameObject gameObject)
-    {
+    {/*
         float distance = Vector3.Distance(gameObject.transform.position, transform.position);
 
         DepthOfField dofEffect = GetDepthOfField();
@@ -143,7 +143,8 @@ public class LimitedCamera : MonoBehaviour
         float nearPoint = calcNearDistance(focusDistance, aperture, focalLength, circleOfConfusion);
         float farPoint = calcFarDistance(focusDistance, aperture, focalLength, circleOfConfusion);
 
-        return distance >= nearPoint && distance <= farPoint;
+        return distance >= nearPoint && distance <= farPoint;*/
+        return false;
     }
 
     // calculate the depth of field, the distance between the nearest and farthes objects that are in acceptable focus
