@@ -15,6 +15,11 @@ public class AIBirdController : MonoBehaviour
 
     Rigidbody rb;
 
+    public Animator animator;
+
+    private bool isSitting;
+    private bool isDoingSth = false;
+
     NavMeshAgent agent;
     public float range; //radius of sphere to walk around
 
@@ -31,6 +36,11 @@ public class AIBirdController : MonoBehaviour
     public int maxJumps;
     private int currentJumps = 0;
     private bool isJumping = false;
+
+    private void Awake()
+    {
+        animator = GetComponent<Animator>();
+    }
 
     private void Start()
     {
@@ -51,6 +61,7 @@ public class AIBirdController : MonoBehaviour
 
     public void PerformActionsSequence()
     {
+
         actionTime -= Time.deltaTime;
         if (actionTime <= 0)
         {
@@ -62,18 +73,32 @@ public class AIBirdController : MonoBehaviour
 
     public virtual void PerformRandomAction()
     {
+        if (isDoingSth) return;
+        isDoingSth = true;
+        animator.Play("01_Standing_Idle");
+
         List<RandomActions> randomActions = new List<RandomActions>
         {
-            PerformChirp,
-            //PerformShit,
-            PerformEat,
+            StandStill,
+            CleanItself,
+            SitDown,
+            PickFood,
             WalkAround,
-            Fly
+            //Fly
         };
 
 
         randomActions[Random.Range(0, randomActions.Count)]();
+        StartCoroutine(ResetActionAfterDelay());
     }
+
+    private IEnumerator ResetActionAfterDelay()
+    {
+        yield return new WaitForSeconds(actionTime);
+        isDoingSth = false; 
+    }
+
+    // test actions
 
     public void PerformChirp()
     {
@@ -96,8 +121,6 @@ public class AIBirdController : MonoBehaviour
         //Debug.Log("I am eating!");
         StartCoroutine(Spin());
     }
-
-    // test actions
 
     IEnumerator Pulse()
     {
@@ -163,17 +186,78 @@ public class AIBirdController : MonoBehaviour
         }
     }
 
+    // normal actions
+
+    public void StandStill()
+    {
+        animator.Play("01_Standing_Idle");
+        isSitting = false;
+    }
+
+    public void CleanItself()
+    {
+        animator.Play("01_Standing_Cleaning");
+        isSitting = false;
+    }
+
+    public void SitDown()
+    {
+        animator.Play("02_Sitting_down");
+        animator.Play("02_Sitting_Idle");
+        isSitting = true;
+    }
+
+    public void PickFood()
+    {
+        if (isSitting) animator.Play("02_Sitting_Picking");
+    }
+
     public void WalkAround()
     {
-        if (agent.remainingDistance <= agent.stoppingDistance) //done with path
+        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
         {
             Vector3 point;
             if (RandomPoint(centrePoint, range, out point)) //pass in our centre point and radius of area
             {
-                Debug.DrawRay(point, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
-                agent.SetDestination(point);
+                Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); //so you can see with gizmos
+                StartCoroutine(RotateAndMoveToPoint(point));
             }
         }
+
+        if (agent.velocity.sqrMagnitude > 0.01f)
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("01_Standing_Idle"))
+            {
+                animator.Play("01_Standing_Idle"); //TODO: change for walking anim when ready
+            }
+            isSitting = false;
+        }
+        else if (!isDoingSth) 
+        {
+            if (!animator.GetCurrentAnimatorStateInfo(0).IsName("01_Standing_Idle"))
+            {
+                animator.Play("01_Standing_Idle"); 
+            }
+        }
+    }
+
+    private IEnumerator RotateAndMoveToPoint(Vector3 targetPoint)
+    {
+        isDoingSth = true;
+
+        Vector3 direction = (targetPoint - transform.position).normalized;
+        Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+        float rotationSpeed = 5f;
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+            yield return null;
+        }
+
+        agent.SetDestination(targetPoint);
+
+        isDoingSth = false;
     }
 
     bool RandomPoint(Vector3 center, float range, out Vector3 result)

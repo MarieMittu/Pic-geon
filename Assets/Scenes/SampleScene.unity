@@ -2256,7 +2256,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pooledBirds: []
   birdsToPool:
-  - {fileID: 8370671803868220185, guid: 443dd5c51b2804b1dadb5ace143d4fb0, type: 3}
+  - {fileID: 5673737481408133652, guid: c6dd2ef3a5f1249199acb1a6f26c6cfb, type: 3}
   birdsAmountToPool: 10
   pooledRobots: []
   robotsToPool:
