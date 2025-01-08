@@ -2,11 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class ScenesController : MonoBehaviour
 {
 
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] GameObject alert;
 
     public bool isPaused = false;
 
@@ -14,6 +16,7 @@ public class ScenesController : MonoBehaviour
     {
         SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
     }
 
     public void GoToMenu()
@@ -24,8 +27,10 @@ public class ScenesController : MonoBehaviour
 
     public void LoadNextLevel()
     {
+        MissionManager.sharedInstance.NextMission();
         SceneManager.LoadScene("SampleScene"); // TODO: add camera selection
         Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
     }
 
     public void OpenIntermediateScene()
@@ -51,6 +56,7 @@ public class ScenesController : MonoBehaviour
 
     public void Resume()
     {
+        if (alert.activeInHierarchy) alert.SetActive(false);
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
         isPaused = false;
@@ -61,5 +67,16 @@ public class ScenesController : MonoBehaviour
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
+    }
+
+    public void ShowAlert()
+    {
+        alert.SetActive(true);
+    }
+
+    public void ActivateSubButton()
+    {
+        Button submitBtn = GameObject.Find("SubmitBtn").GetComponent<Button>();
+        submitBtn.interactable = true;
     }
 }
