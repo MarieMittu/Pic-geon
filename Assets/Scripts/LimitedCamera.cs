@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 using UnityEngine.UI;
 
 public class LimitedCamera : MonoBehaviour
@@ -35,6 +32,8 @@ public class LimitedCamera : MonoBehaviour
     [Header("Other")]
     public bool isScrollEnabled = true;
     private int correctPhotosAmount = 0;
+    public RawImage screenshotImage;
+    public RawImage flashImage;
 
     // Start is called before the first frame update
     void Start()
@@ -88,6 +87,7 @@ public class LimitedCamera : MonoBehaviour
             if (Input.GetMouseButtonDown(0))
             {
                 DetectBirdsOnPhoto();
+                StartCoroutine(TakePhotoScreenshotWithFeedback());
                 TrackTapeAmount();
                 GameManager.sharedInstance.hasEvidence = true;
             }
@@ -247,5 +247,62 @@ public class LimitedCamera : MonoBehaviour
 
         //Gizmos.matrix = Matrix4x4.TRS(transform.position, Quaternion.Euler(centralDirV, centralDirH, 0), transform.localScale);
         //Gizmos.DrawFrustum(Vector3.zero, fovVert, 100, 1, aspect);
+    }
+
+    IEnumerator TakePhotoScreenshotWithFeedback()
+    {
+        yield return new WaitForEndOfFrame();
+        Texture2D texture = ScreenCapture.CaptureScreenshotAsTexture();
+        // set the scale to fill the screen
+        Vector3 imageScale = new Vector3(texture.width / 100.0f, texture.height / 100.0f, 1.0f);
+        screenshotImage.gameObject.GetComponent<RectTransform>().localScale = imageScale;
+        flashImage.gameObject.GetComponent<RectTransform>().localScale = imageScale;
+        ApplyGammaCorrection(texture);
+        screenshotImage.texture = texture;
+        screenshotImage.gameObject.SetActive(true);
+
+        // flash animation (image is white since texture is not set yet)
+        flashImage.gameObject.SetActive(true);
+        float timeElapsed = 0;
+        float flashUpTime = 0.1f;
+        float flashDownTime = 0.2f;
+        while (timeElapsed < flashUpTime + flashDownTime)
+        {
+            if (timeElapsed < flashUpTime)
+            {
+                flashImage.color = new Color(1, 1, 1, Mathf.Lerp(0f, 1f, timeElapsed / flashUpTime));
+            }
+            else
+            {
+                flashImage.color = new Color(1, 1, 1, Mathf.Lerp(1f, 0f, (timeElapsed - flashUpTime) / flashDownTime));
+            }
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
+        flashImage.gameObject.SetActive(false);
+
+        // continue showing the photo for a time
+        yield return new WaitForSeconds(1);
+        // TODO: minimize image animation
+        // TODO: save image
+        // cleanup
+        screenshotImage.gameObject.SetActive(false);
+        screenshotImage.texture = null;
+        UnityEngine.Object.Destroy(texture);
+    }
+
+    private static void ApplyGammaCorrection(Texture2D texture)
+    {
+        Color[] pixels = texture.GetPixels();
+        for (int i = 0; i < pixels.Length; i++)
+        {
+            pixels[i] = new Color(Mathf.GammaToLinearSpace(pixels[i].r),
+                                   Mathf.GammaToLinearSpace(pixels[i].g),
+                                   Mathf.GammaToLinearSpace(pixels[i].b),
+                                   pixels[i].a);
+        }
+        texture.SetPixels(pixels);
+        texture.Apply();
     }
 }
