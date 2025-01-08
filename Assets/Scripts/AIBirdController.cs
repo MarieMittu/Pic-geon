@@ -204,9 +204,11 @@ public class AIBirdController : MonoBehaviour
             animator.Play("02_Sitting_down");
             animator.Play("02_Sitting_Idle");
             isSitting = true;
+
         }
        
     }
+
 
     public void PickFood()
     {
