@@ -30,7 +30,6 @@ public class LimitedCamera : MonoBehaviour
     public float focusDistanceSpeed = 1f;
 
     [Header("Other")]
-    public bool isScrollEnabled = true;
     private int correctPhotosAmount = 0;
     public RawImage screenshotImage;
     public RawImage flashImage;
@@ -53,12 +52,11 @@ public class LimitedCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
-        float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-        ProcessCameraMovement(inputX, inputY);
-
-        if (isScrollEnabled)
+        if (!GameManager.sharedInstance.isGamePaused)
         {
+            float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
+            float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+            ProcessCameraMovement(inputX, inputY);
             Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
             // scroll = change fov zoom level and apply respective depth of field
             if (Input.mouseScrollDelta != Vector2.zero)
@@ -78,12 +76,8 @@ public class LimitedCamera : MonoBehaviour
             float fD = dofShaderMat.GetFloat("_FocusDistance") + focalDepthDirection * focusDistanceSpeed * Time.deltaTime;
             fD = Math.Clamp(fD, minFocusDistance, maxFocusDistance);
             dofShaderMat.SetFloat("_FocusDistance", fD);
-        }
 
-
-        // photo
-        if (!GameManager.sharedInstance.isGamePaused)
-        {
+            // photo
             if (Input.GetMouseButtonDown(0))
             {
                 DetectBirdsOnPhoto();
@@ -94,16 +88,6 @@ public class LimitedCamera : MonoBehaviour
         }
 
         TrackTime();
-
-        if (GameManager.sharedInstance.isGamePaused)
-        {
-            mouseSensitivity = 0;
-            isScrollEnabled = false;
-        } else
-        {
-            mouseSensitivity = 2f;
-            isScrollEnabled = true;
-        }
     }
 
     private bool IsWithinFocusedArea(GameObject gameObject)
