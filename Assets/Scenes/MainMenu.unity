@@ -997,7 +997,7 @@ GameObject:
   - component: {fileID: 422249233}
   - component: {fileID: 422249232}
   m_Layer: 0
-  m_Name: camera_SCREEN_UI
+  m_Name: CameraScreen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1351,6 +1351,11 @@ MonoBehaviour:
   mission2Selected: {fileID: 1356844776}
   mission3Sprite: {fileID: 1255888967}
   mission3Selected: {fileID: 771214637}
+  upButton: {fileID: 1684490867}
+  downButton: {fileID: 771365511}
+  leftButton: {fileID: 16082688}
+  rightButton: {fileID: 758552822}
+  okButton: {fileID: 2134600847}
 --- !u!114 &721151887
 MonoBehaviour:
   m_ObjectHideFlags: 0

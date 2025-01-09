@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.EventSystems;
 
 public class MainMenuController : MonoBehaviour
 {
@@ -21,14 +23,41 @@ public class MainMenuController : MonoBehaviour
     public GameObject mission3Sprite;
     public GameObject mission3Selected;
 
+    [Space(10)]
+    [Header("Buttons")]
+    public Button upButton;
+    public Button downButton;
+    public Button leftButton;
+    public Button rightButton;
+    public Button okButton;
+
+    private EventSystem eventSystem;
+
     // Start is called before the first frame update
     void Start()
     {
         selection = 1;
+        eventSystem = EventSystem.current;
     }
 
     private void Update()
     {
+
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            ClickCameraButton(downButton);
+        }
+
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            ClickCameraButton(upButton);
+        }
+
+        //if (Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    ClickCameraButton(okButton);
+        //}
+
         if (selection == 1)
         {
             mission1Sprite.SetActive(false);
@@ -74,19 +103,43 @@ public class MainMenuController : MonoBehaviour
 
     public void PressOKButton()
     {
+        
         if (selection == 1)
         {
-            FindObjectOfType<ScenesController>().StartGame();
+            StartCoroutine(PlayGame());
         }
 
         if (selection == 2)
         {
-            FindObjectOfType<ScenesController>().StartGame();
+            StartCoroutine(PlayGame());
         }
 
         if (selection == 3)
         {
-            FindObjectOfType<ScenesController>().StartGame();
+            StartCoroutine(PlayGame());
         }
+    }
+
+    private IEnumerator PlayGame()
+    {
+        yield return new WaitForSeconds(0.2f);
+        FindObjectOfType<ScenesController>().StartGame();
+    }
+
+    private void ClickCameraButton(Button button)
+    {
+        StartCoroutine(ClickAnimation(button));
+        button.onClick.Invoke();
+    }
+
+    private System.Collections.IEnumerator ClickAnimation(Button button)
+    {
+        var clickDown = new PointerEventData(eventSystem);
+        ExecuteEvents.Execute(button.gameObject, clickDown, ExecuteEvents.pointerDownHandler);
+
+        yield return new WaitForSeconds(0.1f);
+
+        var clickUp = new PointerEventData(eventSystem);
+        ExecuteEvents.Execute(button.gameObject, clickUp, ExecuteEvents.pointerUpHandler);
     }
 }
