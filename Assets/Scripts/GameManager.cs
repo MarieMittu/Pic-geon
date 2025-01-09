@@ -68,7 +68,7 @@ public class GameManager : MonoBehaviour
                 FindObjectOfType<ScenesController>().Pause();
                 if (hasEvidence)
                 {
-                    FindObjectOfType<ScenesController>().ActivateSubButton();
+                    FindObjectOfType<ScenesController>().ActivateSubOption();
                 } 
             }
         }
