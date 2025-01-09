@@ -85,6 +85,7 @@ public class LimitedCamera : MonoBehaviour
             {
                 DetectBirdsOnPhoto();
                 StartCoroutine(TakePhotoScreenshotWithFeedback());
+                GetComponent<AudioSource>().Play();
                 TrackTapeAmount();
                 GameManager.sharedInstance.hasEvidence = true;
             }
@@ -250,9 +251,11 @@ public class LimitedCamera : MonoBehaviour
             {
                 Directory.CreateDirectory(dirPath);
             }
+            // only save the last 20 pictures
             int photoNumber = PlayerPrefs.GetInt("LastPhotoNumber", 0);
-            photoNumber = (photoNumber + 1) % 21;
-            File.WriteAllBytes(dirPath + "Photo" + photoNumber + ".png", bytes);
+            photoNumber = (photoNumber + 1) % 20;
+            // start with Photo1.pgn (not Photo0.png)
+            File.WriteAllBytes(dirPath + "Photo" + (photoNumber + 1) + ".png", bytes);
             PlayerPrefs.SetInt("LastPhotoNumber", photoNumber);
             PlayerPrefs.Save();
         }
