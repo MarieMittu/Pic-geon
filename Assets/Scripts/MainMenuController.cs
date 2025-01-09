@@ -38,6 +38,12 @@ public class MainMenuController : MonoBehaviour
     {
         selection = 1;
         eventSystem = EventSystem.current;
+
+            mission2Sprite.SetActive(false);
+            mission2Selected.SetActive(false);
+            mission3Sprite.SetActive(false);
+            mission3Selected.SetActive(false);
+        
     }
 
     private void Update()
@@ -111,12 +117,12 @@ public class MainMenuController : MonoBehaviour
 
         if (selection == 2)
         {
-            StartCoroutine(PlayGame());
+            StartCoroutine(PlayNextLevel());
         }
 
         if (selection == 3)
         {
-            StartCoroutine(PlayGame());
+            StartCoroutine(PlayNextLevel());
         }
     }
 
@@ -124,6 +130,12 @@ public class MainMenuController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f);
         FindObjectOfType<ScenesController>().StartGame();
+    }
+
+    private IEnumerator PlayNextLevel()
+    {
+        yield return new WaitForSeconds(0.2f);
+        FindObjectOfType<ScenesController>().LoadNextLevel();
     }
 
     private void ClickCameraButton(Button button)

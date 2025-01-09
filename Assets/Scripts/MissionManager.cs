@@ -10,6 +10,10 @@ public class MissionManager : MonoBehaviour
     public int currentMission = 1;
     public int maxMissions = 3;
 
+    public Camera camera1;
+    public Camera camera2;
+    public Camera camera3;
+
     private void Awake()
     {
         if (sharedInstance == null)

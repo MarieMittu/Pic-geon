@@ -16,7 +16,9 @@ public class GameManager : MonoBehaviour
     public bool hasEvidence;
     public bool hasCorrectPhotos;
 
-    
+    public Camera camera1;
+    public Camera camera2;
+    public Camera camera3;
 
     private void Awake()
     {
@@ -35,6 +37,7 @@ public class GameManager : MonoBehaviour
         }
         hasEvidence = false;
         hasCorrectPhotos = false;
+        SetUpCameras();
     }
 
     // Update is called once per frame
@@ -70,6 +73,27 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+    private void SetUpCameras()
+    {
+        camera1.gameObject.SetActive(false);
+        camera2.gameObject.SetActive(false);
+        camera3.gameObject.SetActive(false);
+
+        switch (MissionManager.sharedInstance.currentMission)
+        {
+            case 1:
+                camera1.gameObject.SetActive(true);
+                break;
+            case 2:
+                camera2.gameObject.SetActive(true);
+                break;
+            case 3:
+                camera3.gameObject.SetActive(true);
+                break;
+        }
+    }
+
 
     public void TriggerGameOver()
     {
