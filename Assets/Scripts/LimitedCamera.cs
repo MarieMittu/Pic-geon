@@ -33,6 +33,7 @@ public class LimitedCamera : MonoBehaviour
     private int correctPhotosAmount = 0;
     public RawImage screenshotImage;
     public RawImage flashImage;
+    bool photoAnimationInProgress = false;
 
     // Start is called before the first frame update
     void Start()
@@ -52,7 +53,7 @@ public class LimitedCamera : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!GameManager.sharedInstance.isGamePaused)
+        if (!GameManager.sharedInstance.isGamePaused && !photoAnimationInProgress)
         {
             float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
             float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
@@ -235,6 +236,7 @@ public class LimitedCamera : MonoBehaviour
 
     IEnumerator TakePhotoScreenshotWithFeedback()
     {
+        photoAnimationInProgress = true;
         yield return new WaitForEndOfFrame();
         Texture2D texture = ScreenCapture.CaptureScreenshotAsTexture();
         // set the scale to fill the screen
@@ -271,6 +273,7 @@ public class LimitedCamera : MonoBehaviour
 
         // continue showing the photo for a time
         yield return new WaitForSeconds(1);
+        photoAnimationInProgress = false;
         // minimize image animation
         timeElapsed = 0;
         float minimizeTime = 0.3f;
