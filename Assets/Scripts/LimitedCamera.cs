@@ -255,8 +255,11 @@ public class LimitedCamera : MonoBehaviour
         Texture2D texture = ScreenCapture.CaptureScreenshotAsTexture();
         // set the scale to fill the screen
         Vector3 imageScale = new Vector3(texture.width / 100.0f, texture.height / 100.0f, 1.0f);
-        screenshotImage.gameObject.GetComponent<RectTransform>().localScale = imageScale;
+        RectTransform imageRect = screenshotImage.gameObject.GetComponent<RectTransform>();
+        imageRect.localScale = imageScale;
         flashImage.gameObject.GetComponent<RectTransform>().localScale = imageScale;
+        // set the image to bottom left corner to prepare for the minimizing animation
+        imageRect.anchoredPosition = new Vector3(-texture.width/2, -texture.height/2, 0);
         ApplyGammaCorrection(texture);
         screenshotImage.texture = texture;
         screenshotImage.gameObject.SetActive(true);
@@ -284,7 +287,16 @@ public class LimitedCamera : MonoBehaviour
 
         // continue showing the photo for a time
         yield return new WaitForSeconds(1);
-        // TODO: minimize image animation
+        // minimize image animation
+        timeElapsed = 0;
+        float minimizeTime = 0.3f;
+        while (timeElapsed < minimizeTime)
+        {
+            imageRect.localScale = imageScale * Mathf.Lerp(1f, 0f, timeElapsed / minimizeTime);
+            timeElapsed += Time.deltaTime;
+
+            yield return null;
+        }
         // TODO: save image
         // cleanup
         screenshotImage.gameObject.SetActive(false);
