@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -34,6 +35,7 @@ public class LimitedCamera : MonoBehaviour
     public RawImage screenshotImage;
     public RawImage flashImage;
     bool photoAnimationInProgress = false;
+    public bool savePhotos = false;
 
     // Start is called before the first frame update
     void Start()
@@ -239,6 +241,21 @@ public class LimitedCamera : MonoBehaviour
         photoAnimationInProgress = true;
         yield return new WaitForEndOfFrame();
         Texture2D texture = ScreenCapture.CaptureScreenshotAsTexture();
+        // save image
+        if (savePhotos)
+        {
+            byte[] bytes = texture.EncodeToPNG();
+            var dirPath = Application.dataPath + "/../SavedPhotos/";
+            if (!Directory.Exists(dirPath))
+            {
+                Directory.CreateDirectory(dirPath);
+            }
+            int photoNumber = PlayerPrefs.GetInt("LastPhotoNumber", 0);
+            photoNumber = (photoNumber + 1) % 21;
+            File.WriteAllBytes(dirPath + "Photo" + photoNumber + ".png", bytes);
+            PlayerPrefs.SetInt("LastPhotoNumber", photoNumber);
+            PlayerPrefs.Save();
+        }
         // set the scale to fill the screen
         Vector3 imageScale = new Vector3(texture.width / 100.0f, texture.height / 100.0f, 1.0f);
         RectTransform imageRect = screenshotImage.gameObject.GetComponent<RectTransform>();
@@ -284,7 +301,6 @@ public class LimitedCamera : MonoBehaviour
 
             yield return null;
         }
-        // TODO: save image
         // cleanup
         screenshotImage.gameObject.SetActive(false);
         screenshotImage.texture = null;
