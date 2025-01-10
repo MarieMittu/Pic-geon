@@ -17,7 +17,8 @@ public class ScenesController : MonoBehaviour
 
     public void StartGame()
     {
-        //MissionManager.sharedInstance.SetMission(1);
+        MissionManager.sharedInstance.SetMission(1);
+        MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
@@ -40,6 +41,7 @@ public class ScenesController : MonoBehaviour
     public void LoadMissionTwo()
     {
         MissionManager.sharedInstance.SetMission(2);
+        MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
@@ -48,6 +50,7 @@ public class ScenesController : MonoBehaviour
     public void LoadMissionThree()
     {
         MissionManager.sharedInstance.SetMission(3);
+        MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;

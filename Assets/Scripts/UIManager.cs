@@ -14,14 +14,10 @@ public class UIManager : MonoBehaviour
 
     public void ActivateNextMission()
     {
-        int currentMission = MissionManager.sharedInstance.currentMission;
-
-        if (currentMission > 1 && currentMission - 2 < newMissions.Length)
+        for (int i = 0; i < newMissions.Length; i++)
         {
-            for (int i = 0; i <= currentMission - 2; i++)
-            {
-                newMissions[i].SetActive(true);
-            }
+            int missionNum = i + 2; 
+            newMissions[i].SetActive(MissionManager.sharedInstance.IsMissionUnlocked(missionNum));
         }
     }
 }

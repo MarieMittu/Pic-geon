@@ -9,7 +9,9 @@ public class MissionManager : MonoBehaviour
 
     public int currentMission = 1;
     public int maxMissions = 3;
-    public int selectedMission;
+    public int selectedMission = 1;
+
+    private HashSet<int> unlockedMissions = new HashSet<int> { 1 };
 
     private void Awake()
     {
@@ -22,16 +24,23 @@ public class MissionManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
-
-
     }
 
     public void SetMission(int mission)
     {
-        if (mission > 0 && mission <= maxMissions)
+        if (IsMissionUnlocked(mission))
         {
-            currentMission = mission;
+            selectedMission = mission;
         }
+    }
+
+    public void StartSelectedMission()
+    {
+        if (IsMissionUnlocked(selectedMission))
+        {
+            currentMission = selectedMission;
+        }
+            
     }
 
     public void NextMission()
@@ -39,7 +48,26 @@ public class MissionManager : MonoBehaviour
         if (currentMission < maxMissions)
         {
             currentMission++;
+            UnlockMission(currentMission);
         }
         Debug.Log("mission " + currentMission);
+    }
+
+    public void UnlockMission(int mission)
+    {
+        if (mission > 0 && mission <= maxMissions)
+        {
+            unlockedMissions.Add(mission);
+        }
+    }
+
+    public bool IsMissionUnlocked(int mission)
+    {
+        return unlockedMissions.Contains(mission);
+    }
+
+    public List<int> GetUnlockedMissions()
+    {
+        return new List<int>(unlockedMissions);
     }
 }
