@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 [RequireComponent(typeof(Camera))]
@@ -7,28 +8,50 @@ using UnityEngine;
 public class ApplyImageEffectScript : MonoBehaviour
 {
 
-    public Material material;
+    public Material[] materials;
 
     void Start()
     {
-        if (Application.isPlaying) {
-            Material mat = new Material(material);
-            material = mat;
+        if (Application.isPlaying)
+        {
+            for (int i = 0; i < materials.Length; i++)
+            {
+                var m = materials[i];
+                Material mat = new Material(m);
+                materials[i] = mat;
+            }
         }
 
         Camera cam = GetComponent<Camera>();
         cam.depthTextureMode = cam.depthTextureMode | DepthTextureMode.Depth;
 
-        if (null == material || null == material.shader ||
-           !material.shader.isSupported)
+        for (int i = 0; i < materials.Length; i++)
         {
-            enabled = false;
-            return;
+            if (null == materials[i] || null == materials[i].shader ||
+               !materials[i].shader.isSupported)
+            {
+                enabled = false;
+                return;
+            }
         }
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
     {
-        Graphics.Blit(source, destination, material);
+        RenderTexture[] intermediate = {
+            RenderTexture.GetTemporary(source.width, source.height, source.depth, source.format),
+            RenderTexture.GetTemporary(source.width, source.height, source.depth, source.format)
+        };
+
+        Graphics.Blit(source, intermediate[1], materials[0]);
+        for (int i = 1; i < materials.Length-1; i++)
+        {
+            Graphics.Blit(intermediate[i%2], intermediate[(i+1)%2], materials[i]);
+        }
+        Graphics.Blit(intermediate[(materials.Length-1) % 2], destination, materials[materials.Length-1]);
+
+
+        RenderTexture.ReleaseTemporary(intermediate[0]);
+        RenderTexture.ReleaseTemporary(intermediate[1]);
     }
 }

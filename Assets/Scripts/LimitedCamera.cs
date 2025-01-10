@@ -47,7 +47,7 @@ public class LimitedCamera : MonoBehaviour
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
-        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
         dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
         dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
     }
@@ -60,7 +60,7 @@ public class LimitedCamera : MonoBehaviour
             float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
             float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
             ProcessCameraMovement(inputX, inputY);
-            Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+            Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
             // scroll = change fov zoom level and apply respective depth of field
             if (Input.mouseScrollDelta != Vector2.zero)
             {
@@ -96,7 +96,7 @@ public class LimitedCamera : MonoBehaviour
 
     private bool IsWithinFocusedArea(GameObject gameObject)
     {
-        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().material;
+        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
 
         float distance = Vector3.Distance(gameObject.transform.position, transform.position);
 
