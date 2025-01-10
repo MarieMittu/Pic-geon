@@ -15,7 +15,8 @@ public class MenusController : MonoBehaviour
         public UnityEngine.Events.UnityEvent onSelect; 
     }
 
-    public List<MenuOption> options = new List<MenuOption>();
+    public List<MenuOption> verticOptions = new List<MenuOption>();
+    public List<MenuOption> horizOptions = new List<MenuOption>();
     public Button upButton;
     public Button downButton;
     public Button leftButton;
@@ -25,72 +26,107 @@ public class MenusController : MonoBehaviour
     private EventSystem eventSystem;
     private int selection = 0;
 
+    public bool isHorizontal = false;
+
     // Start is called before the first frame update
     void Start()
     {
         eventSystem = EventSystem.current;
-        Debug.Log("optionsmenu " + options[1].sprite.activeInHierarchy);
-        for (int i = 0; i < options.Count; i++)
-        {
-            options[i].sprite.SetActive(i != selection);
-            options[i].selectedSprite.SetActive(i == selection);
-        }
+        SetupOptions();
     }
 
     // Update is called once per frame
     void Update()
     {
+        upButton.interactable = !isHorizontal;
+        downButton.interactable = !isHorizontal;
+        leftButton.interactable = isHorizontal;
+        rightButton.interactable = isHorizontal;
+
         if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            ClickCameraButton(downButton);
-        }
+            {
+                ClickCameraButton(downButton);
+            }
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            ClickCameraButton(upButton);
-        }
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                ClickCameraButton(upButton);
+            }
+       
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                ClickCameraButton(leftButton);
+            }
 
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                ClickCameraButton(rightButton);
+            }
+        
+        
         if (Input.GetKeyDown(KeyCode.Return))
         {
             ClickCameraButton(okButton);
         }
     }
 
-    public void PressUpButton()
+    public void SetupOptions()
     {
-        if (options[1].sprite.activeInHierarchy || options[1].selectedSprite.activeInHierarchy)
+        List<MenuOption> options;
+        options = isHorizontal ? horizOptions : verticOptions;
+        for (int i = 0; i < options.Count; i++)
         {
-            selection = (selection - 1 + options.Count) % options.Count;
-            UpdateSelection();
+            options[i].sprite.SetActive(i != selection);
+            options[i].selectedSprite.SetActive(i == selection);
         }
-        
     }
 
-    public void PressDownButton()
+    public void SelectPrevious()
     {
+        List<MenuOption> options;
+        options = isHorizontal ? horizOptions : verticOptions;
+
+            if (options[1].sprite.activeInHierarchy || options[1].selectedSprite.activeInHierarchy)
+            {
+                selection = (selection - 1 + options.Count) % options.Count;
+                UpdateSelection(options);
+            }
+         
+    }
+
+    public void SelectNext()
+    {
+        List<MenuOption> options;
+        options = isHorizontal ? horizOptions : verticOptions;
         if (options[1].sprite.activeInHierarchy || options[1].selectedSprite.activeInHierarchy)
         {
-            selection = (selection + 1) % options.Count;
-            UpdateSelection();
+                selection = (selection + 1) % options.Count;
+                UpdateSelection(options);
         }
-            
+        
+                   
     }
 
     public void PressOKButton()
     {
+        List<MenuOption> options;
+        options = isHorizontal ? horizOptions : verticOptions;
         if (selection >= 0 && selection < options.Count)
         {
             options[selection].onSelect.Invoke();
         }
     }
 
-    private void UpdateSelection()
+    private void UpdateSelection(List<MenuOption> options)
     {
-        for (int i = 0; i < options.Count; i++)
-        {
-            options[i].sprite.SetActive(i != selection);
-            options[i].selectedSprite.SetActive(i == selection);
-        }
+        
+            for (int i = 0; i < options.Count; i++)
+            {
+                options[i].sprite.SetActive(i != selection);
+                options[i].selectedSprite.SetActive(i == selection);
+            }
+        
+        
     }
 
     private void ClickCameraButton(Button button)

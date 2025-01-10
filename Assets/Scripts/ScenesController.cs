@@ -13,6 +13,7 @@ public class ScenesController : MonoBehaviour
     [SerializeField] GameObject submitOption;
 
     public bool isPaused = false;
+    public bool isAlerting = false;
 
     public void StartGame()
     {
@@ -64,6 +65,7 @@ public class ScenesController : MonoBehaviour
         } else
         {
             if (alert.activeInHierarchy) alert.SetActive(false);
+            isAlerting = false;
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
             isPaused = false;
@@ -81,6 +83,7 @@ public class ScenesController : MonoBehaviour
     public void ShowAlert()
     {
         alert.SetActive(true);
+        isAlerting = true;
     }
 
     public void ActivateSubOption()

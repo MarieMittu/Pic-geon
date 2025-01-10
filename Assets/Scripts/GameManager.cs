@@ -72,6 +72,12 @@ public class GameManager : MonoBehaviour
                 } 
             }
         }
+
+        FindObjectOfType<MenusController>().isHorizontal = FindObjectOfType<ScenesController>().isAlerting;
+        if (FindObjectOfType<MenusController>().isHorizontal)
+        {
+            FindObjectOfType<MenusController>().SetupOptions();
+        }
     }
 
     private void SetUpCameras()
