@@ -1389,7 +1389,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 721151887}
           m_TargetAssemblyTypeName: ScenesController, Assembly-CSharp
-          m_MethodName: LoadNextLevel
+          m_MethodName: LoadMissionTwo
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -1406,7 +1406,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 721151887}
           m_TargetAssemblyTypeName: ScenesController, Assembly-CSharp
-          m_MethodName: LoadNextLevel
+          m_MethodName: LoadMissionThree
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
