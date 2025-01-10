@@ -115,6 +115,7 @@ public class GameManager : MonoBehaviour
     {
         if (hasCorrectPhotos)
         {
+            MissionManager.sharedInstance.NextMission();
             TriggerNextLevel();
         } else
         {

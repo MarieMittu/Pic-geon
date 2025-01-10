@@ -24,13 +24,14 @@ public class ScenesController : MonoBehaviour
 
     public void GoToMenu()
     {
+        
         SceneManager.LoadScene("MainMenu");
         Cursor.lockState = CursorLockMode.None;
     }
 
     public void LoadNextLevel()
     {
-        MissionManager.sharedInstance.NextMission();
+        //MissionManager.sharedInstance.NextMission();
         SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
@@ -72,12 +73,6 @@ public class ScenesController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
         
-    }
-
-    public void Exit()
-    {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
     }
 
     public void ShowAlert()

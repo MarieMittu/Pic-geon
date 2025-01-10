@@ -2631,7 +2631,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1041570249}
         m_TargetAssemblyTypeName: ScenesController, Assembly-CSharp
-        m_MethodName: Exit
+        m_MethodName: GoToMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2867,6 +2867,7 @@ MonoBehaviour:
   alert: {fileID: 1921799567}
   photosLibrary: {fileID: 1875342297}
   submitOption: {fileID: 2059832550}
+  newMissions: []
   isPaused: 0
   isAlerting: 0
 --- !u!114 &1041570250
@@ -4829,6 +4830,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 497691055}
     m_Modifications:
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: savePhotos
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: m_Name
       value: LimitedCamera
