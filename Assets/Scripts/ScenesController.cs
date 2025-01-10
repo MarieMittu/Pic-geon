@@ -9,8 +9,11 @@ public class ScenesController : MonoBehaviour
 
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject alert;
+    [SerializeField] GameObject photosLibrary;
+    [SerializeField] GameObject submitOption;
 
     public bool isPaused = false;
+    public bool isAlerting = false;
 
     public void StartGame()
     {
@@ -28,7 +31,7 @@ public class ScenesController : MonoBehaviour
     public void LoadNextLevel()
     {
         MissionManager.sharedInstance.NextMission();
-        SceneManager.LoadScene("SampleScene"); // TODO: add camera selection
+        SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
     }
@@ -56,11 +59,19 @@ public class ScenesController : MonoBehaviour
 
     public void Resume()
     {
-        if (alert.activeInHierarchy) alert.SetActive(false);
-        pauseMenu.SetActive(false);
-        Time.timeScale = 1f;
-        isPaused = false;
-        Cursor.lockState = CursorLockMode.Locked;
+        if (photosLibrary.activeInHierarchy)
+        {
+            photosLibrary.SetActive(false);
+        } else
+        {
+            if (alert.activeInHierarchy) alert.SetActive(false);
+            isAlerting = false;
+            pauseMenu.SetActive(false);
+            Time.timeScale = 1f;
+            isPaused = false;
+            Cursor.lockState = CursorLockMode.Locked;
+        }
+        
     }
 
     public void Exit()
@@ -72,11 +83,16 @@ public class ScenesController : MonoBehaviour
     public void ShowAlert()
     {
         alert.SetActive(true);
+        isAlerting = true;
     }
 
-    public void ActivateSubButton()
+    public void ActivateSubOption()
     {
-        Button submitBtn = GameObject.Find("SubmitBtn").GetComponent<Button>();
-        submitBtn.interactable = true;
+        submitOption.SetActive(true);
+    }
+
+    public void ShowPhotoLibrary()
+    {
+        photosLibrary.SetActive(true);
     }
 }

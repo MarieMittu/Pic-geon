@@ -19,6 +19,7 @@ public class AIBirdController : MonoBehaviour
 
     private bool isSitting;
     private bool isWalking;
+    private bool isFlying;
 
     NavMeshAgent agent;
     public float range; //radius of sphere to walk around
@@ -179,7 +180,7 @@ public class AIBirdController : MonoBehaviour
 
     public void StandStill()
     {
-        if (!isWalking)
+        if (!isWalking && !isFlying && !isSitting)
         {
             animator.Play("01_Standing_Idle");
             isSitting = false;
@@ -189,7 +190,7 @@ public class AIBirdController : MonoBehaviour
 
     public void CleanItself()
     {
-        if (!isWalking)
+        if (!isWalking && !isFlying && !isSitting)
         {
             animator.Play("01_Standing_Cleaning");
             isSitting = false;
@@ -199,25 +200,58 @@ public class AIBirdController : MonoBehaviour
 
     public void SitDown()
     {
-        if (!isWalking)
+        if (!isWalking && !isFlying && !isSitting)
         {
             animator.Play("02_Sitting_down");
-            animator.Play("02_Sitting_Idle");
+          
             isSitting = true;
-
+            StartCoroutine(StaySit());
         }
        
+    }
+
+    private IEnumerator StaySit()
+    {
+        if (!isWalking)
+        {
+            float sitDownDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(sitDownDuration);
+
+            animator.Play("02_Sitting_Idle");
+
+            StartCoroutine(StandUp());
+        }
+      
+    }
+
+    private IEnumerator StandUp()
+    {
+        if (!isWalking)
+        {
+            float waitTime = Random.Range(4f, 8f);
+            yield return new WaitForSeconds(waitTime);
+
+            animator.Play("02_Standing_up");
+
+            float standingUpDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+            yield return new WaitForSeconds(standingUpDuration);
+
+            animator.Play("01_Standing_Idle");
+
+            isSitting = false;
+        }
+        
     }
 
 
     public void PickFood()
     {
-        if (!isWalking && isSitting) animator.Play("02_Sitting_Picking");
+        if (!isWalking && !isFlying && isSitting) animator.Play("02_Sitting_Picking");
     }
 
     public void WalkAround()
     {
-        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
+        if (!isWalking && !isSitting && !isFlying && agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
         {
             Vector3 point;
             if (RandomPoint(centrePoint, range, out point)) // Pass in our centre point and radius of area
@@ -231,6 +265,8 @@ public class AIBirdController : MonoBehaviour
 
     private IEnumerator RotateAndMoveToPoint(Vector3 targetPoint)
     {
+        isWalking = true;
+
         Vector3 direction = (targetPoint - transform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
@@ -240,9 +276,9 @@ public class AIBirdController : MonoBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
             yield return null;
         }
-        isWalking = true;
+        
         agent.SetDestination(targetPoint);
-        animator.Play("T-Pose");
+        animator.Play("03_Walking");
 
         
 
@@ -250,8 +286,9 @@ public class AIBirdController : MonoBehaviour
         {
             yield return null;
         }
-        animator.Play("01_Standing_Idle");
+        
         isWalking = false;
+        StandStill();
     }
 
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
@@ -303,7 +340,6 @@ public class AIBirdController : MonoBehaviour
 
             timer += Time.deltaTime;
             yield return null;
-
         }
 
         // if destination was reached, start flight
