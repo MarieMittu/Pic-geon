@@ -22,7 +22,7 @@ public class AIBirdController : MonoBehaviour
     private bool isFlying;
 
     NavMeshAgent agent;
-    public float range; //radius of sphere to walk around
+    public float walkRadius ; //radius of sphere to walk around
 
     public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which bird walks
 
@@ -76,10 +76,11 @@ public class AIBirdController : MonoBehaviour
 
         List<RandomActions> randomActions = new List<RandomActions>
         {
-            StandStill,
+            () => StandStill(anim: "01_Standing_Idle"),
             CleanItself,
             SitDown,
-            PickFood,
+            PickFoodSitting,
+            PickFoodStanding,
             WalkAround,
             //Fly
         };
@@ -178,11 +179,12 @@ public class AIBirdController : MonoBehaviour
 
     // normal actions
 
-    public void StandStill()
+    public void StandStill(string anim)
     {
         if (!isWalking && !isFlying && !isSitting)
         {
-            animator.Play("01_Standing_Idle");
+            //animator.Play("01_Standing_Idle");
+            animator.Play(anim);
             isSitting = false;
         }
         
@@ -244,9 +246,22 @@ public class AIBirdController : MonoBehaviour
     }
 
 
-    public void PickFood()
+    public void PickFoodSitting()
     {
-        if (!isWalking && !isFlying && isSitting) animator.Play("02_Sitting_Picking");
+        if (!isWalking && !isFlying && isSitting) animator.Play("02_Sitting_to Standing_Picking");
+    }
+
+    public void PickFoodStanding()
+    {
+        if (!isWalking && !isFlying && !isSitting) animator.Play("01_Standing_Picking_1");
+    }
+
+    public void PickFoodWalking()
+    {
+        if (isWalking)
+        {
+
+        }
     }
 
     public void WalkAround()
@@ -254,7 +269,7 @@ public class AIBirdController : MonoBehaviour
         if (!isWalking && !isSitting && !isFlying && agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
         {
             Vector3 point;
-            if (RandomPoint(centrePoint, range, out point)) // Pass in our centre point and radius of area
+            if (RandomPoint(centrePoint, walkRadius, out point)) // Pass in our centre point and radius of area
             {
                 Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); // So you can see the point with gizmos
                 StartCoroutine(RotateAndMoveToPoint(point));
@@ -288,7 +303,7 @@ public class AIBirdController : MonoBehaviour
         }
         
         isWalking = false;
-        StandStill();
+        StandStill("01_Standing_Idle");
     }
 
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
@@ -345,10 +360,13 @@ public class AIBirdController : MonoBehaviour
         // if destination was reached, start flight
         if (Vector3.Distance(agent.destination, transform.position) <= 0.1)
         {
+            animator.Play("04_Flying");
+            isFlying = true;
             SplineAnimate splineAnim = GetComponent<SplineAnimate>();
             splineAnim.Container = splineContainer;
             splineAnim.enabled = true;
             splineAnim.Play();
         }
+        isFlying = false;
     }
 }

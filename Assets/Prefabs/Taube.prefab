@@ -199,7 +199,7 @@ MonoBehaviour:
   startRange: 2
   finalRange: 8
   animator: {fileID: 9063353244716916437}
-  range: 1
+  walkRadius: 1
   centrePoint: {x: -0.56, y: -0.156, z: -1.75}
   pulseScale: 0
   pulseDuration: 0
