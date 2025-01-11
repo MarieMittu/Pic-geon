@@ -66,10 +66,13 @@ Shader "Hidden/GlitchEffectShader"
 
 
                 fixed4 col = tex2D(_MainTex, uv);
-                // fixed4 colOffsetA = tex2D(_MainTex, uv + _MainTex_TexelSize.xy);
-                // fixed4 colOffsetB = tex2D(_MainTex, uv - _MainTex_TexelSize.xy);
-                // col.g = colOffsetA.g;
-                // col.b = colOffsetB.b;
+                float2 colorOffset = _MainTex_TexelSize.xy;
+                colorOffset.x *= 5 * _Intensity;
+                colorOffset *= strength;
+                fixed4 colOffsetA = tex2D(_MainTex, uv + colorOffset);
+                fixed4 colOffsetB = tex2D(_MainTex, uv - colorOffset);
+                col.g = colOffsetA.g;
+                col.b = colOffsetB.b;
 
                 return col;
             }
