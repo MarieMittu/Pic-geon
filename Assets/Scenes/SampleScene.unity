@@ -2824,7 +2824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pooledBirds: []
   birdsToPool:
-  - {fileID: 1626059760388218201, guid: c4b55a20ba27442719109856a17d116c, type: 3}
+  - {fileID: 8594591663033290547, guid: c6dd2ef3a5f1249199acb1a6f26c6cfb, type: 3}
   birdsAmountToPool: 10
   pooledRobots: []
   robotsToPool:
@@ -2867,7 +2867,6 @@ MonoBehaviour:
   alert: {fileID: 1921799567}
   photosLibrary: {fileID: 1875342297}
   submitOption: {fileID: 2059832550}
-  newMissions: []
   isPaused: 0
   isAlerting: 0
 --- !u!114 &1041570250
@@ -3241,9 +3240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMission: 1
   maxMissions: 3
-  camera1: {fileID: 4887386168576983838}
-  camera2: {fileID: 593376189}
-  camera3: {fileID: 225482470}
+  selectedMission: 1
 --- !u!4 &1399647249
 Transform:
   m_ObjectHideFlags: 0

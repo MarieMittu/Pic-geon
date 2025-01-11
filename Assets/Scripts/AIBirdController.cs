@@ -80,7 +80,9 @@ public class AIBirdController : MonoBehaviour
             CleanItself,
             SitDown,
             PickFoodSitting,
+            Sleep,
             PickFoodStanding,
+            PickFoodWalking,
             WalkAround,
             //Fly
         };
@@ -204,9 +206,7 @@ public class AIBirdController : MonoBehaviour
     {
         if (!isWalking && !isFlying && !isSitting)
         {
-            animator.Play("02_Sitting_down");
-          
-            isSitting = true;
+            
             StartCoroutine(StaySit());
         }
        
@@ -216,6 +216,10 @@ public class AIBirdController : MonoBehaviour
     {
         if (!isWalking)
         {
+            animator.Play("02_Sitting_Down");
+
+            isSitting = true;
+
             float sitDownDuration = animator.GetCurrentAnimatorStateInfo(0).length;
             yield return new WaitForSeconds(sitDownDuration);
 
@@ -233,14 +237,13 @@ public class AIBirdController : MonoBehaviour
             float waitTime = Random.Range(4f, 8f);
             yield return new WaitForSeconds(waitTime);
 
-            animator.Play("02_Standing_up");
+            animator.Play("02_Sitting_Standing_up");
 
             float standingUpDuration = animator.GetCurrentAnimatorStateInfo(0).length;
             yield return new WaitForSeconds(standingUpDuration);
 
-            animator.Play("01_Standing_Idle");
-
             isSitting = false;
+            animator.Play("01_Standing_Idle");
         }
         
     }
@@ -260,8 +263,47 @@ public class AIBirdController : MonoBehaviour
     {
         if (isWalking)
         {
-
+            StartCoroutine(PickingWhileWalking());
         }
+        
+    }
+
+    private IEnumerator PickingWhileWalking()
+    {
+        animator.Play("03_Walking_Bending_Down_Picking_Bending_Up");
+        float pickingTime = animator.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForSeconds(pickingTime);
+        animator.Play("03_Walking_Ilde");
+    }
+
+    public void Sleep()
+    {
+        if (isSitting) StartCoroutine(StayAsleep());
+    }
+
+    private IEnumerator StayAsleep()
+    {
+        animator.Play("02_Sitting_Falling_Asleep");
+
+        float fallingAsleepDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForSeconds(fallingAsleepDuration);
+
+        animator.Play("02_Sitting_Sleeping_Idle");
+
+        StartCoroutine(WakeUp());
+    }
+
+    private IEnumerator WakeUp()
+    {
+        float waitTime = Random.Range(4f, 8f);
+        yield return new WaitForSeconds(waitTime);
+
+        animator.Play("02_Sitting_Waking_up");
+
+        float wakingUpDuration = animator.GetCurrentAnimatorStateInfo(0).length;
+        yield return new WaitForSeconds(wakingUpDuration);
+
+        animator.Play("02_Sitting_Idle");
     }
 
     public void WalkAround()
@@ -293,7 +335,7 @@ public class AIBirdController : MonoBehaviour
         }
         
         agent.SetDestination(targetPoint);
-        animator.Play("03_Walking");
+        animator.Play("03_Walking_Ilde");
 
         
 
