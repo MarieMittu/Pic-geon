@@ -12,6 +12,7 @@ public class ApplyImageEffectScript : MonoBehaviour
 
     void Start()
     {
+        // copy materials to avoid changing the materials in the project files when parameters are changed
         if (Application.isPlaying)
         {
             for (int i = 0; i < materials.Length; i++)
@@ -53,5 +54,19 @@ public class ApplyImageEffectScript : MonoBehaviour
 
         RenderTexture.ReleaseTemporary(intermediate[0]);
         RenderTexture.ReleaseTemporary(intermediate[1]);
+    }
+    private void Update()
+    {
+        if (Application.isPlaying)
+        {
+            // update glitch effect intensity so it gradually gets stronger towards the end of the mission
+            float startOfGlitch = 0.75f;
+            Material glitchMat = materials[1];
+            float normalizedMissionTime = 1 - GameManager.sharedInstance.missionDuration / GameManager.sharedInstance.startMissionDuration;
+            float glitchIntensity = Math.Clamp(normalizedMissionTime - startOfGlitch, 0, 1) / (1 - startOfGlitch);
+            //// make glitch more noticeable once it starts and give some time at full intensity
+            //if (glitchIntensity > 0) glitchIntensity = Math.Clamp(glitchIntensity + 0.2f, 0, 1);
+            glitchMat.SetFloat("_Intensity", glitchIntensity);
+        }
     }
 }
