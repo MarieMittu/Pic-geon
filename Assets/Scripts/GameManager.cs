@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     float secondTimer = 0f;
     public Image timer;
 
+    public GameObject noFiles;
+    public GameObject preview;
+
     public bool isGamePaused;
     public bool hasEvidence;
     public bool hasCorrectPhotos;
@@ -38,6 +41,9 @@ public class GameManager : MonoBehaviour
         hasEvidence = false;
         hasCorrectPhotos = false;
         SetUpCameras();
+
+        noFiles.SetActive(true);
+        preview.SetActive(false);
     }
 
     // Update is called once per frame
@@ -69,6 +75,8 @@ public class GameManager : MonoBehaviour
                 if (hasEvidence)
                 {
                     FindObjectOfType<ScenesController>().ActivateSubOption();
+                    noFiles.SetActive(false);
+                    preview.SetActive(true);
                 } 
             }
         }
