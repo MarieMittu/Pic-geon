@@ -2824,11 +2824,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pooledBirds: []
   birdsToPool:
-  - {fileID: 8594591663033290547, guid: c6dd2ef3a5f1249199acb1a6f26c6cfb, type: 3}
+  - {fileID: 5930485210797420366, guid: c4b55a20ba27442719109856a17d116c, type: 3}
   birdsAmountToPool: 10
   pooledRobots: []
   robotsToPool:
-  - {fileID: 4417359888453199722, guid: 6b63c3b5d9a9942ed89c4bd237804d22, type: 3}
+  - {fileID: 3268138461105073101, guid: 6bf7255e642b045ba85b0c8a9f0940be, type: 3}
   robotsAmountToPool: 10
 --- !u!114 &1041570248
 MonoBehaviour:

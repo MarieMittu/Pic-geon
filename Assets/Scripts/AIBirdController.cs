@@ -11,6 +11,7 @@ public class AIBirdController : MonoBehaviour
     public float finalRange;
 
     private float actionTime; //waiting time between start of random actions
+    private bool isTransitioning = false;
     public delegate void RandomActions();
 
     Rigidbody rb;
@@ -20,23 +21,12 @@ public class AIBirdController : MonoBehaviour
     private bool isSitting;
     private bool isWalking;
     private bool isFlying;
+    private bool isSleeping;
 
     NavMeshAgent agent;
     public float walkRadius ; //radius of sphere to walk around
 
     public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which bird walks
-
-    // for testing
-    public float pulseScale;
-    public float pulseDuration;
-    public int pulseCount;
-
-    private Vector3 originalScale;
-
-    public float jumpVelocity;
-    public int maxJumps;
-    private int currentJumps = 0;
-    private bool isJumping = false;
 
     private void Awake()
     {
@@ -47,10 +37,6 @@ public class AIBirdController : MonoBehaviour
     {
         actionTime = 1;
         rb = gameObject.GetComponent<Rigidbody>();
-        originalScale = transform.localScale;
-
-        var cubeRenderer = GetComponent<Renderer>();
-        cubeRenderer.material.SetColor("_Color", Color.blue);
 
         agent = GetComponent<NavMeshAgent>();
     }
@@ -62,6 +48,7 @@ public class AIBirdController : MonoBehaviour
 
     public void PerformActionsSequence()
     {
+        if (isTransitioning) return;
         actionTime -= Time.deltaTime;
         if (actionTime <= 0)
         {
@@ -76,11 +63,10 @@ public class AIBirdController : MonoBehaviour
 
         List<RandomActions> randomActions = new List<RandomActions>
         {
-            () => StandStill(anim: "01_Standing_Idle"),
+            StandStill,
             CleanItself,
             SitDown,
-            PickFoodSitting,
-            Sleep,
+            () => Sleep(anim: "02_Sitting_Sleeping_Idle"),
             PickFoodStanding,
             PickFoodWalking,
             WalkAround,
@@ -91,103 +77,44 @@ public class AIBirdController : MonoBehaviour
         randomActions[Random.Range(0, randomActions.Count)]();
     }
 
-    // test actions
+    // helpers
 
-    public void PerformChirp()
+    private IEnumerator Transit(string anim, string nextAction = null)
     {
-        //Debug.Log("Chirp! Chirp!");
-        StartCoroutine(Pulse());
+        if (isTransitioning) yield break;
+        isTransitioning = true;
+        animator.Play(anim);
 
-    }
+        float animationDuration = ActionDuration(anim);
+        yield return new WaitForSeconds(animationDuration);
 
-    public void PerformShit()
-    {
-        //Debug.Log("Poops ahoy!");
-        if (!isJumping)
+        isTransitioning = false;
+
+        if (!string.IsNullOrEmpty(nextAction))
         {
-            StartCoroutine(TestJump());
+            animator.Play(nextAction);
         }
     }
 
-    public void PerformEat()
+    private float ActionDuration(string anim)
     {
-        //Debug.Log("I am eating!");
-        StartCoroutine(Spin());
-    }
-
-    IEnumerator Pulse()
-    {
-        for (int i = 0; i < pulseCount; i++)
+        foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
         {
-            yield return Scale();
+            if (clip.name == anim)
+            {
+                return clip.length;
+            }
         }
-    }
-
-    IEnumerator Scale()
-    {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < pulseDuration / 2)
-        {
-            transform.localScale = Vector3.Lerp(originalScale, originalScale * pulseScale, elapsedTime / (pulseDuration / 2));
-            elapsedTime += Time.deltaTime;
-            yield return null; 
-        }
-
-        transform.localScale = originalScale * pulseScale;
-
-        elapsedTime = 0f;
-        while (elapsedTime < pulseDuration / 2)
-        {
-            transform.localScale = Vector3.Lerp(originalScale * pulseScale, originalScale, elapsedTime / (pulseDuration / 2));
-            elapsedTime += Time.deltaTime;
-            yield return null; 
-        }
-
-        transform.localScale = originalScale;
-    }
-
-    IEnumerator TestJump()
-    {
-        isJumping = true; 
-        currentJumps = 0;
-
-        while (currentJumps < maxJumps)
-        {
-            rb.velocity = Vector3.zero;
-            rb.AddForce(0, jumpVelocity, 0);
-            currentJumps++;
-
-            yield return new WaitForSeconds(0.5f);
-        }
-        isJumping = false;
-    }
-
-
-    IEnumerator Spin()
-    {
-        float spinDuration = 3f; 
-        float timer = 0f;
-
-        while (timer < spinDuration)
-        {
-            
-                transform.Rotate(0, 0, 180 * Time.deltaTime);
-                timer += Time.deltaTime;
-                yield return null;
-            
-        }
+        return 1.0f;
     }
 
     // normal actions
 
-    public void StandStill(string anim)
+    public void StandStill()
     {
         if (!isWalking && !isFlying && !isSitting)
         {
-            //animator.Play("01_Standing_Idle");
-            animator.Play(anim);
-            isSitting = false;
+            animator.Play("01_Standing_Idle");
         }
         
     }
@@ -197,7 +124,6 @@ public class AIBirdController : MonoBehaviour
         if (!isWalking && !isFlying && !isSitting)
         {
             animator.Play("01_Standing_Cleaning");
-            isSitting = false;
         }
        
     }
@@ -206,7 +132,6 @@ public class AIBirdController : MonoBehaviour
     {
         if (!isWalking && !isFlying && !isSitting)
         {
-            
             StartCoroutine(StaySit());
         }
        
@@ -214,97 +139,66 @@ public class AIBirdController : MonoBehaviour
 
     private IEnumerator StaySit()
     {
-        if (!isWalking)
-        {
-            animator.Play("02_Sitting_Down");
+        isSitting = true;
+        yield return StartCoroutine(Transit("02_Sitting_Down", "02_Sitting_Idle"));
 
-            isSitting = true;
+        if (!isSleeping) StartCoroutine(StandUp());
 
-            float sitDownDuration = animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(sitDownDuration);
-
-            animator.Play("02_Sitting_Idle");
-
-            StartCoroutine(StandUp());
-        }
-      
     }
 
     private IEnumerator StandUp()
     {
-        if (!isWalking)
-        {
             float waitTime = Random.Range(4f, 8f);
             yield return new WaitForSeconds(waitTime);
 
-            animator.Play("02_Sitting_Standing_up");
+            string standUpAnim = Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking";
+        yield return StartCoroutine(Transit(standUpAnim, "01_Standing_Idle"));
+        isSitting = false;
 
-            float standingUpDuration = animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(standingUpDuration);
-
-            isSitting = false;
-            animator.Play("01_Standing_Idle");
-        }
-        
-    }
-
-
-    public void PickFoodSitting()
-    {
-        if (!isWalking && !isFlying && isSitting) animator.Play("02_Sitting_to Standing_Picking");
     }
 
     public void PickFoodStanding()
     {
-        if (!isWalking && !isFlying && !isSitting) animator.Play("01_Standing_Picking_1");
+        if (!isWalking && !isFlying && !isSitting)
+        {
+            StartCoroutine(Transit("01_Standing_Picking_1", "01_Standing_Idle"));
+        }
+        
     }
 
     public void PickFoodWalking()
     {
         if (isWalking)
         {
-            StartCoroutine(PickingWhileWalking());
+            StartCoroutine(Transit("03_Walking_Bending_Down_Picking_Bending_Up", "03_Walking_Ilde"));
         }
         
     }
 
-    private IEnumerator PickingWhileWalking()
+
+    public void Sleep(string anim)
     {
-        animator.Play("03_Walking_Bending_Down_Picking_Bending_Up");
-        float pickingTime = animator.GetCurrentAnimatorStateInfo(0).length;
-        yield return new WaitForSeconds(pickingTime);
-        animator.Play("03_Walking_Ilde");
+        if (isSitting && !isSleeping) StartCoroutine(StayAsleep(anim));
     }
 
-    public void Sleep()
+    private IEnumerator StayAsleep(string anim)
     {
-        if (isSitting) StartCoroutine(StayAsleep());
-    }
+        isSleeping = true;
+        yield return StartCoroutine(Transit("02_Sitting_Falling_Asleep"));
 
-    private IEnumerator StayAsleep()
-    {
-        animator.Play("02_Sitting_Falling_Asleep");
+        animator.Play(anim);
 
-        float fallingAsleepDuration = animator.GetCurrentAnimatorStateInfo(0).length;
-        yield return new WaitForSeconds(fallingAsleepDuration);
+        yield return new WaitForSeconds(Random.Range(4f, 8f)); 
 
-        animator.Play("02_Sitting_Sleeping_Idle");
-
-        StartCoroutine(WakeUp());
-    }
-
-    private IEnumerator WakeUp()
-    {
-        float waitTime = Random.Range(4f, 8f);
-        yield return new WaitForSeconds(waitTime);
-
-        animator.Play("02_Sitting_Waking_up");
-
-        float wakingUpDuration = animator.GetCurrentAnimatorStateInfo(0).length;
-        yield return new WaitForSeconds(wakingUpDuration);
+        yield return StartCoroutine(Transit("02_Sitting_Waking_up"));
+        isSleeping = false;
 
         animator.Play("02_Sitting_Idle");
+
+        if (!isSleeping) StartCoroutine(StandUp());
     }
+
+
 
     public void WalkAround()
     {
@@ -345,7 +239,7 @@ public class AIBirdController : MonoBehaviour
         }
         
         isWalking = false;
-        StandStill("01_Standing_Idle");
+        StandStill();
     }
 
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
