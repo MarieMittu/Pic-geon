@@ -3335,6 +3335,7 @@ GameObject:
   - component: {fileID: 7137864355522252569}
   - component: {fileID: 2055626822848014079}
   - component: {fileID: 6002145695028023682}
+  - component: {fileID: 6253888996438481972}
   m_Layer: 0
   m_Name: Taube
   m_TagString: Untagged
@@ -3550,6 +3551,43 @@ MonoBehaviour:
   m_ObjectForwardAxis: 2
   m_ObjectUpAxis: 1
   m_StartOffset: 0
+--- !u!114 &6253888996438481972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5930485210797420366}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e75bdfe96e73648b14a117fe7286b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  variation: -1
+  bodyParts:
+  - {fileID: 1281584731433848875}
+  - {fileID: 746696405295153615}
+  - {fileID: 717499088425279265}
+  beakParts:
+  - {fileID: 5806853291158173366}
+  - {fileID: 6342553569130063942}
+  wingParts:
+  - {fileID: 3001530358600301461}
+  - {fileID: 8048295795901628109}
+  feetParts:
+  - {fileID: 664676103237433864}
+  - {fileID: 6993785935063176699}
+  eyesParts:
+  - {fileID: 136304840078140540}
+  - {fileID: 6239406319923964863}
+  lidsParts:
+  - {fileID: 5565854885877399662}
+  - {fileID: 1110575759064667827}
+  - {fileID: 6641018348738459684}
+  - {fileID: 6132054888949743500}
+  thighParts:
+  - {fileID: 1469096559729811802}
+  - {fileID: 6750499321662849110}
 --- !u!1 &6132054888949743500
 GameObject:
   m_ObjectHideFlags: 0

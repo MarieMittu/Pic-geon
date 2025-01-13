@@ -2273,6 +2273,7 @@ GameObject:
   - component: {fileID: 5181826920925210693}
   - component: {fileID: 7523777177948137681}
   - component: {fileID: 524992532063890113}
+  - component: {fileID: 5898224107915330681}
   m_Layer: 0
   m_Name: Robot
   m_TagString: Untagged
@@ -2489,6 +2490,43 @@ MonoBehaviour:
   m_ObjectForwardAxis: 2
   m_ObjectUpAxis: 1
   m_StartOffset: 0
+--- !u!114 &5898224107915330681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3268138461105073101}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82e75bdfe96e73648b14a117fe7286b0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  variation: -1
+  bodyParts:
+  - {fileID: 4765245266334916668}
+  - {fileID: 3784857701524704872}
+  - {fileID: 3896127856493164027}
+  beakParts:
+  - {fileID: 86227403522927370}
+  - {fileID: 2077458983620904157}
+  wingParts:
+  - {fileID: 4254095740783231549}
+  - {fileID: 6532727643985881343}
+  feetParts:
+  - {fileID: 5523505449772666778}
+  - {fileID: 1410779151229671575}
+  eyesParts:
+  - {fileID: 4247285093459455390}
+  - {fileID: 2417714527913627413}
+  lidsParts:
+  - {fileID: 2669093953196081608}
+  - {fileID: 1363808569065658898}
+  - {fileID: 6853343940264399662}
+  - {fileID: 504241796388718335}
+  thighParts:
+  - {fileID: 1196302503496672283}
+  - {fileID: 1044764071070750517}
 --- !u!1 &3294976165105585302
 GameObject:
   m_ObjectHideFlags: 0
