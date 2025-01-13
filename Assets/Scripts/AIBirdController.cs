@@ -261,6 +261,12 @@ public class AIBirdController : MonoBehaviour
 
     public void Fly()
     {
+        if (!isSitting)
+        StartCoroutine(FlyPreparation());
+    }
+
+    private IEnumerator FlyPreparation()
+    {
         // check if a flight path spline starts near this bird
         GameObject[] flightPaths = GameObject.FindGameObjectsWithTag("FlightPath");
         foreach (GameObject flightPath in flightPaths)
@@ -273,6 +279,19 @@ public class AIBirdController : MonoBehaviour
                 if (NavMesh.SamplePosition(startPos, out hit, 1.0f, NavMesh.AllAreas))
                 {
                     Debug.DrawRay(hit.position, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
+                    // starts moving to point
+
+                    Vector3 direction = (hit.position - transform.position).normalized;
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+                    float rotationSpeed = 5f;
+                    while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
+                    {
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                        yield return null;
+                    }
+
+
                     agent.SetDestination(hit.position);
                     StartCoroutine(GetToFlightPathAndStartFlight(sc));
                 }
@@ -284,7 +303,7 @@ public class AIBirdController : MonoBehaviour
     {
         float maxDuration = 20;
         float timer = 0f;
-
+        animator.Play("03_Walking_Ilde");
         // wait until destination is reached or timer runs out
         while (timer < maxDuration && Vector3.Distance(agent.destination, transform.position) >= 0.1)
         {
@@ -304,5 +323,7 @@ public class AIBirdController : MonoBehaviour
             splineAnim.Play();
         }
         isFlying = false;
+        // change to courutine take off - fly - land
+        //animator.Play("03_Walking_Ilde");
     }
 }
