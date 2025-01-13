@@ -11,6 +11,7 @@ public class AIBirdController : MonoBehaviour
     public float finalRange;
 
     private float actionTime; //waiting time between start of random actions
+    private bool isTransitioning = false;
     public delegate void RandomActions();
 
     Rigidbody rb;
@@ -20,23 +21,12 @@ public class AIBirdController : MonoBehaviour
     private bool isSitting;
     private bool isWalking;
     private bool isFlying;
+    private bool isSleeping;
 
     NavMeshAgent agent;
-    public float range; //radius of sphere to walk around
+    public float walkRadius ; //radius of sphere to walk around
 
     public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which bird walks
-
-    // for testing
-    public float pulseScale;
-    public float pulseDuration;
-    public int pulseCount;
-
-    private Vector3 originalScale;
-
-    public float jumpVelocity;
-    public int maxJumps;
-    private int currentJumps = 0;
-    private bool isJumping = false;
 
     private void Awake()
     {
@@ -47,10 +37,6 @@ public class AIBirdController : MonoBehaviour
     {
         actionTime = 1;
         rb = gameObject.GetComponent<Rigidbody>();
-        originalScale = transform.localScale;
-
-        var cubeRenderer = GetComponent<Renderer>();
-        cubeRenderer.material.SetColor("_Color", Color.blue);
 
         agent = GetComponent<NavMeshAgent>();
     }
@@ -62,6 +48,7 @@ public class AIBirdController : MonoBehaviour
 
     public void PerformActionsSequence()
     {
+        if (isTransitioning) return;
         actionTime -= Time.deltaTime;
         if (actionTime <= 0)
         {
@@ -79,7 +66,9 @@ public class AIBirdController : MonoBehaviour
             StandStill,
             CleanItself,
             SitDown,
-            PickFood,
+            () => Sleep(anim: "02_Sitting_Sleeping_Idle"),
+            PickFoodStanding,
+            PickFoodWalking,
             WalkAround,
             //Fly
         };
@@ -88,92 +77,35 @@ public class AIBirdController : MonoBehaviour
         randomActions[Random.Range(0, randomActions.Count)]();
     }
 
-    // test actions
+    // helpers
 
-    public void PerformChirp()
+    private IEnumerator Transit(string anim, string nextAction = null)
     {
-        //Debug.Log("Chirp! Chirp!");
-        StartCoroutine(Pulse());
+        if (isTransitioning) yield break;
+        isTransitioning = true;
+        animator.Play(anim);
 
-    }
+        float animationDuration = ActionDuration(anim);
+        yield return new WaitForSeconds(animationDuration);
 
-    public void PerformShit()
-    {
-        //Debug.Log("Poops ahoy!");
-        if (!isJumping)
+        isTransitioning = false;
+
+        if (!string.IsNullOrEmpty(nextAction))
         {
-            StartCoroutine(TestJump());
+            animator.Play(nextAction);
         }
     }
 
-    public void PerformEat()
+    private float ActionDuration(string anim)
     {
-        //Debug.Log("I am eating!");
-        StartCoroutine(Spin());
-    }
-
-    IEnumerator Pulse()
-    {
-        for (int i = 0; i < pulseCount; i++)
+        foreach (AnimationClip clip in animator.runtimeAnimatorController.animationClips)
         {
-            yield return Scale();
+            if (clip.name == anim)
+            {
+                return clip.length;
+            }
         }
-    }
-
-    IEnumerator Scale()
-    {
-        float elapsedTime = 0f;
-
-        while (elapsedTime < pulseDuration / 2)
-        {
-            transform.localScale = Vector3.Lerp(originalScale, originalScale * pulseScale, elapsedTime / (pulseDuration / 2));
-            elapsedTime += Time.deltaTime;
-            yield return null; 
-        }
-
-        transform.localScale = originalScale * pulseScale;
-
-        elapsedTime = 0f;
-        while (elapsedTime < pulseDuration / 2)
-        {
-            transform.localScale = Vector3.Lerp(originalScale * pulseScale, originalScale, elapsedTime / (pulseDuration / 2));
-            elapsedTime += Time.deltaTime;
-            yield return null; 
-        }
-
-        transform.localScale = originalScale;
-    }
-
-    IEnumerator TestJump()
-    {
-        isJumping = true; 
-        currentJumps = 0;
-
-        while (currentJumps < maxJumps)
-        {
-            rb.velocity = Vector3.zero;
-            rb.AddForce(0, jumpVelocity, 0);
-            currentJumps++;
-
-            yield return new WaitForSeconds(0.5f);
-        }
-        isJumping = false;
-    }
-
-
-    IEnumerator Spin()
-    {
-        float spinDuration = 3f; 
-        float timer = 0f;
-
-        while (timer < spinDuration)
-        {
-            
-                transform.Rotate(0, 0, 180 * Time.deltaTime);
-                timer += Time.deltaTime;
-                yield return null;
-            
-        }
+        return 1.0f;
     }
 
     // normal actions
@@ -183,7 +115,6 @@ public class AIBirdController : MonoBehaviour
         if (!isWalking && !isFlying && !isSitting)
         {
             animator.Play("01_Standing_Idle");
-            isSitting = false;
         }
         
     }
@@ -193,7 +124,6 @@ public class AIBirdController : MonoBehaviour
         if (!isWalking && !isFlying && !isSitting)
         {
             animator.Play("01_Standing_Cleaning");
-            isSitting = false;
         }
        
     }
@@ -202,9 +132,6 @@ public class AIBirdController : MonoBehaviour
     {
         if (!isWalking && !isFlying && !isSitting)
         {
-            animator.Play("02_Sitting_down");
-          
-            isSitting = true;
             StartCoroutine(StaySit());
         }
        
@@ -212,49 +139,73 @@ public class AIBirdController : MonoBehaviour
 
     private IEnumerator StaySit()
     {
-        if (!isWalking)
-        {
-            float sitDownDuration = animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(sitDownDuration);
+        isSitting = true;
+        yield return StartCoroutine(Transit("02_Sitting_Down", "02_Sitting_Idle"));
 
-            animator.Play("02_Sitting_Idle");
+        if (!isSleeping) StartCoroutine(StandUp());
 
-            StartCoroutine(StandUp());
-        }
-      
     }
 
     private IEnumerator StandUp()
     {
-        if (!isWalking)
-        {
             float waitTime = Random.Range(4f, 8f);
             yield return new WaitForSeconds(waitTime);
 
-            animator.Play("02_Standing_up");
+            string standUpAnim = Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking";
+        yield return StartCoroutine(Transit(standUpAnim, "01_Standing_Idle"));
+        isSitting = false;
 
-            float standingUpDuration = animator.GetCurrentAnimatorStateInfo(0).length;
-            yield return new WaitForSeconds(standingUpDuration);
+    }
 
-            animator.Play("01_Standing_Idle");
+    public void PickFoodStanding()
+    {
+        if (!isWalking && !isFlying && !isSitting)
+        {
+            StartCoroutine(Transit("01_Standing_Picking_1", "01_Standing_Idle"));
+        }
+        
+    }
 
-            isSitting = false;
+    public void PickFoodWalking()
+    {
+        if (isWalking)
+        {
+            StartCoroutine(Transit("03_Walking_Bending_Down_Picking_Bending_Up", "03_Walking_Ilde"));
         }
         
     }
 
 
-    public void PickFood()
+    public void Sleep(string anim)
     {
-        if (!isWalking && !isFlying && isSitting) animator.Play("02_Sitting_Picking");
+        if (isSitting && !isSleeping) StartCoroutine(StayAsleep(anim));
     }
+
+    private IEnumerator StayAsleep(string anim)
+    {
+        isSleeping = true;
+        yield return StartCoroutine(Transit("02_Sitting_Falling_Asleep"));
+
+        animator.Play(anim);
+
+        yield return new WaitForSeconds(Random.Range(4f, 8f)); 
+
+        yield return StartCoroutine(Transit("02_Sitting_Waking_up"));
+        isSleeping = false;
+
+        animator.Play("02_Sitting_Idle");
+
+        if (!isSleeping) StartCoroutine(StandUp());
+    }
+
+
 
     public void WalkAround()
     {
         if (!isWalking && !isSitting && !isFlying && agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
         {
             Vector3 point;
-            if (RandomPoint(centrePoint, range, out point)) // Pass in our centre point and radius of area
+            if (RandomPoint(centrePoint, walkRadius, out point)) // Pass in our centre point and radius of area
             {
                 Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); // So you can see the point with gizmos
                 StartCoroutine(RotateAndMoveToPoint(point));
@@ -278,7 +229,7 @@ public class AIBirdController : MonoBehaviour
         }
         
         agent.SetDestination(targetPoint);
-        animator.Play("03_Walking");
+        animator.Play("03_Walking_Ilde");
 
         
 
@@ -310,6 +261,12 @@ public class AIBirdController : MonoBehaviour
 
     public void Fly()
     {
+        if (!isSitting)
+        StartCoroutine(FlyPreparation());
+    }
+
+    private IEnumerator FlyPreparation()
+    {
         // check if a flight path spline starts near this bird
         GameObject[] flightPaths = GameObject.FindGameObjectsWithTag("FlightPath");
         foreach (GameObject flightPath in flightPaths)
@@ -322,6 +279,19 @@ public class AIBirdController : MonoBehaviour
                 if (NavMesh.SamplePosition(startPos, out hit, 1.0f, NavMesh.AllAreas))
                 {
                     Debug.DrawRay(hit.position, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
+                    // starts moving to point
+
+                    Vector3 direction = (hit.position - transform.position).normalized;
+                    Quaternion targetRotation = Quaternion.LookRotation(direction);
+
+                    float rotationSpeed = 5f;
+                    while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
+                    {
+                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+                        yield return null;
+                    }
+
+
                     agent.SetDestination(hit.position);
                     StartCoroutine(GetToFlightPathAndStartFlight(sc));
                 }
@@ -333,7 +303,7 @@ public class AIBirdController : MonoBehaviour
     {
         float maxDuration = 20;
         float timer = 0f;
-
+        animator.Play("03_Walking_Ilde");
         // wait until destination is reached or timer runs out
         while (timer < maxDuration && Vector3.Distance(agent.destination, transform.position) >= 0.1)
         {
@@ -345,10 +315,15 @@ public class AIBirdController : MonoBehaviour
         // if destination was reached, start flight
         if (Vector3.Distance(agent.destination, transform.position) <= 0.1)
         {
+            animator.Play("04_Flying");
+            isFlying = true;
             SplineAnimate splineAnim = GetComponent<SplineAnimate>();
             splineAnim.Container = splineContainer;
             splineAnim.enabled = true;
             splineAnim.Play();
         }
+        isFlying = false;
+        // change to courutine take off - fly - land
+        //animator.Play("03_Walking_Ilde");
     }
 }

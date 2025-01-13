@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class AIRobotController : AIBirdController
 {
-    public float minSize;
     public bool isSpying = false;
 
     private void Update()
     {
-        // Debug test
-        if (Input.GetKeyDown(KeyCode.T)) ShowAntennae();
 
         PerformActionsSequence();
     }
@@ -19,44 +16,20 @@ public class AIRobotController : AIBirdController
     {
         List<RandomActions> randomActions = new List<RandomActions>
         {
-            PerformChirp,
-            //PerformShit,
-            PerformEat,
-            ShowAntennae,
+            StandStill,
+            CleanItself,
+            SitDown,
+            ShowAntenna,
             WalkAround,
-            Fly
+            //Fly
         };
 
         randomActions[Random.Range(0, randomActions.Count)]();
     }
 
-    public void ShowAntennae()
+    public void ShowAntenna()
     {
-        //Debug.Log("Beep beep!");
-        StartCoroutine(ChangeColor());
+        Sleep("R02_Sitting_Sleeping");
+        isSpying = true;
     }
-
-    //test actions
-    IEnumerator ChangeColor()
-    {
-        var cubeRenderer = GetComponent<Renderer>();
-        float colorDuration = 2f; 
-        float timer = 0f;
-
-        while (timer < colorDuration)
-        {
-            
-                cubeRenderer.material.SetColor("_Color", Color.red);
-                isSpying = true;
-                timer += Time.deltaTime;
-                yield return null;
-            
-
-            
-        }
-        cubeRenderer.material.SetColor("_Color", Color.blue);
-        isSpying = false;
-
-    }
-
 }
