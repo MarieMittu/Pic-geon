@@ -3,7 +3,47 @@ guid: 85117491000fb49e3acf4464fb23d953
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: antena_BaseColor-min
+    second: {fileID: 2800000, guid: 9c6eb823b908297478f19e1fc52d38d7, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: body_BaseColor-min
+    second: {fileID: 2800000, guid: efed24ea062ada949b89882098374e1e, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: eyelids1_BaseColor
+    second: {fileID: 2800000, guid: 04f8fe206afd1f440ab5ef009ee0769c, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: eyes_BaseColor
+    second: {fileID: 2800000, guid: 62faff87499afca4197398941df28991, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: feet_BaseColor
+    second: {fileID: 2800000, guid: 7ba8ce168aef2ff41a9dfb7f4547984d, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: peak_BaseColor
+    second: {fileID: 2800000, guid: 08bef6c762181f84d85a8638eb9b01f5, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: tigh_BaseColor
+    second: {fileID: 2800000, guid: 0a8c29d7fc038784cac833687aefc21b, type: 3}
+  - first:
+      type: UnityEngine:Texture2D
+      assembly: UnityEngine.CoreModule
+      name: wigs_BaseColor
+    second: {fileID: 2800000, guid: 0a1f0204f6cbb9846835ce71ba98c540, type: 3}
   materials:
     materialImportMode: 2
     materialName: 0
