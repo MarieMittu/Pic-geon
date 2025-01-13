@@ -9,6 +9,7 @@ public class ApplyImageEffectScript : MonoBehaviour
 {
 
     public Material[] materials;
+    public float startOfGlitch = 0.75f;
 
     void Start()
     {
@@ -60,7 +61,6 @@ public class ApplyImageEffectScript : MonoBehaviour
         if (Application.isPlaying)
         {
             // update glitch effect intensity so it gradually gets stronger towards the end of the mission
-            float startOfGlitch = 0.75f;
             Material glitchMat = materials[1];
             float normalizedMissionTime = 1 - GameManager.sharedInstance.missionDuration / GameManager.sharedInstance.startMissionDuration;
             float glitchIntensity = Math.Clamp(normalizedMissionTime - startOfGlitch, 0, 1) / (1 - startOfGlitch);
