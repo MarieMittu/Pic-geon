@@ -14,6 +14,7 @@ public class AIRobotController : AIBirdController
 
     public override void PerformRandomAction()
     {
+        isSpying = false;
         List<RandomActions> randomActions = new List<RandomActions>
         {
             StandStill,
