@@ -83,7 +83,7 @@ public class AIBirdController : MonoBehaviour
     {
         if (isTransitioning) yield break;
         isTransitioning = true;
-        animator.Play(anim);
+        animator.CrossFade(anim, 0.1f);
 
         float animationDuration = ActionDuration(anim);
         yield return new WaitForSeconds(animationDuration);
@@ -92,7 +92,7 @@ public class AIBirdController : MonoBehaviour
 
         if (!string.IsNullOrEmpty(nextAction))
         {
-            animator.Play(nextAction);
+            animator.CrossFade(nextAction, 0.1f);
         }
     }
 
@@ -114,7 +114,7 @@ public class AIBirdController : MonoBehaviour
     {
         if (!isWalking && !isFlying && !isSitting)
         {
-            animator.Play("01_Standing_Idle");
+            animator.CrossFade("01_Standing_Idle", 0.1f);
         }
         
     }
@@ -123,7 +123,7 @@ public class AIBirdController : MonoBehaviour
     {
         if (!isWalking && !isFlying && !isSitting)
         {
-            animator.Play("01_Standing_Cleaning");
+            animator.CrossFade("01_Standing_Cleaning", 0.1f);
         }
        
     }
@@ -186,14 +186,14 @@ public class AIBirdController : MonoBehaviour
         isSleeping = true;
         yield return StartCoroutine(Transit("02_Sitting_Falling_Asleep"));
 
-        animator.Play(anim);
+        animator.CrossFade(anim, 0.1f);
 
         yield return new WaitForSeconds(Random.Range(4f, 8f)); 
 
         yield return StartCoroutine(Transit("02_Sitting_Waking_up"));
         isSleeping = false;
 
-        animator.Play("02_Sitting_Idle");
+        animator.CrossFade("02_Sitting_Idle", 0.1f);
 
         if (!isSleeping) StartCoroutine(StandUp());
     }
@@ -221,7 +221,7 @@ public class AIBirdController : MonoBehaviour
         Vector3 direction = (targetPoint - transform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        float rotationSpeed = 5f;
+        float rotationSpeed = 2f;
         while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
@@ -229,7 +229,7 @@ public class AIBirdController : MonoBehaviour
         }
         
         agent.SetDestination(targetPoint);
-        animator.Play("03_Walking_Ilde");
+        animator.CrossFade("03_Walking_Ilde", 0.1f);
 
         
 
