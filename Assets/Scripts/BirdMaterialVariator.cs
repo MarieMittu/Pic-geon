@@ -27,12 +27,12 @@ public class BirdMaterialVariator : MonoBehaviour
     static string[] slotTextureNames =
     {
         "body_BaseColor-min",
-        "eyelids1_BaseColor-min",
-        "eyes_BaseColor-min",
-        "feet_BaseColor-min",
         "peak_BaseColor-min",
-        "tigh_BaseColor-min",
-        "wigs_BaseColor-min"
+        "wigs_BaseColor-min",
+        "feet_BaseColor-min",
+        "eyes_BaseColor-min",
+        "eyelids1_BaseColor-min",
+        "tigh_BaseColor-min"
     };
     // Start is called before the first frame update
     void Start()
@@ -54,10 +54,8 @@ public class BirdMaterialVariator : MonoBehaviour
                 materialCache[varNumber] = new Material[slots.Length];
                 for (int slotNumber = 0; slotNumber < slots.Length; slotNumber++)
                 {
-                    Texture tex = Resources.Load(
-                            "Textures/" + variationNames[varNumber] + "/" + slotTextureNames[slotNumber]
-                            ) as Texture;
-                    Debug.Log( tex );
+                    string path = "Textures/" + variationNames[varNumber] + "/" + slotTextureNames[slotNumber];
+                    Texture tex = Resources.Load(path) as Texture;
                     // copy material from the built-in material of the right body part
                     Material mat = new Material(slots[slotNumber][0].GetComponent<SkinnedMeshRenderer>().material);
                     mat.SetTexture("_MainTex", tex);
@@ -70,14 +68,9 @@ public class BirdMaterialVariator : MonoBehaviour
         {
             for (int partNumber = 0; partNumber < slots[slotNumber].Length; partNumber++)
             {
-                slots[slotNumber][partNumber].GetComponent<SkinnedMeshRenderer>().material = materialCache[variation][slotNumber];
+                Material mat = materialCache[variation][slotNumber];
+                slots[slotNumber][partNumber].GetComponent<SkinnedMeshRenderer>().material = mat;
             }
         }
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
