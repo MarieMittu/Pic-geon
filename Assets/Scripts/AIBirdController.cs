@@ -221,20 +221,25 @@ public class AIBirdController : MonoBehaviour
         Vector3 direction = (targetPoint - transform.position).normalized;
         Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        float rotationSpeed = 2f;
-        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-            yield return null;
-        }
-        
+        float rotationSpeed = 1f;
+        float walkThreshold = 0.1f;
+
         agent.SetDestination(targetPoint);
         animator.CrossFade("03_Walking_Ilde", 0.1f);
 
+      
         
-
         while (agent.remainingDistance > agent.stoppingDistance || agent.pathPending)
         {
+            direction = (targetPoint - transform.position).normalized; // Recalculate direction to account for movement
+            targetRotation = Quaternion.LookRotation(direction);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
+
+            if (Quaternion.Angle(transform.rotation, targetRotation) < walkThreshold)
+            {
+                //animator.CrossFade("03_Walking_Ilde", 0.1f);
+            }
             yield return null;
         }
         
