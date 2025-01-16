@@ -72,13 +72,15 @@ public class GameManager : MonoBehaviour
             } else
             {
                 FindObjectOfType<ScenesController>().Pause();
-                if (hasEvidence)
-                {
-                    FindObjectOfType<ScenesController>().ActivateSubOption();
-                    noFiles.SetActive(false);
-                    preview.SetActive(true);
-                } 
+                
             }
+        }
+
+        if (hasEvidence)
+        {
+            FindObjectOfType<ScenesController>().ActivateSubOption();
+            noFiles.SetActive(false);
+            preview.SetActive(true);
         }
 
         FindObjectOfType<MenusController>().isHorizontal = FindObjectOfType<ScenesController>().isAlerting;
@@ -120,7 +122,7 @@ public class GameManager : MonoBehaviour
     }
 
    public void ControlEvidence()
-    {
+   {
         if (hasCorrectPhotos)
         {
             MissionManager.sharedInstance.NextMission();
@@ -129,7 +131,21 @@ public class GameManager : MonoBehaviour
         {
             TriggerGameOver();
         }
+   }
+
+
+    public void UpdatePhotoPreview(Texture2D texture)
+    {
+        Image previewImage = preview.GetComponent<Image>();
+
+        Rect rect = new Rect(0, 0, texture.width, texture.height);
+        Vector2 pivot = new Vector2(0.5f, 0.5f);
+        Sprite sprite = Sprite.Create(texture, rect, pivot);
+
+        previewImage.sprite = sprite;
+
+        preview.SetActive(true);
     }
 
-  
+
 }

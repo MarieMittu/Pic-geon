@@ -304,10 +304,12 @@ public class LimitedCamera : MonoBehaviour
 
             yield return null;
         }
+        GameManager.sharedInstance.UpdatePhotoPreview(texture);
+
         // cleanup
         screenshotImage.gameObject.SetActive(false);
         screenshotImage.texture = null;
-        UnityEngine.Object.Destroy(texture);
+        //UnityEngine.Object.Destroy(texture);
     }
 
     private static void ApplyGammaCorrection(Texture2D texture)
