@@ -15,6 +15,9 @@ public class GameManager : MonoBehaviour
     public GameObject noFiles;
     public GameObject preview;
 
+    public GameObject photoSlotPrefab;
+    public Transform photoGalleryContent;
+
     public bool isGamePaused;
     public bool hasEvidence;
     public bool hasCorrectPhotos;
@@ -72,16 +75,16 @@ public class GameManager : MonoBehaviour
             } else
             {
                 FindObjectOfType<ScenesController>().Pause();
-                
+                if (hasEvidence)
+                {
+                    FindObjectOfType<ScenesController>().ActivateSubOption();
+                    noFiles.SetActive(false);
+                    preview.SetActive(true);
+                }
             }
         }
 
-        if (hasEvidence)
-        {
-            FindObjectOfType<ScenesController>().ActivateSubOption();
-            noFiles.SetActive(false);
-            preview.SetActive(true);
-        }
+        
 
         FindObjectOfType<MenusController>().isHorizontal = FindObjectOfType<ScenesController>().isAlerting;
         if (FindObjectOfType<MenusController>().isHorizontal)
@@ -147,5 +150,20 @@ public class GameManager : MonoBehaviour
         preview.SetActive(true);
     }
 
+    public void AddPhotoToGallery(Texture2D photo)
+    {
+        GameObject newPhotoSlot = Instantiate(photoSlotPrefab, photoGalleryContent);
+
+        Image photoImage = newPhotoSlot.GetComponent<Image>();
+        if (photoImage != null)
+        {
+            Sprite photoSprite = Sprite.Create(
+                photo,
+                new Rect(0, 0, photo.width, photo.height),
+                new Vector2(0.5f, 0.5f)
+            );
+            photoImage.sprite = photoSprite;
+        }
+    }
 
 }

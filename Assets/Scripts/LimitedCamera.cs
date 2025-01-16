@@ -259,6 +259,8 @@ public class LimitedCamera : MonoBehaviour
             PlayerPrefs.SetInt("LastPhotoNumber", photoNumber);
             PlayerPrefs.Save();
         }
+
+        GameManager.sharedInstance.AddPhotoToGallery(texture);
         // set the scale to fill the screen
         Vector3 imageScale = new Vector3(texture.width / 100.0f, texture.height / 100.0f, 1.0f);
         RectTransform imageRect = screenshotImage.gameObject.GetComponent<RectTransform>();
