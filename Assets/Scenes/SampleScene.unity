@@ -1045,19 +1045,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 360497819}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1041570250}
-        m_TargetAssemblyTypeName: MenusController, Assembly-CSharp
-        m_MethodName: SelectNext
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &360497819
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1959,8 +1947,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 24, y: 0}
-  m_SizeDelta: {x: 200, y: 200}
+  m_AnchoredPosition: {x: 9.8483, y: 0}
+  m_SizeDelta: {x: 187.3584, y: 200}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &589105344
 MonoBehaviour:
@@ -3358,15 +3346,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3549919a31d864e3aa3c6e182b0970de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentMode: 1
   verticOptions:
   - sprite: {fileID: 302830848}
     selectedSprite: {fileID: 1568896833}
     onSelect:
       m_PersistentCalls:
         m_Calls:
-        - m_Target: {fileID: 1041570249}
-          m_TargetAssemblyTypeName: ScenesController, Assembly-CSharp
-          m_MethodName: ShowPhotoLibrary
+        - m_Target: {fileID: 1041570248}
+          m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+          m_MethodName: OpenLibrary
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -3434,6 +3423,8 @@ MonoBehaviour:
   rightButton: {fileID: 360497818}
   okButton: {fileID: 506946675}
   isHorizontal: 0
+  photoGridContent: {fileID: 1232155005}
+  photoColumns: 3
 --- !u!1 &1058489157
 GameObject:
   m_ObjectHideFlags: 0
@@ -4036,7 +4027,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cfcc41e23b0c4cecaf34d9ace13a70c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tapeLimit: 4
+  tapeLimit: 20
   tapeText: {fileID: 869195475}
   reachedLimit: 0
 --- !u!1 &1568896833
@@ -4590,19 +4581,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1812498195}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1041570250}
-        m_TargetAssemblyTypeName: MenusController, Assembly-CSharp
-        m_MethodName: SelectNext
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1812498195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4722,19 +4701,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1852875085}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1041570250}
-        m_TargetAssemblyTypeName: MenusController, Assembly-CSharp
-        m_MethodName: SelectPrevious
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1852875085
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4986,19 +4953,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1858692347}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1041570250}
-        m_TargetAssemblyTypeName: MenusController, Assembly-CSharp
-        m_MethodName: SelectPrevious
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1858692347
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5072,8 +5027,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -90.61418, y: -51.239685}
-  m_SizeDelta: {x: 420.6916, y: 231.5343}
+  m_AnchoredPosition: {x: -76.6631, y: -51.239685}
+  m_SizeDelta: {x: 454.9534, y: 231.5343}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1875342299
 MonoBehaviour:

@@ -164,6 +164,14 @@ public class GameManager : MonoBehaviour
             );
             photoImage.sprite = photoSprite;
         }
+        //FindObjectOfType<MenusController>().InitializePhotoGrid();
+
+    }
+
+    public void OpenLibrary()
+    {
+        FindObjectOfType<ScenesController>().ShowPhotoLibrary();
+        FindObjectOfType<MenusController>().InitializePhotoGrid();
     }
 
 }
