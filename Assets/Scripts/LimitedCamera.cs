@@ -240,8 +240,13 @@ public class LimitedCamera : MonoBehaviour
     IEnumerator TakePhotoScreenshotWithFeedback()
     {
         photoAnimationInProgress = true;
+        yield return null;
+        //deactivate UI for photo
+        TapeManager.instance.gameObject.GetComponent<Canvas>().enabled = false;
         yield return new WaitForEndOfFrame();
         Texture2D texture = ScreenCapture.CaptureScreenshotAsTexture();
+        //reactivate UI for photo
+        TapeManager.instance.gameObject.GetComponent<Canvas>().enabled = true;
         // save image
         if (savePhotos)
         {
