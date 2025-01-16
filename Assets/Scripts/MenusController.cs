@@ -17,8 +17,8 @@ public class MenusController : MonoBehaviour
 
     public enum MenuMode
     {
-        PhotoGrid, // Mode for photo grid navigation
-        OptionsMenu // Mode for vertical/horizontal options menu
+        PhotoGrid, 
+        OptionsMenu 
     }
 
     public MenuMode currentMode = MenuMode.OptionsMenu;
@@ -37,10 +37,10 @@ public class MenusController : MonoBehaviour
     public bool isHorizontal = false;
 
     // for photo library
-    public Transform photoGridContent; // The Content GameObject of the grid
+    public Transform photoGridContent; 
     private List<SelectablePhoto> photos = new List<SelectablePhoto>();
-    public int photoColumns = 3; // Set the number of columns for the photo grid
-    private int currentGridIndex = 0; // Tracks the currently selected photo
+    public int photoColumns = 3; 
+    private int currentGridIndex = 0; 
 
 
     // Start is called before the first frame update
@@ -161,62 +161,65 @@ public class MenusController : MonoBehaviour
 
     public void PressOKButton()
     {
-        List<MenuOption> options;
-        options = isHorizontal ? horizOptions : verticOptions;
-        if (selection >= 0 && selection < options.Count)
+        if (currentMode == MenuMode.PhotoGrid)
         {
-            options[selection].onSelect.Invoke();
-        }
+            ActivateBigPhoto();
+        } else
+        {
+            List<MenuOption> options;
+            options = isHorizontal ? horizOptions : verticOptions;
+            if (selection >= 0 && selection < options.Count)
+            {
+                options[selection].onSelect.Invoke();
+            }
+        }  
     }
 
     private void OnUpButtonClicked()
     {
         if (currentMode == MenuMode.PhotoGrid)
         {
-            MoveGridSelection(-1, 0); // Navigate up in the photo grid
+            MoveGridSelection(-1, 0); 
         }
         else
         {
-            SelectPrevious(); // Navigate up in the vertical options
+            SelectPrevious(); 
         }
     }
 
-    // Handle UI button click for "Down" button
     private void OnDownButtonClicked()
     {
         if (currentMode == MenuMode.PhotoGrid)
         {
-            MoveGridSelection(1, 0); // Navigate down in the photo grid
+            MoveGridSelection(1, 0);
         }
         else
         {
-            SelectNext(); // Navigate down in the vertical options
+            SelectNext(); 
         }
     }
 
-    // Handle UI button click for "Left" button
     private void OnLeftButtonClicked()
     {
         if (currentMode == MenuMode.PhotoGrid)
         {
-            MoveGridSelection(0, -1); // Navigate left in the photo grid
+            MoveGridSelection(0, -1); 
         }
         else
         {
-            SelectPrevious(); // Navigate left in the horizontal options
+            SelectPrevious(); 
         }
     }
 
-    // Handle UI button click for "Right" button
     private void OnRightButtonClicked()
     {
         if (currentMode == MenuMode.PhotoGrid)
         {
-            MoveGridSelection(0, 1); // Navigate right in the photo grid
+            MoveGridSelection(0, 1); 
         }
         else
         {
-            SelectNext(); // Navigate right in the horizontal options
+            SelectNext(); 
         }
     }
 
@@ -261,11 +264,10 @@ public class MenusController : MonoBehaviour
             if (photo != null)
             {
                 photos.Add(photo);
-                photo.DeselectPhoto(); // Deselect all photos initially
+                photo.DeselectPhoto(); 
             }
         }
 
-        // Select the first photo by default
         if (photos.Count > 0)
         {
             currentMode = MenuMode.PhotoGrid;
@@ -274,12 +276,10 @@ public class MenusController : MonoBehaviour
         }
     }
 
-    // Move photo selection in the grid
     private void MoveGridSelection(int rowDelta, int columnDelta)
     {
-        if (photos.Count == 0) return; // No photos to navigate
+        if (photos.Count == 0) return; 
 
-        // Calculate new grid index
         int currentRow = currentGridIndex / photoColumns;
         int currentColumn = currentGridIndex % photoColumns;
 
@@ -288,13 +288,26 @@ public class MenusController : MonoBehaviour
 
         int newIndex = newRow * photoColumns + newColumn;
 
-        // Ensure the new index is within the bounds of the photo list
         if (newIndex >= photos.Count) return;
 
-        // Update the selection
-        photos[currentGridIndex].DeselectPhoto(); // Deselect the current photo
+        photos[currentGridIndex].DeselectPhoto(); 
         currentGridIndex = newIndex;
-        photos[currentGridIndex].SelectPhoto();   // Select the new photo
+        photos[currentGridIndex].SelectPhoto();  
     }
 
+    private void ActivateBigPhoto()
+    {
+        if (photos.Count > 0)
+        {
+            Texture2D selectedTexture = photos[currentGridIndex].GetPhotoTexture();
+
+            GameManager.sharedInstance.bigPhoto.SetActive(true);
+
+            if (GameManager.sharedInstance.bigPhotoImage != null)
+            {
+                Sprite sprite = Sprite.Create(selectedTexture, new Rect(0, 0, selectedTexture.width, selectedTexture.height), new Vector2(0.5f, 0.5f));
+                GameManager.sharedInstance.bigPhotoImage.sprite = sprite;
+            }
+        }
+    }
 }

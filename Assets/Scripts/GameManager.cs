@@ -18,6 +18,9 @@ public class GameManager : MonoBehaviour
     public GameObject photoSlotPrefab;
     public Transform photoGalleryContent;
 
+    public GameObject bigPhoto;
+    public Image bigPhotoImage;
+
     public bool isGamePaused;
     public bool hasEvidence;
     public bool hasCorrectPhotos;
@@ -153,6 +156,12 @@ public class GameManager : MonoBehaviour
     public void AddPhotoToGallery(Texture2D photo)
     {
         GameObject newPhotoSlot = Instantiate(photoSlotPrefab, photoGalleryContent);
+        SelectablePhoto selectablePhoto = newPhotoSlot.GetComponent<SelectablePhoto>(); 
+
+        if (selectablePhoto != null)
+        {
+            selectablePhoto.photoTexture = photo; 
+        }
 
         Image photoImage = newPhotoSlot.GetComponent<Image>();
         if (photoImage != null)
@@ -164,7 +173,6 @@ public class GameManager : MonoBehaviour
             );
             photoImage.sprite = photoSprite;
         }
-        //FindObjectOfType<MenusController>().InitializePhotoGrid();
 
     }
 

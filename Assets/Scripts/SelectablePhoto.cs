@@ -6,34 +6,40 @@ using UnityEngine.UI;
 public class SelectablePhoto : MonoBehaviour
 {
     private Outline outline;
+    public Texture2D photoTexture;
+    private Image photoImage;
 
     private void Awake()
     {
-        // Cache the Outline component
         outline = GetComponent<Outline>();
         if (outline == null)
         {
             outline = gameObject.AddComponent<Outline>();
         }
-        outline.enabled = false; // Ensure it's disabled by default
+        outline.enabled = false;
+
+        photoImage = GetComponent<Image>();
     }
 
-    // Method to highlight the photo
     public void SelectPhoto()
     {
         if (outline != null)
         {
-            outline.enabled = true; // Enable outline for selection
+            outline.enabled = true; 
         }
     }
     
 
-    // Method to remove highlight from the photo
     public void DeselectPhoto()
     {
         if (outline != null)
         {
             outline.enabled = false;
         }
+    }
+
+    public Texture2D GetPhotoTexture()
+    {
+        return photoTexture;
     }
 }

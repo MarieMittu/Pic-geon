@@ -81,8 +81,15 @@ public class ScenesController : MonoBehaviour
     {
         if (photosLibrary.activeInHierarchy)
         {
-            photosLibrary.SetActive(false);
-            FindObjectOfType<MenusController>().currentMode = MenusController.MenuMode.OptionsMenu;
+            if (GameManager.sharedInstance.bigPhotoImage.IsActive())
+            {
+                GameManager.sharedInstance.bigPhoto.SetActive(false);
+            } else
+            {
+                photosLibrary.SetActive(false);
+                FindObjectOfType<MenusController>().currentMode = MenusController.MenuMode.OptionsMenu;
+            }
+            
         } else
         {
             if (alert.activeInHierarchy) alert.SetActive(false);
