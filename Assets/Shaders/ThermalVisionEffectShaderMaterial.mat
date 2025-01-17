@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: DepthOfFieldShaderMaterial
-  m_Shader: {fileID: 4800000, guid: 911ae24388336074d90c1f34b9fe455a, type: 3}
+  m_Name: ThermalVisionEffectShaderMaterial
+  m_Shader: {fileID: 4800000, guid: 0545acac493d6d8428956021e2d5f834, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -27,12 +27,7 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    m_Ints:
-    - _GridSize: 20
-    m_Floats:
-    - _DepthOfFieldSize: 1.5
-    - _FocusDistance: 1.5
-    - _PeripheryBlurRadius: 0.5
-    - _TransitionSize: 0.1
+    m_Ints: []
+    m_Floats: []
     m_Colors: []
   m_BuildTextureStacks: []

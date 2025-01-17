@@ -363,6 +363,7 @@ MonoBehaviour:
   minFocusDistance: 0
   maxFocusDistance: 3
   focusDistanceSpeed: 1
+  peripheryBlurRadius: 1
   screenshotImage: {fileID: 7576610554782536271}
   flashImage: {fileID: 7422457346622540831}
   savePhotos: 0
@@ -373,15 +374,19 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7221969038424430605}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8124b2c2cdb343742a5f02c538a922a8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   materials:
+  - {fileID: 2100000, guid: a36e9fa5ddf6e7d47b8f0f8164309fe8, type: 2}
   - {fileID: 2100000, guid: 4a33d92365e4cd6438495705a77306eb, type: 2}
   - {fileID: 2100000, guid: dafcc7f3e8d763e408cae4e3d0c27d43, type: 2}
   startOfGlitch: 0.75
+  thermalMat: {fileID: 0}
+  dofMat: {fileID: 0}
+  glitchMat: {fileID: 0}
 --- !u!82 &8750381331898453074
 AudioSource:
   m_ObjectHideFlags: 0

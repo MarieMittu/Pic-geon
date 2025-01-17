@@ -5558,6 +5558,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 497691055}
     m_Modifications:
+    - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: dofMat
+      value: 
+      objectReference: {fileID: 2100000, guid: 4a33d92365e4cd6438495705a77306eb, type: 2}
+    - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: thermalMat
+      value: 
+      objectReference: {fileID: 2100000, guid: a36e9fa5ddf6e7d47b8f0f8164309fe8, type: 2}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: savePhotos
       value: 0

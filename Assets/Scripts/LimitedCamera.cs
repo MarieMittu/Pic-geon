@@ -30,7 +30,7 @@ public class LimitedCamera : MonoBehaviour
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
     public float focusDistanceSpeed = 1f;
-    public float peripheryBlurRadius = 1f;
+    public float peripheryBlurRadius = 0.8f;
     bool focusMode = false;
 
     [Header("Other")]
@@ -40,11 +40,13 @@ public class LimitedCamera : MonoBehaviour
     bool photoAnimationInProgress = false;
     public bool savePhotos = false;
     Camera cam;
+    ApplyImageEffectScript effectScript;
 
     // Start is called before the first frame update
     void Start()
     {
         cam = GetComponent<Camera>();
+        effectScript = GetComponent<ApplyImageEffectScript>();
         cameraHorizontalRotation = transform.localEulerAngles.y;
         cameraVerticalRotation = transform.localEulerAngles.x;
         referenceHorizontalRotation = cameraHorizontalRotation;
@@ -52,7 +54,7 @@ public class LimitedCamera : MonoBehaviour
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
-        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
+        Material dofShaderMat = effectScript.dofMat;
         dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
         dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
     }
@@ -62,7 +64,7 @@ public class LimitedCamera : MonoBehaviour
     {
         if (!GameManager.sharedInstance.isGamePaused && !photoAnimationInProgress)
         {
-            Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
+            Material dofShaderMat = effectScript.dofMat;
             if (!focusMode)
             {
                 float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -82,7 +84,7 @@ public class LimitedCamera : MonoBehaviour
             {
                 if (Input.mouseScrollDelta != Vector2.zero)
                 {
-                    peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, 1f);
+                    peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, 0.8f);
                     dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
                 }
             }
@@ -126,7 +128,7 @@ public class LimitedCamera : MonoBehaviour
 
     private bool IsWithinFocusedArea(GameObject obj)
     {
-        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
+        Material dofShaderMat = effectScript.dofMat;
 
         float distance = Vector3.Distance(obj.transform.position, transform.position);
 
@@ -229,9 +231,9 @@ public class LimitedCamera : MonoBehaviour
     {
         focusMode = false;
         cam.fieldOfView = zoomLevels[currentZoomLevel];
-        peripheryBlurRadius = 1f;
+        peripheryBlurRadius = 0.8f;
 
-        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
+        Material dofShaderMat = effectScript.dofMat;
         dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
     }
 

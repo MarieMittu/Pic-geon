@@ -88,15 +88,19 @@ Shader "Hidden/DepthOfFieldShader"
                 // blur in a Gridzize * Gridzize square around this texel
                 float3 blurredColor = float3(0,0,0);
                 int gridHelp = ((_GridSize - 1) / 2);
+                float ignorance = 0; // how many pixels are (partially) ignored
                 for (int x = -gridHelp; x <= gridHelp; x++)
                 {
                     for (int y = -gridHelp; y <= gridHelp; y++)
                     {
                         float2 uv = i.uv + float2(_MainTex_TexelSize.x * x, _MainTex_TexelSize.y * y);
-                        blurredColor += tex2D(_MainTex, uv).xyz;
+                        // circular blur shape
+                        float ignoreFactor = clamp(2 * length(float2(x,y)) / _GridSize, 0, 1);
+                        ignorance += ignoreFactor;
+                        blurredColor += tex2D(_MainTex, uv).xyz * (1-ignoreFactor);
                     }
                 }
-                blurredColor /= _GridSize * _GridSize;
+                blurredColor /= _GridSize * _GridSize - ignorance;
 
                 
 

@@ -14,7 +14,7 @@ public class BirdMaterialVariator : MonoBehaviour
         "pigeon purple texture set",
     };
     // materialCache[variation number][material slot] = material for this slot and this variation
-    static Material[][] materialCache;
+    public static Material[][] materialCache;
     public GameObject[] bodyParts;
     public GameObject[] beakParts;
     public GameObject[] wingParts;
