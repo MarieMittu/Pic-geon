@@ -65,8 +65,8 @@ public class AIBirdController : MonoBehaviour
         {
             StandStill,
             CleanItself,
-            SitDown,
-            () => Sleep(anim: "02_Sitting_Sleeping_Idle"),
+            () => SitDown(standUpAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
+            () => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
             PickFoodStanding,
             PickFoodWalking,
             WalkAround,
@@ -128,30 +128,30 @@ public class AIBirdController : MonoBehaviour
        
     }
 
-    public void SitDown()
+    public void SitDown(string standUpAnim)
     {
         if (!isWalking && !isFlying && !isSitting)
         {
-            StartCoroutine(StaySit());
+            StartCoroutine(StaySit(standUpAnim));
         }
        
     }
 
-    private IEnumerator StaySit()
+    private IEnumerator StaySit(string standUpAnim)
     {
         isSitting = true;
         yield return StartCoroutine(Transit("02_Sitting_Down", "02_Sitting_Idle"));
 
-        if (!isSleeping) StartCoroutine(StandUp());
+        if (!isSleeping) StartCoroutine(StandUp(standUpAnim));
 
     }
 
-    private IEnumerator StandUp()
+    private IEnumerator StandUp(string standUpAnim)
     {
             float waitTime = Random.Range(4f, 8f);
             yield return new WaitForSeconds(waitTime);
 
-            string standUpAnim = Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking";
+            //string standUpAnim = Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking";
         yield return StartCoroutine(Transit(standUpAnim, "01_Standing_Idle"));
         isSitting = false;
 
@@ -176,12 +176,12 @@ public class AIBirdController : MonoBehaviour
     }
 
 
-    public void Sleep(string anim)
+    public void Sleep(string anim, string standupAnim)
     {
-        if (isSitting && !isSleeping) StartCoroutine(StayAsleep(anim));
+        if (isSitting && !isSleeping) StartCoroutine(StayAsleep(anim, standupAnim));
     }
 
-    private IEnumerator StayAsleep(string anim)
+    private IEnumerator StayAsleep(string anim, string standupAnim)
     {
         isSleeping = true;
         yield return StartCoroutine(Transit("02_Sitting_Falling_Asleep"));
@@ -195,7 +195,7 @@ public class AIBirdController : MonoBehaviour
 
         animator.CrossFade("02_Sitting_Idle", 0.1f);
 
-        if (!isSleeping) StartCoroutine(StandUp());
+        if (!isSleeping) StartCoroutine(StandUp(standupAnim));
     }
 
 

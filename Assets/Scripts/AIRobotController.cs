@@ -19,7 +19,7 @@ public class AIRobotController : AIBirdController
         {
             StandStill,
             CleanItself,
-            SitDown,
+            () => SitDown(standUpAnim: "02_Sitting_Standing_up"),
             ShowAntenna,
             WalkAround,
             //Fly
@@ -30,7 +30,7 @@ public class AIRobotController : AIBirdController
 
     public void ShowAntenna()
     {
-        Sleep("R02_Sitting_Sleeping");
+        Sleep("R02_Sitting_Sleeping", "02_Sitting_Standing_up");
         isSpying = true;
     }
 }
