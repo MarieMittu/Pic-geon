@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.IO;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -29,6 +30,8 @@ public class LimitedCamera : MonoBehaviour
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
     public float focusDistanceSpeed = 1f;
+    public float peripheryBlurRadius = 1f;
+    bool focusMode = false;
 
     [Header("Other")]
     private int correctPhotosAmount = 0;
@@ -36,10 +39,12 @@ public class LimitedCamera : MonoBehaviour
     public RawImage flashImage;
     bool photoAnimationInProgress = false;
     public bool savePhotos = false;
+    Camera cam;
 
     // Start is called before the first frame update
     void Start()
     {
+        cam = GetComponent<Camera>();
         cameraHorizontalRotation = transform.localEulerAngles.y;
         cameraVerticalRotation = transform.localEulerAngles.x;
         referenceHorizontalRotation = cameraHorizontalRotation;
@@ -57,19 +62,29 @@ public class LimitedCamera : MonoBehaviour
     {
         if (!GameManager.sharedInstance.isGamePaused && !photoAnimationInProgress)
         {
-            float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
-            float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
-            ProcessCameraMovement(inputX, inputY);
             Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
-            // scroll = change fov zoom level and apply respective depth of field
-            if (Input.mouseScrollDelta != Vector2.zero)
+            if (!focusMode)
             {
-                Camera cam = GetComponent<Camera>();
-                currentZoomLevel += Math.Sign(Input.mouseScrollDelta.y);
-                currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
+                float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
+                float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+                ProcessCameraMovement(inputX, inputY);
+                // scroll = change fov zoom level and apply respective depth of field
+                if (Input.mouseScrollDelta != Vector2.zero)
+                {
+                    currentZoomLevel += Math.Sign(Input.mouseScrollDelta.y);
+                    currentZoomLevel = Math.Clamp(currentZoomLevel, 0, zoomLevels.Length - 1);
 
-                cam.fieldOfView = zoomLevels[currentZoomLevel];
-                dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
+                    cam.fieldOfView = zoomLevels[currentZoomLevel];
+                    dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
+                }
+            }
+            else
+            {
+                if (Input.mouseScrollDelta != Vector2.zero)
+                {
+                    peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, 1f);
+                    dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
+                }
             }
 
             // W/S = change focus distance
@@ -83,26 +98,60 @@ public class LimitedCamera : MonoBehaviour
             // photo
             if (Input.GetMouseButtonDown(0))
             {
-                DetectBirdsOnPhoto();
-                StartCoroutine(TakePhotoScreenshotWithFeedback());
-                GetComponent<AudioSource>().Play();
-                TrackTapeAmount();
-                GameManager.sharedInstance.hasEvidence = true;
+                if (focusMode)
+                {
+                    DetectBirdsOnPhoto();
+                    StartCoroutine(TakePhotoScreenshotWithFeedback());
+                    GetComponent<AudioSource>().Play();
+                    TrackTapeAmount();
+                    GameManager.sharedInstance.hasEvidence = true;
+                    focusMode = false;
+                    //cam.fieldOfView = zoomLevels[currentZoomLevel]; -> moved to end of photo animation in TakePhotoScreenshotWithFeedback
+                }
+                else
+                {
+                    focusMode = true;
+                    cam.fieldOfView *= 0.9f;
+                }
+            }
+            // cancel photo
+            if (focusMode && Input.GetMouseButtonDown(1))
+            {
+                resetAfterFocusMode();
             }
         }
 
         TrackTime();
     }
 
-    private bool IsWithinFocusedArea(GameObject gameObject)
+    private bool IsWithinFocusedArea(GameObject obj)
     {
         Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
 
-        float distance = Vector3.Distance(gameObject.transform.position, transform.position);
+        float distance = Vector3.Distance(obj.transform.position, transform.position);
 
         float focusDistance = dofShaderMat.GetFloat("_FocusDistance");
         float dof = dofShaderMat.GetFloat("_DepthOfFieldSize");
         return Math.Abs(distance - focusDistance) < dof/2;
+    }
+
+    private bool IsInPeriphery(GameObject obj)
+    {
+        float angle = Vector3.Angle(cam.transform.forward, obj.transform.position - transform.position);
+        bool isInPeriphery = angle > cam.fieldOfView * peripheryBlurRadius;
+        return isInPeriphery;
+    }
+
+    private bool isObstructed(GameObject obj, out RaycastHit hit)
+    {
+        bool didHit = Physics.Linecast(transform.position, obj.transform.position, out hit);
+        Debug.DrawLine(transform.position, didHit ? hit.point : obj.transform.position, Color.cyan, float.MaxValue);
+        return didHit;
+    }
+    private bool isObstructed(GameObject obj)
+    {
+        var hit = new RaycastHit();
+        return isObstructed(obj, out hit);
     }
 
     void ProcessCameraMovement(float inputX, float inputY)
@@ -131,20 +180,31 @@ public class LimitedCamera : MonoBehaviour
             {
                 // test if pigeon is obstructed
                 RaycastHit hit;
-                bool didHit = Physics.Linecast(transform.position, rb.transform.position, out hit);
-                //Ray ray = new Ray(transform.position, rb.transform.position - transform.position);
-                //bool didHit = Physics.Raycast(ray, out hit);
-                //Debug.DrawLine(ray.origin, hit.point, Color.cyan, float.MaxValue);
-                Debug.DrawLine(transform.position, didHit? hit.point : rb.transform.position, Color.cyan, float.MaxValue);
-                //if (didHit && hit.collider.gameObject.tag == "RobotBird")
+                bool didHit = isObstructed(rb, out hit);
                 if (!didHit)
                 {
                     // test if pigeon is in focus
-                    if (IsWithinFocusedArea(rb))
+                    if (IsWithinFocusedArea(rb) && !IsInPeriphery(rb))
                     {
-                        correctPhotosAmount++;
-                        GameManager.sharedInstance.hasCorrectPhotos = true;
-                        Debug.Log("sus bird on photo " + correctPhotosAmount);
+                        // test if other (real) birds are in focus
+                        GameObject[] realBirds = GameObject.FindGameObjectsWithTag("RealBird");
+                        bool realBirdInFocus = false;
+                        for (int i = 0; i < realBirds.Length; i++)
+                        {
+                            GameObject b = realBirds[i];
+                            realBirdInFocus |= b.GetComponent<MeshRenderer>().isVisible && IsWithinFocusedArea(b) && !IsInPeriphery(b) && !isObstructed(b);
+                            if (realBirdInFocus) break;
+                        }
+                        if (!realBirdInFocus)
+                        {
+                            correctPhotosAmount++;
+                            GameManager.sharedInstance.hasCorrectPhotos = true;
+                            Debug.Log("sus bird on photo " + correctPhotosAmount);
+                        }
+                        else
+                        {
+                            Debug.Log("sus bird on photo, but real bird too");
+                        }
                     }
                     else
                     {
@@ -152,7 +212,8 @@ public class LimitedCamera : MonoBehaviour
                     }
 
                 }
-                else {
+                else
+                {
                     Debug.Log("sus bird obstructed ");
                     Debug.Log(hit.collider.name);
                 }
@@ -162,6 +223,16 @@ public class LimitedCamera : MonoBehaviour
                 Debug.Log("wrong timing");
             }
         }
+    }
+
+    void resetAfterFocusMode()
+    {
+        focusMode = false;
+        cam.fieldOfView = zoomLevels[currentZoomLevel];
+        peripheryBlurRadius = 1f;
+
+        Material dofShaderMat = GetComponent<ApplyImageEffectScript>().materials[0];
+        dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
     }
 
     void TrackTapeAmount()
@@ -207,7 +278,6 @@ public class LimitedCamera : MonoBehaviour
         float fovHori = maxHRot - minHRot;
 
         // add the camera's fov, so we can see the actual edges of what can be seen
-        Camera cam = GetComponent<Camera>();
         fovVert += cam.fieldOfView;
         fovHori += cam.fieldOfView * cam.aspect;
 
@@ -240,8 +310,13 @@ public class LimitedCamera : MonoBehaviour
     IEnumerator TakePhotoScreenshotWithFeedback()
     {
         photoAnimationInProgress = true;
+        yield return null;
+        //deactivate UI for photo
+        TapeManager.instance.gameObject.GetComponent<Canvas>().enabled = false;
         yield return new WaitForEndOfFrame();
         Texture2D texture = ScreenCapture.CaptureScreenshotAsTexture();
+        //reactivate UI for photo
+        TapeManager.instance.gameObject.GetComponent<Canvas>().enabled = true;
         // save image
         if (savePhotos)
         {
@@ -295,6 +370,7 @@ public class LimitedCamera : MonoBehaviour
 
         // continue showing the photo for a time
         yield return new WaitForSeconds(1);
+        resetAfterFocusMode();
         photoAnimationInProgress = false;
         // minimize image animation
         timeElapsed = 0;

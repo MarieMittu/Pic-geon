@@ -18,7 +18,7 @@ public class AIBirdController : MonoBehaviour
 
     public Animator animator;
 
-    private bool isSitting;
+    protected bool isSitting;
     private bool isWalking;
     private bool isFlying;
     private bool isSleeping;

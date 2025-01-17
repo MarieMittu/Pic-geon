@@ -7,6 +7,7 @@ Shader "Hidden/DepthOfFieldShader"
         _FocusDistance("Focus Distance", Float) = 2
         _DepthOfFieldSize("Depth Of Field Size", Float) = 1
         _TransitionSize("Transition Size", Float) = 0.1
+        _PeripheryBlurRadius("Periphery Blur Radius", Range(0.0, 1.0)) = 0.1
     }
     SubShader
     {
@@ -48,6 +49,7 @@ Shader "Hidden/DepthOfFieldShader"
             float _FocusDistance;
             float _DepthOfFieldSize;
             float _TransitionSize;
+            float _PeripheryBlurRadius;
 
             float getBlurStrength(float distance)
             {
@@ -72,6 +74,14 @@ Shader "Hidden/DepthOfFieldShader"
                 depth = depth * _ProjectionParams.z;
 
                 float blurStrength = getBlurStrength(depth);
+
+                // blur periphery
+                float aspectRatio = _MainTex_TexelSize.y / _MainTex_TexelSize.x;
+                float2 normalizedUV = i.uv - float2(.5,.5);
+                normalizedUV.x *= aspectRatio;
+                float distFromCenter = distance(float2(0,0), normalizedUV);
+                float radialBlurStrength = clamp((distFromCenter - _PeripheryBlurRadius) * 5, 0, 1);
+                blurStrength = clamp(blurStrength + radialBlurStrength, 0, 1);
 
                 fixed4 col = tex2D(_MainTex, i.uv);
 
