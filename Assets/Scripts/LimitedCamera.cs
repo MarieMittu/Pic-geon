@@ -30,7 +30,8 @@ public class LimitedCamera : MonoBehaviour
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
     public float focusDistanceSpeed = 1f;
-    public float peripheryBlurRadius = 0.8f;
+    const float maxPeripheryBlurRadius = 0.5f;
+    public float peripheryBlurRadius = maxPeripheryBlurRadius;
     bool focusMode = false;
 
     [Header("Other")]
@@ -57,6 +58,7 @@ public class LimitedCamera : MonoBehaviour
         Material dofShaderMat = effectScript.dofMat;
         dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
         dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
+        dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
     }
 
     // Update is called once per frame
@@ -84,7 +86,7 @@ public class LimitedCamera : MonoBehaviour
             {
                 if (Input.mouseScrollDelta != Vector2.zero)
                 {
-                    peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, 0.8f);
+                    peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, maxPeripheryBlurRadius);
                     dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
                 }
             }
@@ -231,7 +233,7 @@ public class LimitedCamera : MonoBehaviour
     {
         focusMode = false;
         cam.fieldOfView = zoomLevels[currentZoomLevel];
-        peripheryBlurRadius = 0.8f;
+        peripheryBlurRadius = maxPeripheryBlurRadius;
 
         Material dofShaderMat = effectScript.dofMat;
         dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
