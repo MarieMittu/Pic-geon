@@ -3378,7 +3378,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cc216ea137fb04a1f994d3b288190011, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  missionDuration: 300
+  missionDuration: 60
   startMissionDuration: 0
   timer: {fileID: 1802748458}
   noFiles: {fileID: 1884437864}
@@ -4216,7 +4216,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 4.0560913, y: -0.81121826}
+  m_AnchoredPosition: {x: 4.0561523, y: -0.81121826}
   m_SizeDelta: {x: -40.851685, y: -36.21649}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1585445415
@@ -5563,6 +5563,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 4a33d92365e4cd6438495705a77306eb, type: 2}
     - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: xrayMat
+      value: 
+      objectReference: {fileID: 2100000, guid: ead2b5425defe41a9845f3763afc9b23, type: 2}
+    - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: glitchMat
+      value: 
+      objectReference: {fileID: 2100000, guid: dafcc7f3e8d763e408cae4e3d0c27d43, type: 2}
+    - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -5570,6 +5578,14 @@ PrefabInstance:
       propertyPath: thermalMat
       value: 
       objectReference: {fileID: 2100000, guid: a36e9fa5ddf6e7d47b8f0f8164309fe8, type: 2}
+    - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: materials.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: ead2b5425defe41a9845f3763afc9b23, type: 2}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: savePhotos
       value: 0

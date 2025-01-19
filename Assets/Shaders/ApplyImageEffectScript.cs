@@ -14,9 +14,12 @@ public class ApplyImageEffectScript : MonoBehaviour
     bool[] enabledMaterials;
     public float startOfGlitch = 0.75f;
     bool thermalActive = false;
+    bool xrayActive = false;
 
     [HideInInspector] public Material thermalMat;
     int thermalMatIndex;
+    [HideInInspector] public Material xrayMat;
+    int xrayMatIndex;
     [HideInInspector] public Material dofMat;
     int dofMatIndex;
     [HideInInspector] public Material glitchMat;
@@ -66,6 +69,11 @@ public class ApplyImageEffectScript : MonoBehaviour
                     thermalMat = mat;
                     thermalMatIndex = i;
                     enabledMaterials[thermalMatIndex] = thermalActive;
+                    break;
+                case "XrayVisionEffectShaderMaterial":
+                    xrayMat = mat;
+                    xrayMatIndex = i;
+                    enabledMaterials[xrayMatIndex] = xrayActive;
                     break;
             }
         }
@@ -130,6 +138,40 @@ public class ApplyImageEffectScript : MonoBehaviour
                     }
                 }
                 enabledMaterials[thermalMatIndex] = thermalActive;
+            }
+
+            if (Input.GetKeyDown(KeyCode.X))
+            {
+                xrayActive = !xrayActive;
+                if (xrayActive)
+                {
+                    for (int i = 0; i < BirdMaterialVariator.materialCache.Length; i++)
+                    {
+                        for (int j = 0; j < BirdMaterialVariator.materialCache[i].Length; j++)
+                        {
+                            Material mat = BirdMaterialVariator.materialCache[i][j];
+
+                            // Example of enabling X-ray effect
+                            mat.EnableKeyword("_EMISSION");
+                            mat.SetColor("_EmissionColor", Color.cyan); // Set emission to a cyan color for X-ray
+                            mat.SetFloat("_Alpha", 0.5f); // Adjust transparency for X-ray effect (requires shader support)
+                        }
+                    }
+                } else
+                {
+                    for (int i = 0; i < BirdMaterialVariator.materialCache.Length; i++)
+                    {
+                        for (int j = 0; j < BirdMaterialVariator.materialCache[i].Length; j++)
+                        {
+                            Material mat = BirdMaterialVariator.materialCache[i][j];
+
+                            // Restore original material settings
+                            mat.DisableKeyword("_EMISSION");
+                            mat.SetFloat("_Alpha", 1f); // Restore full opacity
+                        }
+                    }
+                }
+                enabledMaterials[xrayMatIndex] = xrayActive;
             }
         }
     }
