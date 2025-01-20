@@ -63,12 +63,12 @@ public class AIBirdController : MonoBehaviour
 
         List<RandomActions> randomActions = new List<RandomActions>
         {
-            //StandStill,
-            //CleanItself,
-            //() => SitDown(standUpAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
-            //() => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
-            //PickFoodStanding,
-            //PickFoodWalking,
+            StandStill,
+            CleanItself,
+            () => SitDown(standUpAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
+            () => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
+            PickFoodStanding,
+            PickFoodWalking,
             WalkAround,
             //Fly
         };
