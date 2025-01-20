@@ -63,12 +63,12 @@ public class AIBirdController : MonoBehaviour
 
         List<RandomActions> randomActions = new List<RandomActions>
         {
-            StandStill,
-            CleanItself,
-            () => SitDown(standUpAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
-            () => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
-            PickFoodStanding,
-            PickFoodWalking,
+            //StandStill,
+            //CleanItself,
+            //() => SitDown(standUpAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
+            //() => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
+            //PickFoodStanding,
+            //PickFoodWalking,
             WalkAround,
             //Fly
         };
@@ -257,12 +257,28 @@ public class AIBirdController : MonoBehaviour
             //the 1.0f is the max distance from the random point to a point on the navmesh, might want to increase if range is big
             //or add a for loop like in the documentation
             result = hit.position;
+            Debug.DrawRay(result, Vector3.up, Color.blue, 2.0f);
             return true;
         }
 
         result = Vector3.zero;
         return false;
     }
+
+    private void OnDrawGizmos()
+    {
+        // Draw the walkable area as a circle
+        Gizmos.color = Color.green; // Circle color
+        Gizmos.DrawWireSphere(centrePoint, walkRadius); // Visualize the walk radius from the center point
+
+        // Optional: Draw the agent's current destination if the agent is moving
+        if (agent != null && agent.hasPath)
+        {
+            Gizmos.color = Color.red; // Destination point color
+            Gizmos.DrawSphere(agent.destination, 0.5f); // Visualize the agent's current destination
+        }
+    }
+
 
     public void Fly()
     {

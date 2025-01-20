@@ -146,14 +146,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startRange: 2
   finalRange: 8
-  range: 1
-  centrePoint: {x: -0.56, y: -0.156, z: -1.75}
-  pulseScale: 1.5
-  pulseDuration: 0.7
-  pulseCount: 3
-  jumpVelocity: 50
-  maxJumps: 3
-  minSize: 0.001
+  animator: {fileID: 0}
+  walkRadius: 0
+  centrePoint: {x: -0.56, y: 4.63, z: -1.75}
   isSpying: 0
 --- !u!195 &6759729605132827713
 NavMeshAgent:
