@@ -33,6 +33,6 @@ Material:
     - _DepthOfFieldSize: 1.5
     - _FocusDistance: 1.5
     - _PeripheryBlurRadius: 0.5
-    - _TransitionSize: 0.1
+    - _TransitionSize: 1
     m_Colors: []
   m_BuildTextureStacks: []

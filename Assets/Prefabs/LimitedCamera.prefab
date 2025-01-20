@@ -277,9 +277,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7221969038424430605}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.0032761171, y: -0.98747176, z: -0.020684585, w: 0.15640014}
-  m_LocalPosition: {x: -0.009932548, y: 0.016924888, z: 0.21242142}
-  m_LocalScale: {x: 14.264999, y: 14.264999, z: 14.264999}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7997284044324186713}
@@ -357,13 +357,15 @@ MonoBehaviour:
   - 60
   - 30
   - 10
+  - 5
   zoomLevelsDepthOfField:
-  - 3
-  - 1.5
-  - 0.5
+  - 20
+  - 10
+  - 5
+  - 2
   minFocusDistance: 0
-  maxFocusDistance: 3
-  focusDistanceSpeed: 1
+  maxFocusDistance: 50
+  focusDistanceSpeed: 10
   peripheryBlurRadius: 1
   screenshotImage: {fileID: 7576610554782536271}
   flashImage: {fileID: 7422457346622540831}
@@ -505,5 +507,3 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imageEffectScript: {fileID: 0}
-  thermalTime: 10
-  thermalChargeUseRate: 0.3
