@@ -101,36 +101,30 @@ public class ApplyImageEffectScript : MonoBehaviour
             //// make glitch more noticeable once it starts and give some time at full intensity
             //if (glitchIntensity > 0) glitchIntensity = Math.Clamp(glitchIntensity + 0.2f, 0, 1);
             glitchMat.SetFloat("_Intensity", glitchIntensity);
+        }
+    }
 
-            // toggle thermal vision
-            if(Input.GetKeyDown(KeyCode.T))
+    public void SetThermalVision(bool enabled)
+    {
+        thermalActive = enabled;
+        for (int i = 0; i < BirdMaterialVariator.materialCache.Length; i++)
+        {
+            for (int j = 0; j < BirdMaterialVariator.materialCache[i].Length; j++)
             {
-                thermalActive = !thermalActive;
+                Material mat = BirdMaterialVariator.materialCache[i][j];
                 if (thermalActive)
                 {
-                    for (int i = 0; i < BirdMaterialVariator.materialCache.Length; i++)
-                    {
-                        for (int j = 0; j < BirdMaterialVariator.materialCache[i].Length; j++)
-                        {
-                            Material mat = BirdMaterialVariator.materialCache[i][j];
-                            mat.EnableKeyword("_EMISSION");
-                            mat.SetColor("_EmissionColor", Color.magenta);
-                        }
-                    }
+                    mat.EnableKeyword("_EMISSION");
+                    mat.SetColor("_EmissionColor", Color.magenta);
                 }
                 else
                 {
-                    for (int i = 0; i < BirdMaterialVariator.materialCache.Length; i++)
-                    {
-                        for (int j = 0; j < BirdMaterialVariator.materialCache[i].Length; j++)
-                        {
-                            Material mat = BirdMaterialVariator.materialCache[i][j];
-                            mat.DisableKeyword("_EMISSION");
-                        }
-                    }
+                    mat.DisableKeyword("_EMISSION");
                 }
-                enabledMaterials[thermalMatIndex] = thermalActive;
             }
         }
+        enabledMaterials[thermalMatIndex] = thermalActive;
     }
+
+    public bool isThermalActive() { return thermalActive; }
 }

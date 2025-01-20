@@ -261,6 +261,7 @@ GameObject:
   - component: {fileID: 4739496552211864261}
   - component: {fileID: 8750381331898453074}
   - component: {fileID: 6593473375721480845}
+  - component: {fileID: 7229078716807553216}
   m_Layer: 6
   m_Name: LimitedCamera
   m_TagString: Untagged
@@ -491,3 +492,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7221969038424430605}
   m_Enabled: 1
+--- !u!114 &7229078716807553216
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7221969038424430605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fb5b756a8a5a02542840bca9fa04a13a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  imageEffectScript: {fileID: 0}
+  thermalTime: 10
+  thermalChargeUseRate: 0.3
