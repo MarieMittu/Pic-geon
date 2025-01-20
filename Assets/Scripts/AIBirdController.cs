@@ -268,7 +268,7 @@ public class AIBirdController : MonoBehaviour
     private void OnDrawGizmos()
     {
         // Draw the walkable area as a circle
-        Gizmos.color = Color.green; // Circle color
+        Gizmos.color = Color.red; // Circle color
         Gizmos.DrawWireSphere(centrePoint, walkRadius); // Visualize the walk radius from the center point
 
         // Optional: Draw the agent's current destination if the agent is moving

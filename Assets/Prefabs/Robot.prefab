@@ -2415,8 +2415,8 @@ MonoBehaviour:
   startRange: 5
   finalRange: 10
   animator: {fileID: 7063825414732274203}
-  walkRadius: 20
-  centrePoint: {x: -0.56, y: -0.156, z: -1.75}
+  walkRadius: 15
+  centrePoint: {x: 4.4, y: -0.156, z: -4.5}
   isSpying: 0
 --- !u!195 &5181826920925210693
 NavMeshAgent:
