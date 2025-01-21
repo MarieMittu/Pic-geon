@@ -25,7 +25,8 @@ public class LimitedCamera : MonoBehaviour
     //[Range(0.0f, 90f)] public float maxFOV = 60.0f;
     [Header("Zoom and Focus")]
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
-    [Range(0, 10)] public float[] zoomLevelsDepthOfField = { 3, 2, 1 };
+    //[Range(0, 10)]
+    public float[] zoomLevelsDepthOfField = { 3, 2, 1 };
     public float minFocusDistance = 0;
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;

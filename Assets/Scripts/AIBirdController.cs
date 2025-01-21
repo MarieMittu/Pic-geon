@@ -218,11 +218,11 @@ public class AIBirdController : MonoBehaviour
     {
         isWalking = true;
 
-        Vector3 direction = (targetPoint - transform.position).normalized;
-        Quaternion targetRotation = Quaternion.LookRotation(direction);
+        //Vector3 direction = (targetPoint - transform.position).normalized;
+        //Quaternion targetRotation = Quaternion.LookRotation(direction);
 
-        float rotationSpeed = 1f;
-        float walkThreshold = 0.1f;
+        //float rotationSpeed = 1f;
+        //float walkThreshold = 0.1f;
 
         agent.SetDestination(targetPoint);
         animator.CrossFade("03_Walking_Ilde", 0.1f);
@@ -231,20 +231,22 @@ public class AIBirdController : MonoBehaviour
         
         while (agent.remainingDistance > agent.stoppingDistance || agent.pathPending)
         {
-            direction = (targetPoint - transform.position).normalized; // Recalculate direction to account for movement
-            targetRotation = Quaternion.LookRotation(direction);
-
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-
-            if (Quaternion.Angle(transform.rotation, targetRotation) < walkThreshold)
+            if (agent.velocity.sqrMagnitude > 0.01f)
             {
-                //animator.CrossFade("03_Walking_Ilde", 0.1f);
+                Vector3 moveDirection = agent.velocity.normalized;
+
+                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); 
             }
             yield return null;
         }
-        
-        isWalking = false;
-        StandStill();
+
+        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
+        {
+            isWalking = false;
+            StandStill();
+        }
     }
 
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
@@ -252,17 +254,33 @@ public class AIBirdController : MonoBehaviour
 
         Vector3 randomPoint = center + Random.insideUnitSphere * range; //random point in a sphere 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 1.0f, NavMesh.AllAreas)) //documentation: https://docs.unity3d.com/ScriptReference/AI.NavMesh.SamplePosition.html
+        if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas)) //documentation: https://docs.unity3d.com/ScriptReference/AI.NavMesh.SamplePosition.html
         {
             //the 1.0f is the max distance from the random point to a point on the navmesh, might want to increase if range is big
             //or add a for loop like in the documentation
             result = hit.position;
+            Debug.DrawRay(result, Vector3.up, Color.blue, 2.0f);
             return true;
         }
 
         result = Vector3.zero;
         return false;
     }
+
+    private void OnDrawGizmos()
+    {
+        // Draw the walkable area as a circle
+        Gizmos.color = Color.red; // Circle color
+        Gizmos.DrawWireSphere(centrePoint, walkRadius); // Visualize the walk radius from the center point
+
+        // Optional: Draw the agent's current destination if the agent is moving
+        if (agent != null && agent.hasPath)
+        {
+            Gizmos.color = Color.red; // Destination point color
+            Gizmos.DrawSphere(agent.destination, 0.5f); // Visualize the agent's current destination
+        }
+    }
+
 
     public void Fly()
     {
