@@ -134,7 +134,7 @@ GameObject:
   m_Layer: 0
   m_Name: RobotPos (1)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -440,7 +440,7 @@ GameObject:
   m_Layer: 0
   m_Name: BirdsPos (2)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1959,7 +1959,7 @@ GameObject:
   m_Layer: 0
   m_Name: BirdsPos (1)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -1990,7 +1990,7 @@ GameObject:
   m_Layer: 0
   m_Name: RobotPos
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5132851093641282708, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -2939,14 +2939,22 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2644089229999021228, guid: 1c0cdc4a309604eadbdca8282fd72b39, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2656992245577399836, guid: 1c0cdc4a309604eadbdca8282fd72b39, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3779642478101333330, guid: 1c0cdc4a309604eadbdca8282fd72b39, type: 3}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+      objectReference: {fileID: 0}
     - target: {fileID: 4062007454344743574, guid: 1c0cdc4a309604eadbdca8282fd72b39, type: 3}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+      objectReference: {fileID: 0}
     - target: {fileID: 4062007454344743574, guid: 1c0cdc4a309604eadbdca8282fd72b39, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -2958,7 +2966,7 @@ PrefabInstance:
     - target: {fileID: 6251831881927721431, guid: 1c0cdc4a309604eadbdca8282fd72b39, type: 3}
       propertyPath: m_Icon
       value: 
-      objectReference: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
+      objectReference: {fileID: 0}
     - target: {fileID: 6417661429286696695, guid: 1c0cdc4a309604eadbdca8282fd72b39, type: 3}
       propertyPath: m_IsActive
       value: 1
@@ -4876,7 +4884,7 @@ GameObject:
   m_Layer: 0
   m_Name: BirdsPos (3)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -5019,7 +5027,7 @@ GameObject:
   m_Layer: 0
   m_Name: BirdsPos
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -6001,7 +6009,7 @@ GameObject:
   m_Layer: 0
   m_Name: BirdsPos (4)
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
