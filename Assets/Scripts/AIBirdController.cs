@@ -28,6 +28,9 @@ public class AIBirdController : MonoBehaviour
 
     public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which bird walks
 
+    protected Dictionary<RandomActions, List<System.Tuple<float, RandomActions>>> states = new Dictionary<RandomActions, List<System.Tuple<float, RandomActions>>>();
+    protected RandomActions currentState;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -39,6 +42,77 @@ public class AIBirdController : MonoBehaviour
         rb = gameObject.GetComponent<Rigidbody>();
 
         agent = GetComponent<NavMeshAgent>();
+
+        InitializeStates();
+    }
+
+    protected virtual void InitializeStates()
+    {
+        RandomActions sitDownAction = () => SitDown(standUpAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking");
+        RandomActions sleepAction = () => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking");
+
+        currentState = StandStill;
+        states[StandStill] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.05f, StandStill),
+            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
+            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
+            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
+            new System.Tuple<float, RandomActions>(0.25f, WalkAround),
+            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+        };
+        states[CleanItself] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.2f, StandStill),
+            new System.Tuple<float, RandomActions>(0.05f, CleanItself),
+            new System.Tuple<float, RandomActions>(0.3f, sitDownAction),
+            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
+            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
+            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+        };
+        states[sitDownAction] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.4f, sleepAction),
+            new System.Tuple<float, RandomActions>(0.3f, StandStill),
+        };
+        states[sleepAction] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.2f, StandStill),
+            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
+            new System.Tuple<float, RandomActions>(0.2f, sleepAction),
+        };
+        states[PickFoodStanding] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.2f, StandStill),
+            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
+            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
+            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
+            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
+            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+        };
+        states[PickFoodWalking] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.2f, StandStill),
+            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
+            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
+            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
+            new System.Tuple<float, RandomActions>(0.0f, PickFoodWalking),
+            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
+            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+        };
+        states[WalkAround] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.2f, StandStill),
+            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
+            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
+            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
+            new System.Tuple<float, RandomActions>(0.0f, PickFoodWalking),
+            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
+            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+        };
+        //states[Fly] = new List<System.Tuple<float, RandomActions>> {
+        //    new System.Tuple<float, RandomActions>(0.2f, StandStill),
+        //    new System.Tuple<float, RandomActions>(0.2f, CleanItself),
+        //    new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
+        //    new System.Tuple<float, RandomActions>(0.0f, sleepAction),
+        //    new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
+        //    new System.Tuple<float, RandomActions>(0.0f, PickFoodWalking),
+        //    new System.Tuple<float, RandomActions>(0.3f, WalkAround),
+        //    //new System.Tuple<float, RandomActions>(0.0f, Fly),
+        //};
     }
 
     private void Update()
@@ -60,21 +134,24 @@ public class AIBirdController : MonoBehaviour
 
     public virtual void PerformRandomAction()
     {
-
-        List<RandomActions> randomActions = new List<RandomActions>
+        var transitions = states[currentState];
+        float weightSum = 0;
+        foreach (var transition in transitions)
         {
-            StandStill,
-            CleanItself,
-            () => SitDown(standUpAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
-            () => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking"),
-            PickFoodStanding,
-            PickFoodWalking,
-            WalkAround,
-            //Fly
-        };
-
-
-        randomActions[Random.Range(0, randomActions.Count)]();
+            weightSum += transition.Item1;
+        }
+        float rand = Random.Range(0, weightSum);
+        for (int i = 0; i < transitions.Count; i++)
+        {
+            var transition = transitions[i];
+            rand -= transition.Item1;
+            if (rand <= 0)
+            {
+                currentState = transitions[i].Item2;
+                currentState();
+                return;
+            }
+        }
     }
 
     // helpers
@@ -148,7 +225,7 @@ public class AIBirdController : MonoBehaviour
 
     private IEnumerator StandUp(string standUpAnim)
     {
-            float waitTime = Random.Range(4f, 8f);
+            float waitTime = Random.Range(8f, 12f);
             yield return new WaitForSeconds(waitTime);
 
             //string standUpAnim = Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking";
