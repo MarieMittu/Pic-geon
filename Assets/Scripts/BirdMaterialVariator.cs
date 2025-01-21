@@ -5,6 +5,7 @@ using UnityEngine;
 public class BirdMaterialVariator : MonoBehaviour
 {
     public int variation = -1;
+    public bool hasHeatSignature = true;
     static string[] variationNames =
     {
         "Pigeon basic texture set",
@@ -15,6 +16,7 @@ public class BirdMaterialVariator : MonoBehaviour
     };
     // materialCache[variation number][material slot] = material for this slot and this variation
     public static Material[][] materialCache;
+    public static Material[][] materialCacheNoHeatSignature;
     public GameObject[] bodyParts;
     public GameObject[] beakParts;
     public GameObject[] wingParts;
@@ -49,9 +51,11 @@ public class BirdMaterialVariator : MonoBehaviour
         {
             // create materials
             materialCache = new Material[variationNames.Length][];
+            materialCacheNoHeatSignature = new Material[variationNames.Length][];
             for (int varNumber = 0; varNumber < variationNames.Length; varNumber++)
             {
                 materialCache[varNumber] = new Material[slots.Length];
+                materialCacheNoHeatSignature[varNumber] = new Material[slots.Length];
                 for (int slotNumber = 0; slotNumber < slots.Length; slotNumber++)
                 {
                     string path = "Textures/" + variationNames[varNumber] + "/" + slotTextureNames[slotNumber];
@@ -60,6 +64,7 @@ public class BirdMaterialVariator : MonoBehaviour
                     Material mat = new Material(slots[slotNumber][0].GetComponent<SkinnedMeshRenderer>().material);
                     mat.SetTexture("_MainTex", tex);
                     materialCache[varNumber][slotNumber] = mat;
+                    materialCacheNoHeatSignature[varNumber][slotNumber] = new Material(mat);
                 }
             }
         }
@@ -68,7 +73,9 @@ public class BirdMaterialVariator : MonoBehaviour
         {
             for (int partNumber = 0; partNumber < slots[slotNumber].Length; partNumber++)
             {
-                Material mat = materialCache[variation][slotNumber];
+                Material mat;
+                if (hasHeatSignature) mat = materialCache[variation][slotNumber];
+                else   mat = materialCacheNoHeatSignature[variation][slotNumber];
                 slots[slotNumber][partNumber].GetComponent<SkinnedMeshRenderer>().material = mat;
             }
         }

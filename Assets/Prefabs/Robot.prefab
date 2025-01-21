@@ -2503,6 +2503,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   variation: -1
+  hasHeatSignature: 0
   bodyParts:
   - {fileID: 4765245266334916668}
   - {fileID: 3784857701524704872}
