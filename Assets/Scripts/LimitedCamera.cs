@@ -30,8 +30,8 @@ public class LimitedCamera : MonoBehaviour
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
     public float focusDistanceSpeed = 1f;
-    const float maxPeripheryBlurRadius = 0.5f;
-    public float peripheryBlurRadius = maxPeripheryBlurRadius;
+    public float maxPeripheryBlurRadius = 0.5f;
+    float peripheryBlurRadius = 0.5f;
     bool focusMode = false;
 
     [Header("Other")]
@@ -55,6 +55,7 @@ public class LimitedCamera : MonoBehaviour
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
+        peripheryBlurRadius = maxPeripheryBlurRadius;
         Material dofShaderMat = effectScript.dofMat;
         dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
         dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
