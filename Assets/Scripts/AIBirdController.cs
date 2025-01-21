@@ -23,7 +23,7 @@ public class AIBirdController : MonoBehaviour
     private bool isFlying;
     private bool isSleeping;
 
-    NavMeshAgent agent;
+    [HideInInspector] public NavMeshAgent agent;
     public float walkRadius ; //radius of sphere to walk around
 
     public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which bird walks
@@ -295,12 +295,6 @@ public class AIBirdController : MonoBehaviour
     {
         isWalking = true;
 
-        //Vector3 direction = (targetPoint - transform.position).normalized;
-        //Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-        //float rotationSpeed = 1f;
-        //float walkThreshold = 0.1f;
-
         agent.SetDestination(targetPoint);
         animator.CrossFade("03_Walking_Ilde", 0.1f);
 
@@ -326,7 +320,7 @@ public class AIBirdController : MonoBehaviour
         }
     }
 
-    bool RandomPoint(Vector3 center, float range, out Vector3 result)
+    protected virtual bool RandomPoint(Vector3 center, float range, out Vector3 result)
     {
 
         Vector3 randomPoint = center + Random.insideUnitSphere * range; //random point in a sphere 

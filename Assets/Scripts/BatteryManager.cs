@@ -56,6 +56,10 @@ public class BatteryManager : MonoBehaviour
             usedCharge = amount;
         }
         updateBatteryText();
+        if (charge <= 0)
+        {
+            GameManager.sharedInstance.TriggerGameOver();
+        }
         return usedCharge;
     }
 
