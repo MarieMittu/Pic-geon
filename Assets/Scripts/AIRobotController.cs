@@ -11,7 +11,9 @@ public class AIRobotController : AIBirdController
 
     private void Update()
     {
-        string anim = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+        var clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        string anim = "";
+        if (clipInfo != null) anim = clipInfo[0].clip.name;
         if (anim.StartsWith('R')) isSpying = true;
         else isSpying = false;
         PerformActionsSequence();
@@ -28,14 +30,14 @@ public class AIRobotController : AIBirdController
             new System.Tuple<float, RandomActions>(0.2f, CleanItself),
             new System.Tuple<float, RandomActions>(0.8f, sitDownAction),
             new System.Tuple<float, RandomActions>(0.15f, WalkAround),
-            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+            new System.Tuple<float, RandomActions>(0.1f, Fly),
         };
         states[CleanItself] = new List<System.Tuple<float, RandomActions>> {
             new System.Tuple<float, RandomActions>(0.2f, StandStill),
             new System.Tuple<float, RandomActions>(0.05f, CleanItself),
             new System.Tuple<float, RandomActions>(0.7f, sitDownAction),
             new System.Tuple<float, RandomActions>(0.2f, WalkAround),
-            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+            new System.Tuple<float, RandomActions>(0.1f, Fly),
         };
         states[sitDownAction] = new List<System.Tuple<float, RandomActions>> {
             new System.Tuple<float, RandomActions>(0.9f, ShowAntenna),
@@ -46,20 +48,20 @@ public class AIRobotController : AIBirdController
             new System.Tuple<float, RandomActions>(0.2f, CleanItself),
             new System.Tuple<float, RandomActions>(0.7f, sitDownAction),
             new System.Tuple<float, RandomActions>(0.15f, WalkAround),
-            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+            new System.Tuple<float, RandomActions>(0.2f, Fly),
         };
         states[ShowAntenna] = new List<System.Tuple<float, RandomActions>> {
             new System.Tuple<float, RandomActions>(0.5f, ShowAntenna),
             new System.Tuple<float, RandomActions>(0.3f, StandStill),
         };
-        //states[Fly] = new List<System.Tuple<float, RandomActions>> {
-        //    new System.Tuple<float, RandomActions>(0.2f, StandStill),
-        //    new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-        //    new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-        //    new System.Tuple<float, RandomActions>(0.0f, ShowAntenna),
-        //    new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-        //    //new System.Tuple<float, RandomActions>(0.0f, Fly),
-        //};
+        states[Fly] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.2f, StandStill),
+            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
+            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
+            new System.Tuple<float, RandomActions>(0.0f, ShowAntenna),
+            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
+            new System.Tuple<float, RandomActions>(0.05f, Fly),
+        };
     }
 
     public void ShowAntenna()

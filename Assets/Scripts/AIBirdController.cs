@@ -58,7 +58,7 @@ public class AIBirdController : MonoBehaviour
             new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
             new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
             new System.Tuple<float, RandomActions>(0.25f, WalkAround),
-            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+            new System.Tuple<float, RandomActions>(1000.2f, Fly),
         };
         states[CleanItself] = new List<System.Tuple<float, RandomActions>> {
             new System.Tuple<float, RandomActions>(0.2f, StandStill),
@@ -66,7 +66,7 @@ public class AIBirdController : MonoBehaviour
             new System.Tuple<float, RandomActions>(0.3f, sitDownAction),
             new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
             new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+            new System.Tuple<float, RandomActions>(0.2f, Fly),
         };
         states[sitDownAction] = new List<System.Tuple<float, RandomActions>> {
             new System.Tuple<float, RandomActions>(0.4f, sleepAction),
@@ -83,7 +83,7 @@ public class AIBirdController : MonoBehaviour
             new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
             new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
             new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+            new System.Tuple<float, RandomActions>(0.2f, Fly),
         };
         states[PickFoodWalking] = new List<System.Tuple<float, RandomActions>> {
             new System.Tuple<float, RandomActions>(0.2f, StandStill),
@@ -92,7 +92,7 @@ public class AIBirdController : MonoBehaviour
             new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
             new System.Tuple<float, RandomActions>(0.0f, PickFoodWalking),
             new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+            new System.Tuple<float, RandomActions>(0.4f, Fly),
         };
         states[WalkAround] = new List<System.Tuple<float, RandomActions>> {
             new System.Tuple<float, RandomActions>(0.2f, StandStill),
@@ -101,18 +101,16 @@ public class AIBirdController : MonoBehaviour
             new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
             new System.Tuple<float, RandomActions>(0.0f, PickFoodWalking),
             new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            //new System.Tuple<float, RandomActions>(0.0f, Fly),
+            new System.Tuple<float, RandomActions>(0.3f, Fly),
         };
-        //states[Fly] = new List<System.Tuple<float, RandomActions>> {
-        //    new System.Tuple<float, RandomActions>(0.2f, StandStill),
-        //    new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-        //    new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-        //    new System.Tuple<float, RandomActions>(0.0f, sleepAction),
-        //    new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
-        //    new System.Tuple<float, RandomActions>(0.0f, PickFoodWalking),
-        //    new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-        //    //new System.Tuple<float, RandomActions>(0.0f, Fly),
-        //};
+        states[Fly] = new List<System.Tuple<float, RandomActions>> {
+            new System.Tuple<float, RandomActions>(0.2f, StandStill),
+            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
+            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
+            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
+            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
+            new System.Tuple<float, RandomActions>(0.1f, Fly),
+        };
     }
 
     private void Update()
@@ -367,10 +365,10 @@ public class AIBirdController : MonoBehaviour
         {
             SplineContainer sc = flightPath.GetComponent<SplineContainer>();
             Vector3 startPos = sc.EvaluatePosition(0, 0f);
-            if (Vector3.Distance(startPos, transform.position) < 0.5) // this number may need to change once in a real scene
+            if (Vector3.Distance(startPos, transform.position) < 10) // this number may need to change once in a real scene
             {
                 NavMeshHit hit;
-                if (NavMesh.SamplePosition(startPos, out hit, 1.0f, NavMesh.AllAreas))
+                if (NavMesh.SamplePosition(startPos, out hit, 15.0f, NavMesh.AllAreas))
                 {
                     Debug.DrawRay(hit.position, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
                     // starts moving to point
@@ -395,29 +393,37 @@ public class AIBirdController : MonoBehaviour
 
     IEnumerator GetToFlightPathAndStartFlight(SplineContainer splineContainer)
     {
+        isWalking = true;
         float maxDuration = 20;
         float timer = 0f;
         animator.Play("03_Walking_Ilde");
         // wait until destination is reached or timer runs out
-        while (timer < maxDuration && Vector3.Distance(agent.destination, transform.position) >= 0.1)
+        while (timer < maxDuration && Vector3.Distance(agent.destination, transform.position) >= 0.5)
         {
 
             timer += Time.deltaTime;
             yield return null;
         }
 
+        SplineAnimate splineAnim = GetComponent<SplineAnimate>();
         // if destination was reached, start flight
-        if (Vector3.Distance(agent.destination, transform.position) <= 0.1)
+        if (Vector3.Distance(agent.destination, transform.position) <= 0.5)
         {
-            animator.Play("04_Flying");
+            agent.ResetPath();
+            agent.enabled = false;
+            animator.CrossFade("04_Flying", 0.1f);
             isFlying = true;
-            SplineAnimate splineAnim = GetComponent<SplineAnimate>();
             splineAnim.Container = splineContainer;
             splineAnim.enabled = true;
+            isWalking = false;
             splineAnim.Play();
         }
+        while (splineAnim.NormalizedTime < 1)
+            yield return new WaitForSeconds(0.01f);
+        agent.enabled = true;
         isFlying = false;
+        isWalking = false;
         // change to courutine take off - fly - land
-        //animator.Play("03_Walking_Ilde");
+        animator.CrossFade("01_Standing_Idle", 0.2f);
     }
 }
