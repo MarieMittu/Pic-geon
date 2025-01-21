@@ -8,6 +8,7 @@ public class TutorialManager : MonoBehaviour
     public GameObject[] tutorials;
     private int currentIndex = 0;
     private bool isSwitching = false;
+    public float focusTimer = 6;
 
     // Start is called before the first frame update
     void Start()
@@ -29,11 +30,40 @@ public class TutorialManager : MonoBehaviour
         }
         if (Input.mouseScrollDelta != Vector2.zero)
         {
-            ShowNextTutorial(3);
+            if (currentIndex == 2)
+            {
+                ShowNextTutorial(3);
+            } else if (currentIndex == 10)
+            {
+                ShowNextTutorial(11);
+            }
         }
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
         {
             ShowNextTutorial(5);
+        }
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            ShowNextTutorial(7);
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            ShowNextTutorial(9);
+        }
+
+        if (Input.GetMouseButtonDown(1))
+        {
+            ShowNextTutorial(12);
+        }
+
+        if (currentIndex == 12)
+        {
+            focusTimer -= Time.deltaTime;
+
+            if (focusTimer <= 0)
+            {
+                ShowNextTutorial(13);
+            }
         }
     }
 
@@ -60,6 +90,22 @@ public class TutorialManager : MonoBehaviour
         else if (currentIndex == 3)
         {
             ActivateTutorial(4);
+        }
+        else if (currentIndex == 5)
+        {
+            ActivateTutorial(6);
+        } else if (currentIndex == 7)
+        {
+            ActivateTutorial(8);
+        } else if (currentIndex == 9)
+        {
+            ActivateTutorial(10);
+        } else if (currentIndex == 13)
+        {
+            ActivateTutorial(14);
+        } else if (currentIndex == 14)
+        {
+            ActivateTutorial(15);
         }
     }
 
