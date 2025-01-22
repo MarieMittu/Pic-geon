@@ -91,6 +91,7 @@ public class TutorialManager : MonoBehaviour
             if (currentIndex == 17)
             {
                 ShowNextTutorial(18);
+                showRobot = false;
             }
         }
 
@@ -125,25 +126,41 @@ public class TutorialManager : MonoBehaviour
         else if (currentIndex == 5)
         {
             ActivateTutorial(6);
-        } else if (currentIndex == 7)
+        }
+        else if (currentIndex == 7)
         {
             ActivateTutorial(8);
-        } else if (currentIndex == 9)
+        }
+        else if (currentIndex == 9)
         {
             ActivateTutorial(10);
-        } else if (currentIndex == 13)
+        }
+        else if (currentIndex == 13)
         {
             ActivateTutorial(14);
-        } else if (currentIndex == 14)
+        }
+        else if (currentIndex == 14)
         {
             ActivateTutorial(15);
-        } else if (currentIndex == 18)
+        }
+        else if (currentIndex == 18)
         {
             ActivateTutorial(19);
         }
+        else if (currentIndex == 19)
+        {
+            ActivateTutorial(20);
+        }
+        else if (currentIndex == 20)
+        {
+            ActivateTutorial(21);
+        }
+        else if (currentIndex == 21)
+        {
+            ActivateTutorial(22);
+        }
     }
-
-    private void ShowNextTutorial(int index)
+        private void ShowNextTutorial(int index)
     {
         if (currentIndex == index - 1 && !isSwitching)
         {
