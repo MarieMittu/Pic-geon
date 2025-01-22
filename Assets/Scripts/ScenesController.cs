@@ -46,7 +46,6 @@ public class ScenesController : MonoBehaviour
                 break;
         }
 
-        //SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
     }
@@ -55,7 +54,7 @@ public class ScenesController : MonoBehaviour
     {
         MissionManager.sharedInstance.SetMission(2);
         MissionManager.sharedInstance.StartSelectedMission();
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("LevelTwo");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
     }
@@ -73,7 +72,7 @@ public class ScenesController : MonoBehaviour
     {
         MissionManager.sharedInstance.SetMission(4);
         MissionManager.sharedInstance.StartSelectedMission();
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("LevelTwo");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
     }

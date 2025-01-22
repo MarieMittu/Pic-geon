@@ -67,12 +67,12 @@ public class MenusController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
-                OnUpButtonClicked();
+                //OnUpButtonClicked();
                 ClickCameraButton(upButton);
             }
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-                OnDownButtonClicked();
+                //OnDownButtonClicked();
                 ClickCameraButton(downButton);
             }
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
@@ -95,7 +95,7 @@ public class MenusController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
             {
-
+                OnDownButtonClicked();
                 ClickCameraButton(downButton);
             }
 
@@ -107,11 +107,13 @@ public class MenusController : MonoBehaviour
 
             if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
+                OnLeftButtonClicked();
                 ClickCameraButton(leftButton);
             }
 
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
             {
+                OnRightButtonClicked();
                 ClickCameraButton(rightButton);
             }
         }
@@ -225,15 +227,28 @@ public class MenusController : MonoBehaviour
 
     private void UpdateSelection(List<MenuOption> options)
     {
-        
-            for (int i = 0; i < options.Count; i++)
+        for (int i = 0; i < options.Count; i++)
+        {
+            if (options[i].sprite == null || options[i].selectedSprite == null)
             {
-                options[i].sprite.SetActive(i != selection);
-                options[i].selectedSprite.SetActive(i == selection);
+                Debug.LogError($"Invalid MenuOption at index {i}: Missing sprite or selectedSprite.");
+                continue;
             }
-        
-        
+
+            bool isSelected = (i == selection);
+
+            // Force-reset states to prevent stale visibility
+            options[i].sprite.SetActive(false);
+            options[i].selectedSprite.SetActive(false);
+
+            // Apply correct visibility
+            options[i].sprite.SetActive(!isSelected);
+            options[i].selectedSprite.SetActive(isSelected);
+
+            Debug.Log($"Option {i}: sprite {(isSelected ? "hidden" : "visible")}, selectedSprite {(isSelected ? "visible" : "hidden")}");
+        }
     }
+
 
     private void ClickCameraButton(Button button)
     {
