@@ -299,6 +299,7 @@ public class LimitedCamera : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
+        if (cam == null) cam = GetComponent<Camera>();
         // absolute values
         float minHRot = (Application.isPlaying ? referenceHorizontalRotation : transform.localEulerAngles.y) + minHorizontalRotation;
         float maxHRot = (Application.isPlaying ? referenceHorizontalRotation : transform.localEulerAngles.y) + maxHorizontalRotation;
