@@ -250,11 +250,17 @@ public class LimitedCamera : MonoBehaviour
                     Debug.Log("wrong timing");
                 } else
                 {
-                    if (MissionManager.sharedInstance.isTutorial) TutorialManager.sharedInstance.showRobot = true;
+                    Debug.Log("visible");
+                    if (MissionManager.sharedInstance.isTutorial) Invoke("ShowTutorialRobot", 3f);
                 }
                     
             }
         }
+    }
+
+    void ShowTutorialRobot()
+    {
+        TutorialManager.sharedInstance.showRobot = true;
     }
 
     void resetAfterFocusMode()
