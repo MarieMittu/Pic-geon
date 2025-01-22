@@ -58,7 +58,7 @@ public class AIBirdController : MonoBehaviour
             new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
             new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
             new System.Tuple<float, RandomActions>(0.25f, WalkAround),
-            new System.Tuple<float, RandomActions>(1000.2f, Fly),
+            new System.Tuple<float, RandomActions>(0.6f, Fly),
         };
         states[CleanItself] = new List<System.Tuple<float, RandomActions>> {
             new System.Tuple<float, RandomActions>(0.2f, StandStill),
