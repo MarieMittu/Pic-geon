@@ -181,7 +181,7 @@ public class LimitedCamera : MonoBehaviour
         foreach (GameObject rb in roboBirds)
         {
             // is a visible pigeon showing suspicious behaviour?
-            var robotScript = rb.GetComponent<AIRobotController>();
+            var robotScript = MissionManager.sharedInstance.currentMission == 1 ? rb.GetComponent<RobotTutorial>() : rb.GetComponent<AIRobotController>();
             if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying)
             {
                 // test if pigeon is obstructed

@@ -15,4 +15,14 @@ public class RobotTutorial : AIRobotController
     {
         
     }
+
+    void TeachRobotic()
+    {
+        animator.CrossFade("R02_Sitting_Sleeping", 0.1f);
+    }
+
+    void ReturnToNormal()
+    {
+        animator.CrossFade("01_Standing_Idle_On_Stick", 0.1f);
+    }
 }

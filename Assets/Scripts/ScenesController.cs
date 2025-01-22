@@ -19,7 +19,7 @@ public class ScenesController : MonoBehaviour
     {
         MissionManager.sharedInstance.SetMission(1);
         MissionManager.sharedInstance.StartSelectedMission();
-        SceneManager.LoadScene("SampleScene");
+        SceneManager.LoadScene("TutorialScene");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
     }
@@ -33,12 +33,25 @@ public class ScenesController : MonoBehaviour
 
     public void LoadNextLevel()
     {
-        SceneManager.LoadScene("SampleScene");
+        switch (MissionManager.sharedInstance.currentMission)
+        {
+            case 2:
+                SceneManager.LoadScene("LevelTwo"); // to change
+                break;
+            case 3:
+                SceneManager.LoadScene("LevelTwo");
+                break;
+            case 4:
+                SceneManager.LoadScene("LevelTwo"); // to change
+                break;
+        }
+
+        //SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
     }
 
-    public void LoadMissionTwo()
+    public void LoadMissionOne()
     {
         MissionManager.sharedInstance.SetMission(2);
         MissionManager.sharedInstance.StartSelectedMission();
@@ -47,9 +60,18 @@ public class ScenesController : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void LoadMissionThree()
+    public void LoadMissionTwo()
     {
         MissionManager.sharedInstance.SetMission(3);
+        MissionManager.sharedInstance.StartSelectedMission();
+        SceneManager.LoadScene("LevelTwo");
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
+    }
+
+    public void LoadMissionThree()
+    {
+        MissionManager.sharedInstance.SetMission(4);
         MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("SampleScene");
         Cursor.lockState = CursorLockMode.Locked;

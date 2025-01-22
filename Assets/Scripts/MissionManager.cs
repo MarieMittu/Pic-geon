@@ -8,7 +8,7 @@ public class MissionManager : MonoBehaviour
     public static MissionManager sharedInstance;
 
     public int currentMission = 1;
-    public int maxMissions = 3;
+    public int maxMissions = 4;
     public int selectedMission = 1;
 
     private HashSet<int> unlockedMissions = new HashSet<int> { 1 };
