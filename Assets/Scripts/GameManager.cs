@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
         }
         hasEvidence = false;
         hasCorrectPhotos = false;
-        SetUpCameras();
+        //SetUpCameras();
 
         noFiles.SetActive(true);
         preview.SetActive(false);
