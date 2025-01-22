@@ -52,7 +52,7 @@ public class TutorialManager : MonoBehaviour
         {
             ShowNextTutorial(5);
         }
-        if (Input.GetKeyDown(KeyCode.T))
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             ShowNextTutorial(7);
         }

@@ -15,7 +15,7 @@ public class AIRobotController : AIBirdController
         PerformActionsSequence();
     }
 
-    protected virtual void CheckIfSpying()
+    public void CheckIfSpying()
     {
         string anim = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
         if (anim.StartsWith('R')) isSpying = true;
