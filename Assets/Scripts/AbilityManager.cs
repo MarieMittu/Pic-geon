@@ -38,7 +38,7 @@ public class AbilityManager : MonoBehaviour
             imageEffectScript = GetComponent<ApplyImageEffectScript>();
         }
         abilities = new Ability[] {
-            new Ability("Thermal Vision", KeyCode.T, 10, 0.3f, imageEffectScript.SetThermalVision)
+            new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision)
         };
     }
 
