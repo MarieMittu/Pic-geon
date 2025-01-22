@@ -13,6 +13,8 @@ public class MissionManager : MonoBehaviour
 
     private HashSet<int> unlockedMissions = new HashSet<int> { 1 };
 
+    public bool isTutorial = false;
+
     private void Awake()
     {
         if (sharedInstance == null)
@@ -45,6 +47,7 @@ public class MissionManager : MonoBehaviour
 
     public void NextMission()
     {
+        isTutorial = false;
         if (currentMission < maxMissions)
         {
             currentMission++;

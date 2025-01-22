@@ -127,7 +127,7 @@ public class LimitedCamera : MonoBehaviour
             }
         }
 
-        if (MissionManager.sharedInstance.currentMission == 1 && TutorialManager.sharedInstance.currentIndex >= 15)
+        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex == 15)
         {
             DetectBirdsOnPhoto(false);
         }
@@ -186,7 +186,7 @@ public class LimitedCamera : MonoBehaviour
         foreach (GameObject rb in roboBirds)
         {
             // is a visible pigeon showing suspicious behaviour?
-            var robotScript = MissionManager.sharedInstance.currentMission == 1 ? rb.GetComponent<RobotTutorial>() : rb.GetComponent<AIRobotController>();
+            var robotScript = rb.GetComponent<AIRobotController>();
             if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying)
             {
                 // test if pigeon is obstructed
@@ -214,7 +214,7 @@ public class LimitedCamera : MonoBehaviour
                                 GameManager.sharedInstance.hasCorrectPhotos = true;
                                 Debug.Log("sus bird on photo " + correctPhotosAmount);
 
-                                if (MissionManager.sharedInstance.currentMission == 1)
+                                if (MissionManager.sharedInstance.isTutorial)
                                 {
                                     TutorialManager.sharedInstance.showRobot = false;
                                     Debug.Log("CHANGE SHOW ROBOT");
@@ -222,7 +222,7 @@ public class LimitedCamera : MonoBehaviour
 
                             } else
                             {
-
+                                
                             }
                                 
                         }
@@ -250,7 +250,7 @@ public class LimitedCamera : MonoBehaviour
                     Debug.Log("wrong timing");
                 } else
                 {
-                    TutorialManager.sharedInstance.showRobot = true;
+                    if (MissionManager.sharedInstance.isTutorial) TutorialManager.sharedInstance.showRobot = true;
                 }
                     
             }

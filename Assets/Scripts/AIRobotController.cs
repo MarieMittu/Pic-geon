@@ -15,13 +15,16 @@ public class AIRobotController : AIBirdController
         PerformActionsSequence();
     }
 
-    private void CheckIfSpying()
+    protected void CheckIfSpying()
     {
-        var clipInfo = animator.GetCurrentAnimatorClipInfo(0);
-        string anim = "";
-        if (clipInfo != null) anim = clipInfo[0].clip.name;
-        if (anim.StartsWith('R')) isSpying = true;
-        else isSpying = false;
+        try {
+            string anim = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+            if (anim.StartsWith('R')) isSpying = true;
+            else isSpying = false;
+        }
+        catch { 
+            isSpying = false;
+        }
     }
 
     protected override void InitializeStates()

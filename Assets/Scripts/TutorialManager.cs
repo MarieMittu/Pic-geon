@@ -27,6 +27,7 @@ public class TutorialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        MissionManager.sharedInstance.isTutorial = true;
         tutorialSwitchMap = new Dictionary<int, int>
         {
             { 0, 1 },
