@@ -5,10 +5,20 @@ using UnityEngine;
 public class TutorialManager : MonoBehaviour
 {
 
+    public static TutorialManager sharedInstance;
+
     public GameObject[] tutorials;
-    private int currentIndex = 0;
+    [HideInInspector] public int currentIndex = 0;
     private bool isSwitching = false;
     public float focusTimer = 6;
+    [HideInInspector] public bool showRobot = false;
+
+    private void Awake()
+    {
+
+        sharedInstance = this;
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -65,6 +75,27 @@ public class TutorialManager : MonoBehaviour
                 ShowNextTutorial(13);
             }
         }
+
+        if (showRobot)
+        {
+            if (currentIndex == 15)
+            {
+                ShowNextTutorial(16);
+            }
+            if (currentIndex == 16)
+            {
+                ShowNextTutorial(17);
+            }
+        } else
+        {
+            if (currentIndex == 17)
+            {
+                ShowNextTutorial(18);
+            }
+        }
+
+
+        
     }
 
     private void ActivateTutorial(int index)
@@ -106,6 +137,9 @@ public class TutorialManager : MonoBehaviour
         } else if (currentIndex == 14)
         {
             ActivateTutorial(15);
+        } else if (currentIndex == 18)
+        {
+            ActivateTutorial(19);
         }
     }
 

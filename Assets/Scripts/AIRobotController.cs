@@ -11,10 +11,15 @@ public class AIRobotController : AIBirdController
 
     private void Update()
     {
+        CheckIfSpying();
+        PerformActionsSequence();
+    }
+
+    protected virtual void CheckIfSpying()
+    {
         string anim = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
         if (anim.StartsWith('R')) isSpying = true;
         else isSpying = false;
-        PerformActionsSequence();
     }
 
     protected override void InitializeStates()

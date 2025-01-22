@@ -106,7 +106,7 @@ public class LimitedCamera : MonoBehaviour
             {
                 if (focusMode)
                 {
-                    DetectBirdsOnPhoto();
+                    DetectBirdsOnPhoto(true);
                     StartCoroutine(TakePhotoScreenshotWithFeedback());
                     GetComponent<AudioSource>().Play();
                     TrackTapeAmount();
@@ -125,6 +125,11 @@ public class LimitedCamera : MonoBehaviour
             {
                 resetAfterFocusMode();
             }
+        }
+
+        if (MissionManager.sharedInstance.currentMission == 1 && TutorialManager.sharedInstance.currentIndex >= 15)
+        {
+            DetectBirdsOnPhoto(false);
         }
 
         TrackTime();
@@ -175,7 +180,7 @@ public class LimitedCamera : MonoBehaviour
         transform.localEulerAngles = Vector3.right * cameraVerticalRotation + Vector3.up * cameraHorizontalRotation;
     }
 
-    void DetectBirdsOnPhoto()
+    void DetectBirdsOnPhoto(bool isFullDetection)
     {
         GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
         foreach (GameObject rb in roboBirds)
@@ -203,9 +208,22 @@ public class LimitedCamera : MonoBehaviour
                         }
                         if (!realBirdInFocus)
                         {
-                            correctPhotosAmount++;
-                            GameManager.sharedInstance.hasCorrectPhotos = true;
-                            Debug.Log("sus bird on photo " + correctPhotosAmount);
+                            if (isFullDetection)
+                            {
+                                correctPhotosAmount++;
+                                GameManager.sharedInstance.hasCorrectPhotos = true;
+                                Debug.Log("sus bird on photo " + correctPhotosAmount);
+
+                                if (MissionManager.sharedInstance.currentMission == 1)
+                                {
+                                    TutorialManager.sharedInstance.showRobot = false;
+                                }
+
+                            } else
+                            {
+
+                            }
+                                
                         }
                         else
                         {
@@ -226,7 +244,14 @@ public class LimitedCamera : MonoBehaviour
             }
             else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
             {
-                Debug.Log("wrong timing");
+                if (isFullDetection)
+                {
+                    Debug.Log("wrong timing");
+                } else
+                {
+                    TutorialManager.sharedInstance.showRobot = true;
+                }
+                    
             }
         }
     }
