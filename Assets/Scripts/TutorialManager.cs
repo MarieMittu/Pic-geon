@@ -8,10 +8,14 @@ public class TutorialManager : MonoBehaviour
     public static TutorialManager sharedInstance;
 
     public GameObject[] tutorials;
-    [HideInInspector] public int currentIndex = 0;
-    private bool isSwitching = false;
     public float focusTimer = 6;
-    [HideInInspector] public bool showRobot = false;
+
+    [HideInInspector]
+    public int currentIndex = 0;
+    public bool showRobot = false;
+
+    private bool isSwitching = false;
+    private Dictionary<int, int> tutorialSwitchMap;
 
     private void Awake()
     {
@@ -23,6 +27,21 @@ public class TutorialManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tutorialSwitchMap = new Dictionary<int, int>
+        {
+            { 0, 1 },
+            { 3, 4 },
+            { 5, 6 },
+            { 7, 8 },
+            { 9, 10 },
+            { 13, 14 },
+            { 14, 15 },
+            { 18, 19 },
+            { 19, 20 },
+            { 20, 21 },
+            { 21, 22 }
+        };
+
         ActivateTutorial(0);
     }
 
@@ -85,15 +104,19 @@ public class TutorialManager : MonoBehaviour
             if (currentIndex == 16)
             {
                 ShowNextTutorial(17);
+                
             }
         } else
         {
             if (currentIndex == 17)
             {
                 ShowNextTutorial(18);
-                showRobot = false;
+
             }
         }
+        
+        
+        
 
 
         
@@ -115,49 +138,9 @@ public class TutorialManager : MonoBehaviour
 
     private void SwitchTutorial()
     {
-        if (currentIndex == 0)
+        if (tutorialSwitchMap.TryGetValue(currentIndex, out int nextIndex))
         {
-            ActivateTutorial(1);
-        }
-        else if (currentIndex == 3)
-        {
-            ActivateTutorial(4);
-        }
-        else if (currentIndex == 5)
-        {
-            ActivateTutorial(6);
-        }
-        else if (currentIndex == 7)
-        {
-            ActivateTutorial(8);
-        }
-        else if (currentIndex == 9)
-        {
-            ActivateTutorial(10);
-        }
-        else if (currentIndex == 13)
-        {
-            ActivateTutorial(14);
-        }
-        else if (currentIndex == 14)
-        {
-            ActivateTutorial(15);
-        }
-        else if (currentIndex == 18)
-        {
-            ActivateTutorial(19);
-        }
-        else if (currentIndex == 19)
-        {
-            ActivateTutorial(20);
-        }
-        else if (currentIndex == 20)
-        {
-            ActivateTutorial(21);
-        }
-        else if (currentIndex == 21)
-        {
-            ActivateTutorial(22);
+            ActivateTutorial(nextIndex);
         }
     }
         private void ShowNextTutorial(int index)

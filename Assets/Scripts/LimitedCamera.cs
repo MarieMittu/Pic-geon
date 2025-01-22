@@ -217,6 +217,7 @@ public class LimitedCamera : MonoBehaviour
                                 if (MissionManager.sharedInstance.currentMission == 1)
                                 {
                                     TutorialManager.sharedInstance.showRobot = false;
+                                    Debug.Log("CHANGE SHOW ROBOT");
                                 }
 
                             } else
