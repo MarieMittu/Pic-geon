@@ -143,6 +143,13 @@ public class ScenesController : MonoBehaviour
         
     }
 
+    public void ShowExitAlert()
+    {
+        GameManager.sharedInstance.wantsToExit = true;
+        alert.SetActive(true);
+        isAlerting = true;
+    }
+
     public void ShowAlert()
     {
         alert.SetActive(true);

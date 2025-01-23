@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
     public bool isGamePaused;
     public bool hasEvidence;
     public bool hasCorrectPhotos;
+    public bool wantsToExit;
 
     public Camera camera1;
     public Camera camera2;
@@ -125,6 +126,23 @@ public class GameManager : MonoBehaviour
     public void TriggerNextLevel()
     {
         FindObjectOfType<ScenesController>().OpenIntermediateScene();
+    }
+
+    public void TriggerExitToMenu()
+    {
+        FindObjectOfType<ScenesController>().GoToMenu();
+    }
+
+    public void AlertYesAction()
+    {
+        if (wantsToExit)
+        {
+            TriggerExitToMenu();
+
+        } else
+        {
+            ControlEvidence();
+        }
     }
 
    public void ControlEvidence()

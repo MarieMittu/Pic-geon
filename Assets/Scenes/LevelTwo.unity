@@ -3306,7 +3306,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1041570249}
         m_TargetAssemblyTypeName: ScenesController, Assembly-CSharp
-        m_MethodName: GoToMenu
+        m_MethodName: ShowExitAlert
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3480,6 +3480,7 @@ MonoBehaviour:
   isGamePaused: 0
   hasEvidence: 0
   hasCorrectPhotos: 0
+  wantsToExit: 0
   camera1: {fileID: 4887386168576983838}
   camera2: {fileID: 593376189}
   camera3: {fileID: 225482470}
@@ -3557,7 +3558,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1041570248}
           m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
-          m_MethodName: ControlEvidence
+          m_MethodName: AlertYesAction
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
