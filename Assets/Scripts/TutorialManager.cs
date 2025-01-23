@@ -9,6 +9,8 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject[] tutorials;
     public float focusTimer = 6;
+    public GameObject normalMarker;
+    public GameObject robotMarker;
 
     [HideInInspector]
     public int currentIndex = 0;
@@ -52,7 +54,7 @@ public class TutorialManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SwitchTutorial();
-
+            if (currentIndex == 15) robotMarker.SetActive(true);
         }
         if ((Input.GetAxis("Mouse X") != 0) || (Input.GetAxis("Mouse Y") != 0))
         {
@@ -83,6 +85,7 @@ public class TutorialManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
+            normalMarker.SetActive(true);
             ShowNextTutorial(12);
         }
 
@@ -93,6 +96,7 @@ public class TutorialManager : MonoBehaviour
             if (focusTimer <= 0)
             {
                 ShowNextTutorial(13);
+                normalMarker.SetActive(false);
             }
         }
 
@@ -111,6 +115,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (currentIndex == 17)
             {
+                robotMarker.SetActive(false);
                 ShowNextTutorial(18);
 
             }
