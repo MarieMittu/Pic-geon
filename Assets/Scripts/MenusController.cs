@@ -65,26 +65,26 @@ public class MenusController : MonoBehaviour
             leftButton.interactable = true;
             rightButton.interactable = true;
 
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                //OnUpButtonClicked();
-                ClickCameraButton(upButton);
-            }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                //OnDownButtonClicked();
-                ClickCameraButton(downButton);
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                OnLeftButtonClicked();
-                ClickCameraButton(leftButton);
-            }
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                OnRightButtonClicked();
-                ClickCameraButton(rightButton);
-            }
+            //if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            //{
+            //    OnUpButtonClicked();
+            //    ClickCameraButton(upButton);
+            //}
+            //if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            //{
+            //    OnDownButtonClicked();
+            //    ClickCameraButton(downButton);
+            //}
+            //if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            //{
+            //    OnLeftButtonClicked();
+            //    ClickCameraButton(leftButton);
+            //}
+            //if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            //{
+            //    OnRightButtonClicked();
+            //    ClickCameraButton(rightButton);
+            //}
 
         } else
         {
@@ -93,35 +93,35 @@ public class MenusController : MonoBehaviour
             leftButton.interactable = isHorizontal;
             rightButton.interactable = isHorizontal;
 
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            {
-                OnDownButtonClicked();
-                ClickCameraButton(downButton);
-            }
+            //if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            //{
+            //    OnDownButtonClicked();
+            //    ClickCameraButton(downButton);
+            //}
 
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            {
-                OnUpButtonClicked();
-                ClickCameraButton(upButton);
-            }
+            //if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            //{
+            //    OnUpButtonClicked();
+            //    ClickCameraButton(upButton);
+            //}
 
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            {
-                OnLeftButtonClicked();
-                ClickCameraButton(leftButton);
-            }
+            //if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            //{
+            //    OnLeftButtonClicked();
+            //    ClickCameraButton(leftButton);
+            //}
 
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            {
-                OnRightButtonClicked();
-                ClickCameraButton(rightButton);
-            }
+            //if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            //{
+            //    OnRightButtonClicked();
+            //    ClickCameraButton(rightButton);
+            //}
         }
            
-        if (Input.GetKeyDown(KeyCode.Return))
-        {
-            ClickCameraButton(okButton);
-        }
+        //if (Input.GetKeyDown(KeyCode.Return))
+        //{
+        //    ClickCameraButton(okButton);
+        //}
     }
 
     public void SetupOptions()
@@ -154,11 +154,10 @@ public class MenusController : MonoBehaviour
         options = isHorizontal ? horizOptions : verticOptions;
         if (options[1].sprite.activeInHierarchy || options[1].selectedSprite.activeInHierarchy)
         {
-                selection = (selection + 1) % options.Count;
-                UpdateSelection(options);
+            selection = (selection + 1) % options.Count;
+            UpdateSelection(options);
         }
-        
-                   
+
     }
 
     public void PressOKButton()
@@ -231,7 +230,7 @@ public class MenusController : MonoBehaviour
         {
             if (options[i].sprite == null || options[i].selectedSprite == null)
             {
-                Debug.LogError($"Invalid MenuOption at index {i}: Missing sprite or selectedSprite.");
+                Debug.Log($"Invalid MenuOption at index {i}: Missing sprite or selectedSprite.");
                 continue;
             }
 
@@ -246,6 +245,7 @@ public class MenusController : MonoBehaviour
             options[i].selectedSprite.SetActive(isSelected);
 
             Debug.Log($"Option {i}: sprite {(isSelected ? "hidden" : "visible")}, selectedSprite {(isSelected ? "visible" : "hidden")}");
+            Debug.Log($"UpdateSelection called: selection = {selection}");
         }
     }
 

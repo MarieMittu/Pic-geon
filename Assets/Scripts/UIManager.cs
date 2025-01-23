@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] GameObject[] newMissions;
 
-    private void Awake()
+    private void Start()
     {
         ActivateNextMission();
     }
@@ -16,8 +16,15 @@ public class UIManager : MonoBehaviour
     {
         for (int i = 0; i < newMissions.Length; i++)
         {
-            int missionNum = i + 2; 
-            newMissions[i].SetActive(MissionManager.sharedInstance.IsMissionUnlocked(missionNum));
+            int missionNum = i + 2;
+            bool isUnlocked = MissionManager.sharedInstance.IsMissionUnlocked(missionNum);
+
+            newMissions[i].SetActive(isUnlocked);
+
+            // Detailed debug log for each mission
+            Debug.Log($"Mission {missionNum} ({newMissions[i].name}) - " +
+                      $"Unlocked: {isUnlocked}, Current Mission: {MissionManager.sharedInstance.currentMission}");
         }
+
     }
 }

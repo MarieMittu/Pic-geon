@@ -33,6 +33,11 @@ public class MissionManager : MonoBehaviour
         if (IsMissionUnlocked(mission))
         {
             selectedMission = mission;
+            Debug.Log($"Mission {mission} selected.");
+        }
+        else
+        {
+            Debug.LogWarning($"Mission {mission} cannot be selected because it is not unlocked.");
         }
     }
 
@@ -41,8 +46,13 @@ public class MissionManager : MonoBehaviour
         if (IsMissionUnlocked(selectedMission))
         {
             currentMission = selectedMission;
+            Debug.Log($"Starting mission {currentMission}.");
         }
-            
+        else
+        {
+            Debug.LogWarning($"Cannot start mission {selectedMission} because it is not unlocked.");
+        }
+
     }
 
     public void NextMission()
@@ -52,6 +62,12 @@ public class MissionManager : MonoBehaviour
         {
             currentMission++;
             UnlockMission(currentMission);
+            Debug.Log($"Advanced to next mission: {currentMission}.");
+
+        }
+        else
+        {
+            Debug.LogWarning("No more missions to unlock. Reached maxMissions.");
         }
         Debug.Log("mission " + currentMission);
     }
@@ -60,7 +76,15 @@ public class MissionManager : MonoBehaviour
     {
         if (mission > 0 && mission <= maxMissions)
         {
-            unlockedMissions.Add(mission);
+            if (!unlockedMissions.Contains(mission))
+            {
+                unlockedMissions.Add(mission);
+                Debug.Log($"Mission {mission} unlocked.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Mission {mission} is out of range (1 to {maxMissions}).");
         }
     }
 
