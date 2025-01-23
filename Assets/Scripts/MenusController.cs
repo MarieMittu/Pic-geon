@@ -49,10 +49,29 @@ public class MenusController : MonoBehaviour
         eventSystem = EventSystem.current;
         SetupOptions();
 
-        if (upButton != null) upButton.onClick.AddListener(() => OnUpButtonClicked());
-        if (downButton != null) downButton.onClick.AddListener(() => OnDownButtonClicked());
-        if (leftButton != null) leftButton.onClick.AddListener(() => OnLeftButtonClicked());
-        if (rightButton != null) rightButton.onClick.AddListener(() => OnRightButtonClicked());
+        if (upButton != null)
+        {
+            upButton.onClick.RemoveAllListeners(); // Remove existing listeners
+            upButton.onClick.AddListener(() => OnUpButtonClicked());
+        }
+
+        if (downButton != null)
+        {
+            downButton.onClick.RemoveAllListeners(); // Remove existing listeners
+            downButton.onClick.AddListener(() => OnDownButtonClicked());
+        }
+
+        if (leftButton != null)
+        {
+            leftButton.onClick.RemoveAllListeners();
+            leftButton.onClick.AddListener(() => OnLeftButtonClicked());
+        }
+
+        if (rightButton != null)
+        {
+            rightButton.onClick.RemoveAllListeners();
+            rightButton.onClick.AddListener(() => OnRightButtonClicked());
+        }
     }
 
     // Update is called once per frame
@@ -137,26 +156,32 @@ public class MenusController : MonoBehaviour
 
     public void SelectPrevious()
     {
+        Debug.Log("menucheck previous");
         List<MenuOption> options;
         options = isHorizontal ? horizOptions : verticOptions;
 
-            if (options[1].sprite.activeInHierarchy || options[1].selectedSprite.activeInHierarchy)
-            {
-                selection = (selection - 1 + options.Count) % options.Count;
-                UpdateSelection(options);
-            }
-         
+        do
+        {
+            selection = (selection - 1 + options.Count) % options.Count;
+        } while (!options[selection].sprite.activeInHierarchy &&
+           !options[selection].selectedSprite.activeInHierarchy);
+
+        UpdateSelection(options);
+
     }
 
     public void SelectNext()
     {
+        Debug.Log("menucheck next");
         List<MenuOption> options;
         options = isHorizontal ? horizOptions : verticOptions;
-        if (options[1].sprite.activeInHierarchy || options[1].selectedSprite.activeInHierarchy)
+        do
         {
             selection = (selection + 1) % options.Count;
-            UpdateSelection(options);
-        }
+        } while (!options[selection].sprite.activeInHierarchy &&
+             !options[selection].selectedSprite.activeInHierarchy);
+
+        UpdateSelection(options);
 
     }
 
@@ -176,7 +201,7 @@ public class MenusController : MonoBehaviour
         }  
     }
 
-    private void OnUpButtonClicked()
+    public void OnUpButtonClicked()
     {
         if (currentMode == MenuMode.PhotoGrid)
         {
@@ -188,7 +213,7 @@ public class MenusController : MonoBehaviour
         }
     }
 
-    private void OnDownButtonClicked()
+    public void OnDownButtonClicked()
     {
         if (currentMode == MenuMode.PhotoGrid)
         {
@@ -228,24 +253,9 @@ public class MenusController : MonoBehaviour
     {
         for (int i = 0; i < options.Count; i++)
         {
-            if (options[i].sprite == null || options[i].selectedSprite == null)
-            {
-                Debug.Log($"Invalid MenuOption at index {i}: Missing sprite or selectedSprite.");
-                continue;
-            }
-
-            bool isSelected = (i == selection);
-
-            // Force-reset states to prevent stale visibility
-            options[i].sprite.SetActive(false);
-            options[i].selectedSprite.SetActive(false);
-
-            // Apply correct visibility
-            options[i].sprite.SetActive(!isSelected);
-            options[i].selectedSprite.SetActive(isSelected);
-
-            Debug.Log($"Option {i}: sprite {(isSelected ? "hidden" : "visible")}, selectedSprite {(isSelected ? "visible" : "hidden")}");
-            Debug.Log($"UpdateSelection called: selection = {selection}");
+            options[i].sprite.SetActive(i != selection);
+            options[i].selectedSprite.SetActive(i == selection);
+          
         }
     }
 

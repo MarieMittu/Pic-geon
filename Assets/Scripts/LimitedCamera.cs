@@ -187,7 +187,7 @@ public class LimitedCamera : MonoBehaviour
         {
             // is a visible pigeon showing suspicious behaviour?
             var robotScript = rb.GetComponent<AIRobotController>();
-            if (rb.GetComponent<MeshRenderer>().isVisible && robotScript.isSpying)
+            if (rb.GetComponent<MeshRenderer>() && robotScript.isSpying)
             {
                 // test if pigeon is obstructed
                 RaycastHit hit;

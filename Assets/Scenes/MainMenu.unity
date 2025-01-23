@@ -426,7 +426,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &255088454
 RectTransform:
   m_ObjectHideFlags: 0
@@ -667,7 +667,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &493366209
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1201,19 +1201,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 771365512}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 721151888}
-        m_TargetAssemblyTypeName: MenusController, Assembly-CSharp
-        m_MethodName: SelectNext
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &771365512
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1665,7 +1653,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentMission: 1
   maxMissions: 4
-  selectedMission: 0
+  selectedMission: 1
   isTutorial: 0
 --- !u!4 &1324594400
 Transform:
@@ -2033,19 +2021,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1684490868}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 721151888}
-        m_TargetAssemblyTypeName: MenusController, Assembly-CSharp
-        m_MethodName: SelectPrevious
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1684490868
 MonoBehaviour:
   m_ObjectHideFlags: 0
