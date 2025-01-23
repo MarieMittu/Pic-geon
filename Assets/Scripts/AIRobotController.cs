@@ -34,7 +34,8 @@ public class AIRobotController : AIBirdController
         
         currentState = StandStill;
         states[StandStill] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.05f, StandStill),
+            new System.Tuple<float, RandomActions>(0.05f, TweakStanding),
+            //new System.Tuple<float, RandomActions>(0.05f, StandStill),
             new System.Tuple<float, RandomActions>(0.2f, CleanItself),
             new System.Tuple<float, RandomActions>(0.8f, sitDownAction),
             new System.Tuple<float, RandomActions>(0.15f, WalkAround),
@@ -76,6 +77,12 @@ public class AIRobotController : AIBirdController
     {
         Sleep("R02_Sitting_Sleeping", "02_Sitting_Standing_up");
         isSpying = true;
+    }
+
+    public void TweakStanding()
+    {
+          animator.CrossFade("R01_Standing_Idle_Antenna", 0.1f);
+        
     }
 
     protected override bool RandomPoint(Vector3 center, float range, out Vector3 result)
