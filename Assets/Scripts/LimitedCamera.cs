@@ -104,21 +104,25 @@ public class LimitedCamera : MonoBehaviour
             // photo
             if (Input.GetMouseButtonDown(0))
             {
-                if (focusMode)
+                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex > 7))
                 {
-                    DetectBirdsOnPhoto(true);
-                    StartCoroutine(TakePhotoScreenshotWithFeedback());
-                    GetComponent<AudioSource>().Play();
-                    TrackTapeAmount();
-                    GameManager.sharedInstance.hasEvidence = true;
-                    focusMode = false;
-                    //cam.fieldOfView = zoomLevels[currentZoomLevel]; -> moved to end of photo animation in TakePhotoScreenshotWithFeedback
+                    if (focusMode)
+                    {
+                        DetectBirdsOnPhoto(true);
+                        StartCoroutine(TakePhotoScreenshotWithFeedback());
+                        GetComponent<AudioSource>().Play();
+                        TrackTapeAmount();
+                        GameManager.sharedInstance.hasEvidence = true;
+                        focusMode = false;
+                        //cam.fieldOfView = zoomLevels[currentZoomLevel]; -> moved to end of photo animation in TakePhotoScreenshotWithFeedback
+                    }
+                    else
+                    {
+                        focusMode = true;
+                        cam.fieldOfView *= 0.9f;
+                    }
                 }
-                else
-                {
-                    focusMode = true;
-                    cam.fieldOfView *= 0.9f;
-                }
+
             }
             // cancel photo
             if (focusMode && Input.GetMouseButtonDown(1))
