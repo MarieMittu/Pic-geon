@@ -34,6 +34,7 @@ public class LimitedCamera : MonoBehaviour
     public float maxPeripheryBlurRadius = 0.5f;
     float peripheryBlurRadius = 0.5f;
     bool focusMode = false;
+    bool realBirdInFocus = false;
 
     [Header("Other")]
     private int correctPhotosAmount = 0;
@@ -131,9 +132,13 @@ public class LimitedCamera : MonoBehaviour
             }
         }
 
-        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex == 15)
+        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex == 14)
         {
             DetectBirdsOnPhoto(false);
+        }
+        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex >10 && TutorialManager.sharedInstance.currentIndex < 15)
+        {
+            CheckRealBirdInFocus();
         }
 
         TrackTime();
@@ -184,6 +189,40 @@ public class LimitedCamera : MonoBehaviour
         transform.localEulerAngles = Vector3.right * cameraVerticalRotation + Vector3.up * cameraHorizontalRotation;
     }
 
+    void CheckRealBirdInFocus()
+    {
+        GameObject[] realBirds = GameObject.FindGameObjectsWithTag("RealBird");
+        realBirdInFocus = false;
+        for (int i = 0; i < realBirds.Length; i++)
+        {
+            GameObject b = realBirds[i];
+            realBirdInFocus |= b.GetComponent<MeshRenderer>().isVisible && IsWithinFocusedArea(b) && !IsInPeriphery(b) && !isObstructed(b);
+            if (!realBirdInFocus)
+            {
+                if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex < 14)
+                {
+                    Debug.Log("NOOrealfocus");
+                    TutorialManager.sharedInstance.lookingAtNormal = false;
+                }
+            } else
+            {
+                if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex < 14)
+                {
+                    Debug.Log("realfocus");
+                    TutorialManager.sharedInstance.lookingAtNormal = true;
+                    
+                }
+                else
+                {
+                    break;
+                }
+                
+            }
+
+            
+        }
+    }
+
     void DetectBirdsOnPhoto(bool isFullDetection)
     {
         GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
@@ -202,14 +241,7 @@ public class LimitedCamera : MonoBehaviour
                     if (IsWithinFocusedArea(rb) && !IsInPeriphery(rb))
                     {
                         // test if other (real) birds are in focus
-                        GameObject[] realBirds = GameObject.FindGameObjectsWithTag("RealBird");
-                        bool realBirdInFocus = false;
-                        for (int i = 0; i < realBirds.Length; i++)
-                        {
-                            GameObject b = realBirds[i];
-                            realBirdInFocus |= b.GetComponent<MeshRenderer>().isVisible && IsWithinFocusedArea(b) && !IsInPeriphery(b) && !isObstructed(b);
-                            if (realBirdInFocus) break;
-                        }
+                        CheckRealBirdInFocus();
                         if (!realBirdInFocus)
                         {
                             if (isFullDetection)
@@ -254,8 +286,14 @@ public class LimitedCamera : MonoBehaviour
                     Debug.Log("wrong timing");
                 } else
                 {
-                    Debug.Log("visible");
-                    if (MissionManager.sharedInstance.isTutorial) Invoke("ShowTutorialRobot", 3f);
+                    
+                    if (MissionManager.sharedInstance.isTutorial)
+                    {
+                        Debug.Log("visible");
+                        TutorialManager.sharedInstance.hintRobot = true;
+                        Invoke("ShowTutorialRobot", 3f);
+                    }
+                    
                 }
                     
             }

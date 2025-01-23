@@ -15,6 +15,8 @@ public class TutorialManager : MonoBehaviour
     [HideInInspector]
     public int currentIndex = 0;
     public bool showRobot = false;
+    public bool hintRobot = false;
+    public bool lookingAtNormal = false;
 
     private bool isSwitching = false;
     private Dictionary<int, int> tutorialSwitchMap;
@@ -38,7 +40,6 @@ public class TutorialManager : MonoBehaviour
             { 7, 8 },
             { 9, 10 },
             { 13, 14 },
-            { 14, 15 },
             { 18, 19 },
             { 19, 20 },
             { 20, 21 },
@@ -54,7 +55,7 @@ public class TutorialManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SwitchTutorial();
-            if (currentIndex == 15) robotMarker.SetActive(true);
+         
         }
         if ((Input.GetAxis("Mouse X") != 0) || (Input.GetAxis("Mouse Y") != 0))
         {
@@ -91,17 +92,37 @@ public class TutorialManager : MonoBehaviour
 
         if (currentIndex == 12)
         {
-            focusTimer -= Time.deltaTime;
-
-            if (focusTimer <= 0)
+            if (lookingAtNormal)
             {
-                ShowNextTutorial(13);
-                normalMarker.SetActive(false);
+                focusTimer -= Time.deltaTime;
+
+                if (focusTimer <= 0)
+                {
+                    ShowNextTutorial(13);
+                    
+                    lookingAtNormal = false;
+                }
+            }
+            
+        }
+
+        if (currentIndex == 13)
+        {
+            normalMarker.SetActive(false);
+            robotMarker.SetActive(true);
+        }
+
+        if (hintRobot)
+        {
+            if (currentIndex == 14)
+            {
+                ShowNextTutorial(15);
             }
         }
 
         if (showRobot)
         {
+           
             if (currentIndex == 15)
             {
                 ShowNextTutorial(16);
