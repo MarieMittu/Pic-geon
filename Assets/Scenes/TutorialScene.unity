@@ -2423,14 +2423,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574010166}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 13.1, y: 7.4, z: -25.3}
+  m_LocalRotation: {x: -0.03809622, y: -0.2633008, z: 0.09959296, w: 0.95880276}
+  m_LocalPosition: {x: 12.811, y: 7.798, z: -24.017}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 777854027}
   m_Father: {fileID: 1071146049}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -1.181, y: -30.837, z: 12.186}
 --- !u!1 &589105342
 GameObject:
   m_ObjectHideFlags: 0
@@ -4680,6 +4680,7 @@ MonoBehaviour:
   isGamePaused: 0
   hasEvidence: 0
   hasCorrectPhotos: 0
+  wantsToExit: 0
   camera1: {fileID: 4887386168576983838}
   camera2: {fileID: 593376189}
   camera3: {fileID: 225482470}
@@ -5966,6 +5967,7 @@ MonoBehaviour:
   robotMarker: {fileID: 777854026}
   currentIndex: 0
   showRobot: 0
+  hintRobot: 0
   lookingAtNormal: 0
 --- !u!1 &1539459444
 GameObject:
@@ -6448,14 +6450,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1789320320}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 25.2, y: 13.1, z: -16.7}
+  m_LocalRotation: {x: -0, y: -0, z: 0.26437873, w: 0.96441895}
+  m_LocalPosition: {x: 25.15, y: 13.32, z: -15.19}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1010800839}
   m_Father: {fileID: 1071146049}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30.66}
 --- !u!1 &1802748456
 GameObject:
   m_ObjectHideFlags: 0

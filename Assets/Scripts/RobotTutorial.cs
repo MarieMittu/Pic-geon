@@ -28,7 +28,7 @@ public class RobotTutorial : AIRobotController
     {
         if (!animator.IsInTransition(0) && !isSpying)
         {
-            animator.CrossFade("R02_Sitting_Sleeping", 0.1f);
+            animator.CrossFade("R01_Standing_Idle_On_Stick_Antenna", 0.1f);
         }
     }
 
