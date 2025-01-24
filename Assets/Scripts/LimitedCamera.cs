@@ -57,6 +57,7 @@ public class LimitedCamera : MonoBehaviour
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
+        cam.fieldOfView = zoomLevels[currentZoomLevel];
         peripheryBlurRadius = maxPeripheryBlurRadius;
         Material dofShaderMat = effectScript.dofMat;
         dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
