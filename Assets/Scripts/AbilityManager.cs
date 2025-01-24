@@ -49,17 +49,20 @@ public class AbilityManager : MonoBehaviour
             var ability = abilities[i];
             if (Input.GetKeyDown(ability.key))
             {
-                // if this ability is already active
-                if (activeAbilityIndex == i)
+                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex > 5))
                 {
-                    deactivateActiveAbility();
-                    remainingAbilityTime = 0;
-                }
-                else
-                {
-                    deactivateActiveAbility();
-                    remainingAbilityTime = BatteryManager.instance.useCharge(ability.duration * ability.chargeUseRate) / ability.chargeUseRate;
-                    if (remainingAbilityTime > 0) activateAbility(i);
+                    // if this ability is already active
+                    if (activeAbilityIndex == i)
+                    {
+                        deactivateActiveAbility();
+                        remainingAbilityTime = 0;
+                    }
+                    else
+                    {
+                        deactivateActiveAbility();
+                        remainingAbilityTime = BatteryManager.instance.useCharge(ability.duration * ability.chargeUseRate) / ability.chargeUseRate;
+                        if (remainingAbilityTime > 0) activateAbility(i);
+                    }
                 }
             }
         }

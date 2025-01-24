@@ -89,6 +89,26 @@ public class ScenesController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
+    public void RetryMission()
+    {
+        switch (MissionManager.sharedInstance.currentMission)
+        {
+            case 1:
+                StartGame();
+                break;
+            case 2:
+                LoadMissionOne();
+                break;
+            case 3:
+                LoadMissionTwo();
+                break;
+            case 4:
+                LoadMissionThree();
+                break;
+        }
+            
+    }
+
     public void Pause()
     {
         pauseMenu.SetActive(true);
@@ -121,6 +141,13 @@ public class ScenesController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
         }
         
+    }
+
+    public void ShowExitAlert()
+    {
+        GameManager.sharedInstance.wantsToExit = true;
+        alert.SetActive(true);
+        isAlerting = true;
     }
 
     public void ShowAlert()

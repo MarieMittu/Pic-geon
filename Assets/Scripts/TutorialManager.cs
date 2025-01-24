@@ -9,10 +9,14 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject[] tutorials;
     public float focusTimer = 6;
+    public GameObject normalMarker;
+    public GameObject robotMarker;
 
     [HideInInspector]
     public int currentIndex = 0;
     public bool showRobot = false;
+    public bool hintRobot = false;
+    public bool lookingAtNormal = false;
 
     private bool isSwitching = false;
     private Dictionary<int, int> tutorialSwitchMap;
@@ -36,7 +40,6 @@ public class TutorialManager : MonoBehaviour
             { 7, 8 },
             { 9, 10 },
             { 13, 14 },
-            { 14, 15 },
             { 18, 19 },
             { 19, 20 },
             { 20, 21 },
@@ -52,7 +55,7 @@ public class TutorialManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SwitchTutorial();
-
+         
         }
         if ((Input.GetAxis("Mouse X") != 0) || (Input.GetAxis("Mouse Y") != 0))
         {
@@ -83,21 +86,43 @@ public class TutorialManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
+            normalMarker.SetActive(true);
             ShowNextTutorial(12);
         }
 
         if (currentIndex == 12)
         {
-            focusTimer -= Time.deltaTime;
-
-            if (focusTimer <= 0)
+            if (lookingAtNormal)
             {
-                ShowNextTutorial(13);
+                focusTimer -= Time.deltaTime;
+
+                if (focusTimer <= 0)
+                {
+                    ShowNextTutorial(13);
+                    
+                    lookingAtNormal = false;
+                }
+            }
+            
+        }
+
+        if (currentIndex == 13)
+        {
+            normalMarker.SetActive(false);
+            robotMarker.SetActive(true);
+        }
+
+        if (hintRobot)
+        {
+            if (currentIndex == 14)
+            {
+                ShowNextTutorial(15);
             }
         }
 
         if (showRobot)
         {
+           
             if (currentIndex == 15)
             {
                 ShowNextTutorial(16);
@@ -111,6 +136,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (currentIndex == 17)
             {
+                robotMarker.SetActive(false);
                 ShowNextTutorial(18);
 
             }
