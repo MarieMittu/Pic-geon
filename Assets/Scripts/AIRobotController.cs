@@ -103,7 +103,7 @@ public class AIRobotController : AIBirdController
          if (agent != null && agent.hasPath)
         {
             Gizmos.color = Color.magenta; // Destination point color
-            Gizmos.DrawSphere(agent.destination, 0.5f); // Visualize the agent's current destination
+            Gizmos.DrawSphere(agent.destination, 0.1f); // Visualize the agent's current destination
         }
     }
 

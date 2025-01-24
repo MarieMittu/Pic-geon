@@ -18,7 +18,8 @@ public class AIBirdController : MonoBehaviour
 
     public Animator animator;
 
-    private bool isWalking;
+    private bool blockStateTransition = false;
+    private bool blockAutoAnimation = false;
     public bool shallWeLog = false;
 
     [HideInInspector] public NavMeshAgent agent;
@@ -114,11 +115,16 @@ public class AIBirdController : MonoBehaviour
             (1.0f, "03_Walking_Bending_Down_Picking_Bending_Up"),
         }, WalkAround);
 
+        states["flying"] = new State("flying", new (float, string)[]{
+            (1.0f, "03_Walking_Ilde"),
+        }, Fly);
+
         // state transitions
         states["standing"].transitions = new (float, (string[], State))[]
         {
             (1.0f, (new string[]{ "02_Sitting_Down" }, states["sitting"])),
             (1.0f, (new string[]{  }, states["walking"])),
+            (1.0f, (new string[]{  }, states["flying"])),
         };
 
         states["sitting"].transitions = new (float, (string[], State))[]
@@ -132,6 +138,11 @@ public class AIBirdController : MonoBehaviour
         };
 
         states["walking"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{  }, states["standing"])),
+        };
+
+        states["flying"].transitions = new (float, (string[], State))[]
         {
             (1.0f, (new string[]{  }, states["standing"])),
         };
@@ -152,13 +163,13 @@ public class AIBirdController : MonoBehaviour
         actionTime -= Time.deltaTime;
         stateTime -= Time.deltaTime;
         if (isTransitioning) return;
-        if (stateTime <= 0 && !isWalking)
+        if (stateTime <= 0 && !blockStateTransition)
         {
             TransitionToNextState();
             stateTime = Random.Range(startRange, finalRange);
             actionTime = 0;
         }
-        else if (actionTime <= 0 || (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animator.GetCurrentAnimatorClipInfo(0).Length != 0))
+        else if (!blockAutoAnimation && (actionTime <= 0 || (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animator.GetCurrentAnimatorClipInfo(0).Length != 0)))
         {
             string anim = PerformRandomAction();
             actionTime = ActionDuration(anim);
@@ -178,6 +189,7 @@ public class AIBirdController : MonoBehaviour
         var anim = trans.Item1;
         if(!string.IsNullOrEmpty(anim)) StartCoroutine(Transit(anim));
         currentState = trans.Item2;
+        blockStateTransition = false;
     }
 
     // helpers
@@ -218,10 +230,10 @@ public class AIBirdController : MonoBehaviour
         // start new path
         if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
         {
-            if (isWalking)
+            if (blockStateTransition)
             {
                 stateTime = 0;
-                isWalking = false;
+                blockStateTransition = false;
                 return;
             }
             Vector3 point;
@@ -234,15 +246,20 @@ public class AIBirdController : MonoBehaviour
         // while on path
         else
         {
-            isWalking = true;
-            if (agent.velocity.sqrMagnitude > 0.01f)
-            {
-                Vector3 moveDirection = agent.velocity.normalized;
+            blockStateTransition = true;
+            DuringWalk();
+        }
+    }
 
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+    private void DuringWalk()
+    {
+        if (agent.velocity.sqrMagnitude > 0.01f)
+        {
+            Vector3 moveDirection = agent.velocity.normalized;
 
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); 
-            }
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
     }
 
@@ -274,84 +291,96 @@ public class AIBirdController : MonoBehaviour
         if (agent != null && agent.hasPath)
         {
             Gizmos.color = Color.red; // Destination point color
-            Gizmos.DrawSphere(agent.destination, 0.5f); // Visualize the agent's current destination
+            Gizmos.DrawSphere(agent.destination, 0.1f); // Visualize the agent's current destination
         }
     }
 
-
-    public void Fly()
+    void Fly()
     {
-        //if (!isSitting)
-        StartCoroutine(FlyPreparation());
-    }
-
-    private IEnumerator FlyPreparation()
-    {
-        // check if a flight path spline starts near this bird
         GameObject[] flightPaths = GameObject.FindGameObjectsWithTag("FlightPath");
-        foreach (GameObject flightPath in flightPaths)
+        Vector3 closestStart = flightPaths[0].GetComponent<SplineContainer>().EvaluatePosition(0, 0f);
+        SplineContainer closestSpline = flightPaths[0].GetComponent<SplineContainer>();
+        // just started fly state
+        if (!blockStateTransition)
         {
-            SplineContainer sc = flightPath.GetComponent<SplineContainer>();
-            Vector3 startPos = sc.EvaluatePosition(0, 0f);
-            if (Vector3.Distance(startPos, transform.position) < 10) // this number may need to change once in a real scene
+            // get nearest flight path
+            foreach (GameObject flightPath in flightPaths)
             {
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(startPos, out hit, 15.0f, NavMesh.AllAreas))
+                SplineContainer sc = flightPath.GetComponent<SplineContainer>();
+                Vector3 startPos = sc.EvaluatePosition(0, 0f);
+                if (Vector3.Distance(transform.position, startPos) < Vector3.Distance(transform.position, closestStart))
                 {
-                    Debug.DrawRay(hit.position, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
-                    // starts moving to point
-
-                    Vector3 direction = (hit.position - transform.position).normalized;
-                    Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-                    float rotationSpeed = 5f;
-                    while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
-                    {
-                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-                        yield return null;
-                    }
-
-
-                    agent.SetDestination(hit.position);
-                    StartCoroutine(GetToFlightPathAndStartFlight(sc));
+                    closestStart = startPos;
+                    closestSpline = sc;
                 }
+            }
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(closestStart, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                Debug.DrawRay(hit.position, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
+                                                                          // starts moving to point
+                agent.SetDestination(hit.position);
+                if (Vector3.Distance(agent.destination, closestStart) > 1)
+                {
+                    ForceStateChange();
+                    return;
+                }
+                blockStateTransition = true;
+                stateTime = 20; // state time is used as a limit for how long the bird tries to get to the spline
+                animator.CrossFade("03_Walking_Ilde", 0.1f);
+            }
+            else
+            {
+                ForceStateChange();
+                return;
+            }
+        }
+        else
+        {
+            blockAutoAnimation = true; // prevent automatic animation switch
+            SplineAnimate splineAnim = GetComponent<SplineAnimate>();
+            if (stateTime <= 0)
+            {
+                ForceStateChange();
+            }
+            else if (Vector3.Distance(transform.position, closestSpline.EvaluatePosition(0, 0f)) <= 0.5f && !splineAnim.enabled)
+            {
+                // if destination was reached, start flight
+                agent.ResetPath();
+                agent.enabled = false;
+                animator.CrossFade("04_Flying", 0.1f);
+                splineAnim.Container = closestSpline;
+                splineAnim.enabled = true;
+                splineAnim.Play();
+            }
+            else if (splineAnim.enabled && splineAnim.NormalizedTime >= 1)
+            {
+                // when flight along the spline is finished
+                splineAnim.enabled = false;
+                agent.enabled = true;
+                agent.ResetPath();
+                // force walking state to get the bird away from the landing zone
+                blockStateTransition = false;
+                Vector3 point;
+                // smaller radius than normal for walking state
+                if (RandomPoint(centrePoint, 2f, out point))
+                {
+                    Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); // So you can see the point with gizmos
+                    agent.SetDestination(point);
+                    blockStateTransition = true;
+                }
+                currentState = states["walking"];
+                blockAutoAnimation = false;
+                actionTime = 0f;
+                stateTime = 5f;
             }
         }
     }
 
-    IEnumerator GetToFlightPathAndStartFlight(SplineContainer splineContainer)
+    private void ForceStateChange()
     {
-        //isWalking = true;
-        float maxDuration = 20;
-        float timer = 0f;
-        animator.Play("03_Walking_Ilde");
-        // wait until destination is reached or timer runs out
-        while (timer < maxDuration && Vector3.Distance(agent.destination, transform.position) >= 0.5)
-        {
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        SplineAnimate splineAnim = GetComponent<SplineAnimate>();
-        // if destination was reached, start flight
-        if (Vector3.Distance(agent.destination, transform.position) <= 0.5)
-        {
-            agent.ResetPath();
-            agent.enabled = false;
-            animator.CrossFade("04_Flying", 0.1f);
-            //isFlying = true;
-            splineAnim.Container = splineContainer;
-            splineAnim.enabled = true;
-            //isWalking = false;
-            splineAnim.Play();
-        }
-        while (splineAnim.NormalizedTime < 1)
-            yield return new WaitForSeconds(0.01f);
-        agent.enabled = true;
-        //isFlying = false;
-        //isWalking = false;
-        // change to courutine take off - fly - land
-        animator.CrossFade("01_Standing_Idle", 0.2f);
+        stateTime = 0;
+        blockStateTransition = false;
+        blockAutoAnimation = false;
     }
 }
