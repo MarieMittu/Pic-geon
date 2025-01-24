@@ -35,6 +35,7 @@ public class MenusController : MonoBehaviour
     private int selection = 0;
 
     public bool isHorizontal = false;
+    private bool isReturnPressed = false;
 
     // for photo library
     public Transform photoGridContent; 
@@ -72,6 +73,12 @@ public class MenusController : MonoBehaviour
             rightButton.onClick.RemoveAllListeners();
             rightButton.onClick.AddListener(() => OnRightButtonClicked());
         }
+
+        if (okButton != null)
+        {
+            okButton.onClick.RemoveAllListeners();
+            okButton.onClick.AddListener(() => PressOKButton());
+        }
     }
 
     // Update is called once per frame
@@ -83,27 +90,8 @@ public class MenusController : MonoBehaviour
             downButton.interactable = true;
             leftButton.interactable = true;
             rightButton.interactable = true;
-
-            //if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            //{
-            //    OnUpButtonClicked();
-            //    ClickCameraButton(upButton);
-            //}
-            //if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            //{
-            //    OnDownButtonClicked();
-            //    ClickCameraButton(downButton);
-            //}
-            //if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            //{
-            //    OnLeftButtonClicked();
-            //    ClickCameraButton(leftButton);
-            //}
-            //if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            //{
-            //    OnRightButtonClicked();
-            //    ClickCameraButton(rightButton);
-            //}
+            AssignHorizKeyboard();
+            AssignVerticKeyboard();
 
         } else
         {
@@ -112,35 +100,72 @@ public class MenusController : MonoBehaviour
             leftButton.interactable = isHorizontal;
             rightButton.interactable = isHorizontal;
 
-            //if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
-            //{
-            //    OnDownButtonClicked();
-            //    ClickCameraButton(downButton);
-            //}
-
-            //if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-            //{
-            //    OnUpButtonClicked();
-            //    ClickCameraButton(upButton);
-            //}
-
-            //if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
-            //{
-            //    OnLeftButtonClicked();
-            //    ClickCameraButton(leftButton);
-            //}
-
-            //if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-            //{
-            //    OnRightButtonClicked();
-            //    ClickCameraButton(rightButton);
-            //}
+            if (isHorizontal) AssignHorizKeyboard(); else AssignVerticKeyboard();
+            
         }
-           
-        //if (Input.GetKeyDown(KeyCode.Return))
+
+        //if (Input.GetKeyDown(KeyCode.Return) && !isReturnPressed)
         //{
-        //    ClickCameraButton(okButton);
+        //    Debug.Log("Return key pressed");
+        //    isReturnPressed = true;
+        //    PressButton(okButton);
+        //    PressOKButton();
+        //} else if (isReturnPressed && !Input.GetKey(KeyCode.Return)) 
+        //{
+        //    Debug.Log("Return key released (manual detection)");
+        //    isReturnPressed = false;
+        //    ReleaseButton(okButton);
         //}
+    }
+
+    private void AssignHorizKeyboard()
+    {
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            OnLeftButtonClicked();
+            PressButton(leftButton);
+        }
+        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow))
+        {
+            ReleaseButton(leftButton);
+        }
+
+        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            OnRightButtonClicked();
+            PressButton(rightButton);
+        }
+        else if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow))
+        {
+            ReleaseButton(rightButton);
+        }
+    }
+
+    private void AssignVerticKeyboard()
+    {
+        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            Debug.Log("Down key pressed");
+            OnDownButtonClicked();
+            PressButton(downButton);
+        }
+        else if (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow))
+        {
+            Debug.Log("Down key released");
+            ReleaseButton(downButton);
+        }
+
+        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            Debug.Log("Up key pressed");
+            OnUpButtonClicked();
+            PressButton(upButton);
+        }
+        else if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow))
+        {
+            Debug.Log("Up key released");
+            ReleaseButton(upButton);
+        }
     }
 
     public void SetupOptions()
@@ -259,20 +284,13 @@ public class MenusController : MonoBehaviour
         }
     }
 
-
-    private void ClickCameraButton(Button button)
-    {
-        StartCoroutine(ClickAnimation(button));
-        button.onClick.Invoke();
-    }
-
-    private IEnumerator ClickAnimation(Button button)
+    private void PressButton(Button button)
     {
         var clickDown = new PointerEventData(eventSystem);
         ExecuteEvents.Execute(button.gameObject, clickDown, ExecuteEvents.pointerDownHandler);
-
-        yield return new WaitForSeconds(0.1f);
-
+    }
+    private void ReleaseButton(Button button)
+    {
         var clickUp = new PointerEventData(eventSystem);
         ExecuteEvents.Execute(button.gameObject, clickUp, ExecuteEvents.pointerUpHandler);
     }
