@@ -69,6 +69,7 @@ public class ApplyImageEffectScript : MonoBehaviour
                     break;
             }
         }
+        SetThermalVision(thermalActive);
     }
 
     void OnRenderImage(RenderTexture source, RenderTexture destination)
@@ -106,6 +107,10 @@ public class ApplyImageEffectScript : MonoBehaviour
 
     public void SetThermalVision(bool enabled)
     {
+        if (BirdMaterialVariator.materialCache == null)
+        {
+            return;
+        }
         thermalActive = enabled;
         for (int i = 0; i < BirdMaterialVariator.materialCache.Length; i++)
         {

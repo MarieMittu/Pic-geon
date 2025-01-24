@@ -348,7 +348,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a3917e045c14f54fbb4f910360f3d59, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mouseSensitivity: 2
   minHorizontalRotation: -20.9
   maxHorizontalRotation: 65.9
   minVerticalRotation: -20.9
@@ -363,10 +362,15 @@ MonoBehaviour:
   - 10
   - 5
   - 2
+  zoomLevelsMouseSensitivity:
+  - 3
+  - 2
+  - 1
+  - 0.5
   minFocusDistance: 0
   maxFocusDistance: 50
   focusDistanceSpeed: 10
-  peripheryBlurRadius: 1
+  maxPeripheryBlurRadius: 0.5
   screenshotImage: {fileID: 7576610554782536271}
   flashImage: {fileID: 7422457346622540831}
   savePhotos: 0

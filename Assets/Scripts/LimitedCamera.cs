@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class LimitedCamera : MonoBehaviour
 {
     [Header("Camera Rotation")]
-    public float mouseSensitivity = 2f;
+    //public float mouseSensitivity = 2f;
     float cameraVerticalRotation = 0f;
     float cameraHorizontalRotation = 0f;
 
@@ -27,6 +27,7 @@ public class LimitedCamera : MonoBehaviour
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
     //[Range(0, 10)]
     public float[] zoomLevelsDepthOfField = { 3, 2, 1 };
+    public float[] zoomLevelsMouseSensitivity = { 3, 2, 1 };
     public float minFocusDistance = 0;
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
@@ -73,8 +74,8 @@ public class LimitedCamera : MonoBehaviour
             Material dofShaderMat = effectScript.dofMat;
             if (!focusMode)
             {
-                float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
-                float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+                float inputX = Input.GetAxis("Mouse X") * zoomLevelsMouseSensitivity[currentZoomLevel];
+                float inputY = Input.GetAxis("Mouse Y") * zoomLevelsMouseSensitivity[currentZoomLevel];
                 ProcessCameraMovement(inputX, inputY);
                 // scroll = change fov zoom level and apply respective depth of field
                 if (Input.mouseScrollDelta != Vector2.zero)
@@ -115,7 +116,7 @@ public class LimitedCamera : MonoBehaviour
                         GetComponent<AudioSource>().Play();
                         TrackTapeAmount();
                         GameManager.sharedInstance.hasEvidence = true;
-                        focusMode = false;
+                        //focusMode = false;
                         //cam.fieldOfView = zoomLevels[currentZoomLevel]; -> moved to end of photo animation in TakePhotoScreenshotWithFeedback
                     }
                     else
@@ -433,7 +434,7 @@ public class LimitedCamera : MonoBehaviour
         flashImage.gameObject.SetActive(true);
         float timeElapsed = 0;
         float flashUpTime = 0.1f;
-        float flashDownTime = 0.2f;
+        float flashDownTime = 0.35f;
         while (timeElapsed < flashUpTime + flashDownTime)
         {
             if (timeElapsed < flashUpTime)
@@ -451,8 +452,8 @@ public class LimitedCamera : MonoBehaviour
         flashImage.gameObject.SetActive(false);
 
         // continue showing the photo for a time
-        yield return new WaitForSeconds(1);
-        resetAfterFocusMode();
+        yield return new WaitForSeconds(2);
+        //resetAfterFocusMode();
         photoAnimationInProgress = false;
         // minimize image animation
         timeElapsed = 0;
