@@ -156,6 +156,11 @@ public class AIBirdController : MonoBehaviour
         var action = currentState.stateAction;
         if (action != null) action();
         PerformActionsSequence();
+        if (shallWeLog)
+        {
+            shallWeLog = false;
+            Debug.Log("State: " + currentState.name);
+        }
     }
 
     public void PerformActionsSequence()
@@ -363,7 +368,7 @@ public class AIBirdController : MonoBehaviour
                 blockStateTransition = false;
                 Vector3 point;
                 // smaller radius than normal for walking state
-                if (RandomPoint(centrePoint, 2f, out point))
+                if (RandomPoint(transform.position, 2f, out point))
                 {
                     Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); // So you can see the point with gizmos
                     agent.SetDestination(point);

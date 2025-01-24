@@ -13,6 +13,11 @@ public class AIRobotController : AIBirdController
         var action = currentState.stateAction;
         if (action != null) action();
         PerformActionsSequence();
+        if (shallWeLog)
+        {
+            shallWeLog = false;
+            Debug.Log("State: " + currentState.name);
+        }
     }
 
     protected void CheckIfSpying()
