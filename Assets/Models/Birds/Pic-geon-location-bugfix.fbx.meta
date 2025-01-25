@@ -526,7 +526,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: 03_Walking_Ilde
+      name: 03_Walking_Idle
       takeName: Pigeon1|03_Walking_Ilde
       internalID: 2821151426908181424
       firstFrame: 0
@@ -932,7 +932,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: R03_Walking_Ilde_Shutter
+      name: R03_Walking_Idle_Shutter
       takeName: Pigeon1|R03_Walking_Ilde_Shutter
       internalID: 5110181863625894504
       firstFrame: 0
@@ -961,7 +961,7 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: R03_Walking_Ilde_Tweak
+      name: R03_Walking_Idle_Tweak
       takeName: Pigeon1|R03_Walking_Ilde_Tweak
       internalID: 603880540428334193
       firstFrame: 0

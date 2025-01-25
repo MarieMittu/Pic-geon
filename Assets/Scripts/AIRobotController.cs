@@ -58,15 +58,15 @@ public class AIRobotController : AIBirdController
         });
 
         states["walking"] = new State("walking", new (float, string)[]{
-            (1.0f, "03_Walking_Ilde"),
-            (1.0f, "R03_Walking_Ilde_Tweak"),
+            (1.0f, "03_Walking_Idle"),
+            (1.0f, "R03_Walking_Idle_Tweak"),
             (1.0f, "R03_Walking_Picking_Shutter"),
             (1.0f, "R03_Walking_Picking_Stiff"),
-            (1.0f, "R03_Walking_Ilde_Shutter"),
+            (1.0f, "R03_Walking_Idle_Shutter"),
         }, WalkAround);
 
         states["flying"] = new State("flying", new (float, string)[]{
-            (1.0f, "03_Walking_Ilde"),
+            (1.0f, "03_Walking_Idle"),
         }, Fly);
 
         // state transitions
