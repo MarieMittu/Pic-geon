@@ -39,7 +39,7 @@ public class ScenesController : MonoBehaviour
                 SceneManager.LoadScene("LevelTwo"); // to change
                 break;
             case 3:
-                SceneManager.LoadScene("LevelTwo");
+                SceneManager.LoadScene("SampleScene");
                 break;
             case 4:
                 SceneManager.LoadScene("LevelTwo"); // to change

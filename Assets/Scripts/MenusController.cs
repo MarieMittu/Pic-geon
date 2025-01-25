@@ -36,6 +36,8 @@ public class MenusController : MonoBehaviour
     private int selection = 0;
 
     public bool isHorizontal = false;
+
+    private int okCheck = 0;
     private bool isReturnPressed = false;
 
     // for photo library
@@ -111,7 +113,8 @@ public class MenusController : MonoBehaviour
         //    isReturnPressed = true;
         //    PressButton(okButton);
         //    PressOKButton();
-        //} else if (isReturnPressed && !Input.GetKey(KeyCode.Return)) 
+        //}
+        //else if (isReturnPressed && !Input.GetKey(KeyCode.Return))
         //{
         //    Debug.Log("Return key released (manual detection)");
         //    isReturnPressed = false;
@@ -230,6 +233,8 @@ public class MenusController : MonoBehaviour
             {
                 options[selection].onSelect.Invoke();
             }
+            okCheck++;
+            Debug.Log("okokokokokkokok " + okCheck);
         }  
     }
 
