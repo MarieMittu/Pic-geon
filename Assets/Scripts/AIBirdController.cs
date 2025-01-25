@@ -300,7 +300,7 @@ public class AIBirdController : MonoBehaviour
         }
     }
 
-    void Fly()
+    protected void Fly()
     {
         GameObject[] flightPaths = GameObject.FindGameObjectsWithTag("FlightPath");
         Vector3 closestStart = flightPaths[0].GetComponent<SplineContainer>().EvaluatePosition(0, 0f);
@@ -344,7 +344,7 @@ public class AIBirdController : MonoBehaviour
         {
             blockAutoAnimation = true; // prevent automatic animation switch
             SplineAnimate splineAnim = GetComponent<SplineAnimate>();
-            if (stateTime <= 0)
+            if (!splineAnim.enabled && (stateTime <= 0 || agent.pathStatus != NavMeshPathStatus.PathComplete))
             {
                 ForceStateChange();
             }
@@ -384,6 +384,7 @@ public class AIBirdController : MonoBehaviour
 
     private void ForceStateChange()
     {
+        agent.ResetPath();
         stateTime = 0;
         blockStateTransition = false;
         blockAutoAnimation = false;

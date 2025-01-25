@@ -32,51 +32,74 @@ public class AIRobotController : AIBirdController
         }
     }
 
-    //protected override void InitializeStates()
-    //{
-    //    RandomActions sitDownAction = () => SitDown(standUpAnim: "02_Sitting_Standing_up");
-    //    RandomActions sleepAction = () => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: "02_Sitting_Standing_up");
-        
-    //    currentState = StandStill;
-    //    states[StandStill] = new List<System.Tuple<float, RandomActions>> {
-    //        new System.Tuple<float, RandomActions>(0.05f, TweakStanding),
-    //        //new System.Tuple<float, RandomActions>(0.05f, StandStill),
-    //        new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-    //        new System.Tuple<float, RandomActions>(0.8f, sitDownAction),
-    //        new System.Tuple<float, RandomActions>(0.15f, WalkAround),
-    //        new System.Tuple<float, RandomActions>(0.1f, Fly),
-    //    };
-    //    states[CleanItself] = new List<System.Tuple<float, RandomActions>> {
-    //        new System.Tuple<float, RandomActions>(0.2f, StandStill),
-    //        new System.Tuple<float, RandomActions>(0.05f, CleanItself),
-    //        new System.Tuple<float, RandomActions>(0.7f, sitDownAction),
-    //        new System.Tuple<float, RandomActions>(0.2f, WalkAround),
-    //        new System.Tuple<float, RandomActions>(0.1f, Fly),
-    //    };
-    //    states[sitDownAction] = new List<System.Tuple<float, RandomActions>> {
-    //        new System.Tuple<float, RandomActions>(0.9f, ShowAntenna),
-    //        new System.Tuple<float, RandomActions>(0.3f, StandStill),
-    //    };
-    //    states[WalkAround] = new List<System.Tuple<float, RandomActions>> {
-    //        new System.Tuple<float, RandomActions>(0.2f, StandStill),
-    //        new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-    //        new System.Tuple<float, RandomActions>(0.7f, sitDownAction),
-    //        new System.Tuple<float, RandomActions>(0.15f, WalkAround),
-    //        new System.Tuple<float, RandomActions>(0.2f, Fly),
-    //    };
-    //    states[ShowAntenna] = new List<System.Tuple<float, RandomActions>> {
-    //        new System.Tuple<float, RandomActions>(0.5f, ShowAntenna),
-    //        new System.Tuple<float, RandomActions>(0.3f, StandStill),
-    //    };
-    //    states[Fly] = new List<System.Tuple<float, RandomActions>> {
-    //        new System.Tuple<float, RandomActions>(0.2f, StandStill),
-    //        new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-    //        new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-    //        new System.Tuple<float, RandomActions>(0.0f, ShowAntenna),
-    //        new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-    //        new System.Tuple<float, RandomActions>(0.05f, Fly),
-    //    };
-    //}
+    protected override void InitializeStates()
+    {
+
+        // states
+        states["standing"] = new State("standing", new (float, string)[]{
+            (1.0f, "01_Standing_Idle"),
+            (1.0f, "01_Standing_Cleaning"),
+            (1.0f, "R01_Standing_Idle_Antenna"),
+            (1.0f, "R01_Standing_Idle_Head"),
+            (1.0f, "R01_Standing_Idle_Shutter"),
+            (1.0f, "R01_Standing_Idle_Tweak"),
+        });
+
+        states["sitting"] = new State("sitting", new (float, string)[]{
+            (1.0f, "02_Sitting_Idle"),
+            (1.0f, "R02_Sitting_Idle_Head"),
+            (1.0f, "R02_Sitting_Idle_Tweak"),
+            (1.0f, "R02_Sitting_Idle_Shutter"),
+        });
+        states["sleeping"] = new State("sleeping", new (float, string)[]{
+            (1.0f, "02_Sitting_Sleeping_Idle"),
+            (1.0f, "R02_Sitting_Sleeping_Antenna"),
+            (1.0f, "R02_Sitting_Sleeping_Idle_Tweak"),
+        });
+
+        states["walking"] = new State("walking", new (float, string)[]{
+            (1.0f, "03_Walking_Ilde"),
+            (1.0f, "R03_Walking_Ilde_Tweak"),
+            (1.0f, "R03_Walking_Picking_Shutter"),
+            (1.0f, "R03_Walking_Picking_Stiff"),
+            (1.0f, "R03_Walking_Ilde_Shutter"),
+        }, WalkAround);
+
+        states["flying"] = new State("flying", new (float, string)[]{
+            (1.0f, "03_Walking_Ilde"),
+        }, Fly);
+
+        // state transitions
+        states["standing"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Down" }, states["sitting"])),
+            (1.0f, (new string[]{  }, states["walking"])),
+            (1.0f, (new string[]{  }, states["flying"])),
+        };
+
+        states["sitting"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Standing_up" }, states["standing"])),
+            (1.0f, (new string[]{ "02_Sitting_Falling_Asleep" }, states["sleeping"])),
+        };
+        states["sleeping"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Waking_up" }, states["sitting"])),
+        };
+
+        states["walking"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{  }, states["standing"])),
+        };
+
+        states["flying"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{  }, states["standing"])),
+        };
+
+        // starting state
+        currentState = states["standing"];
+    }
 
 
     protected override bool RandomPoint(Vector3 center, float range, out Vector3 result)
