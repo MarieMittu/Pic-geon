@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 
 public class MenusController : MonoBehaviour
 {
@@ -120,51 +121,57 @@ public class MenusController : MonoBehaviour
 
     private void AssignHorizKeyboard()
     {
-        if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+        if (SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "NextLevelScene" || GameManager.sharedInstance.isGamePaused)
         {
-            OnLeftButtonClicked();
-            PressButton(leftButton);
-        }
-        else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow))
-        {
-            ReleaseButton(leftButton);
-        }
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                OnLeftButtonClicked();
+                PressButton(leftButton);
+            }
+            else if (Input.GetKeyUp(KeyCode.A) || Input.GetKeyUp(KeyCode.LeftArrow))
+            {
+                ReleaseButton(leftButton);
+            }
 
-        if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
-        {
-            OnRightButtonClicked();
-            PressButton(rightButton);
-        }
-        else if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow))
-        {
-            ReleaseButton(rightButton);
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                OnRightButtonClicked();
+                PressButton(rightButton);
+            }
+            else if (Input.GetKeyUp(KeyCode.D) || Input.GetKeyUp(KeyCode.RightArrow))
+            {
+                ReleaseButton(rightButton);
+            }
         }
     }
 
     private void AssignVerticKeyboard()
     {
-        if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+        if (SceneManager.GetActiveScene().name == "MainMenu" || SceneManager.GetActiveScene().name == "NextLevelScene" || GameManager.sharedInstance.isGamePaused)
         {
-            Debug.Log("Down key pressed");
-            OnDownButtonClicked();
-            PressButton(downButton);
-        }
-        else if (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow))
-        {
-            Debug.Log("Down key released");
-            ReleaseButton(downButton);
-        }
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                Debug.Log("Down key pressed");
+                OnDownButtonClicked();
+                PressButton(downButton);
+            }
+            else if (Input.GetKeyUp(KeyCode.S) || Input.GetKeyUp(KeyCode.DownArrow))
+            {
+                Debug.Log("Down key released");
+                ReleaseButton(downButton);
+            }
 
-        if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            Debug.Log("Up key pressed");
-            OnUpButtonClicked();
-            PressButton(upButton);
-        }
-        else if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow))
-        {
-            Debug.Log("Up key released");
-            ReleaseButton(upButton);
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                Debug.Log("Up key pressed");
+                OnUpButtonClicked();
+                PressButton(upButton);
+            }
+            else if (Input.GetKeyUp(KeyCode.W) || Input.GetKeyUp(KeyCode.UpArrow))
+            {
+                Debug.Log("Up key released");
+                ReleaseButton(upButton);
+            }
         }
     }
 
