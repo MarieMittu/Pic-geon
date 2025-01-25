@@ -147,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 8088574}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.62, y: 7, z: 1.81}
+  m_LocalPosition: {x: 6.739, y: 10.852, z: -1.853}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2334,6 +2334,37 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 366642426}
   m_SourcePrefab: {fileID: 100100000, guid: 5f453400c5afe48289991cc409bbbc84, type: 3}
+--- !u!1 &671563738
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 671563739}
+  m_Layer: 0
+  m_Name: BirdsPos (19)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &671563739
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 671563738}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 8.126, y: 10.852, z: -2.043}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1071146049}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &691249087
 GameObject:
   m_ObjectHideFlags: 0
@@ -4195,6 +4226,7 @@ MonoBehaviour:
   - {fileID: 1286069271}
   - {fileID: 16078922}
   - {fileID: 901865049}
+  - {fileID: 671563739}
   robotsPositions:
   - {fileID: 574010167}
   - {fileID: 8088575}
@@ -4214,6 +4246,7 @@ Transform:
   m_Children:
   - {fileID: 1789320321}
   - {fileID: 901865049}
+  - {fileID: 671563739}
   - {fileID: 16078922}
   - {fileID: 1286069271}
   - {fileID: 1226247575}
