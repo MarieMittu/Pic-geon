@@ -2,10 +2,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class AbilityManager : MonoBehaviour
 {
     public ApplyImageEffectScript imageEffectScript;
+    public Image heatVisionTimer;
 
     float remainingAbilityTime = 0;
 
@@ -69,6 +71,11 @@ public class AbilityManager : MonoBehaviour
 
         remainingAbilityTime -= Time.deltaTime;
 
+        if (activeAbilityIndex != -1 && abilities[activeAbilityIndex].name == "Thermal Vision")
+        {
+            heatVisionTimer.fillAmount = remainingAbilityTime / abilities[activeAbilityIndex].duration;
+        }
+
         if (remainingAbilityTime <= 0)
         {
             deactivateActiveAbility();
@@ -79,6 +86,7 @@ public class AbilityManager : MonoBehaviour
     {
         if (activeAbilityIndex == -1) return;
         abilities[activeAbilityIndex].setActive(false);
+        if (abilities[activeAbilityIndex].name == "Thermal Vision") heatVisionTimer.fillAmount = 0;
         activeAbilityIndex = -1;
     }
 
