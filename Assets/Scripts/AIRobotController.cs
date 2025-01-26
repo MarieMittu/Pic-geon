@@ -9,6 +9,7 @@ public class AIRobotController : AIBirdController
 
     public Vector3 rectangleSize = new Vector3(20, 0, 10);
     private Coroutine slidingCoroutine;
+    private Coroutine hoveringCoroutine;
 
     private void Update()
     {
@@ -20,6 +21,10 @@ public class AIRobotController : AIBirdController
         {
             shallWeLog = false;
             Debug.Log("State: " + currentState.name);
+        }
+        if (currentState.name != "sitting")
+        {
+            StopSliding();
         }
     }
 
@@ -183,12 +188,12 @@ public class AIRobotController : AIBirdController
 
 
 
+
     public void SittingBehavior()
     {
         if (animator == null) return;
 
         var clipInfo = animator.GetCurrentAnimatorClipInfo(0);
-
         if (clipInfo.Length > 0)
         {
             string currentClipName = clipInfo[0].clip.name;
@@ -197,17 +202,68 @@ public class AIRobotController : AIBirdController
             {
                 if (slidingCoroutine == null)
                 {
+                    StopHovering();
                     slidingCoroutine = StartCoroutine(SlidingMovement());
+                }
+
+                if (hoveringCoroutine == null)
+                {
+                    hoveringCoroutine = StartCoroutine(MovingUp(0.5f, transform.position, new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)));
+                }
+            }
+            else if (currentClipName == "02_Sitting_Sleeping_Idle")
+            {
+                StopSliding(); 
+                if (hoveringCoroutine == null)
+                {
+                    hoveringCoroutine = StartCoroutine(MovingUp(0.5f, transform.position, new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)));
                 }
             }
             else
             {
                 StopSliding();
+                StopHovering();
             }
         }
         else
         {
             StopSliding();
+            StopHovering();
+        }
+    }
+
+    IEnumerator MovingUp(float time, Vector3 startpos, Vector3 endpos)
+    {
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < time)
+        {
+            transform.position = Vector3.Lerp(startpos, endpos, (elapsedTime / time));
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < time)
+        {
+            transform.position = Vector3.Lerp(endpos, startpos, (elapsedTime / time));
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+
+
+
+    private void StopHovering()
+    {
+        if (hoveringCoroutine != null)
+        {
+            StopCoroutine(hoveringCoroutine);
+            hoveringCoroutine = null;
         }
     }
 
