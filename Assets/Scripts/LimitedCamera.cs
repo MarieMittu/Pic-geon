@@ -111,11 +111,15 @@ public class LimitedCamera : MonoBehaviour
                 {
                     if (focusMode)
                     {
-                        DetectBirdsOnPhoto(true);
-                        StartCoroutine(TakePhotoScreenshotWithFeedback());
-                        GetComponent<AudioSource>().Play();
-                        TrackTapeAmount();
-                        GameManager.sharedInstance.hasEvidence = true;
+                        if (!TapeManager.instance.reachedLimit)
+                        {
+                            DetectBirdsOnPhoto(true);
+                            StartCoroutine(TakePhotoScreenshotWithFeedback());
+                            GetComponent<AudioSource>().Play();
+                            TrackTapeAmount();
+                            GameManager.sharedInstance.hasEvidence = true;
+                        }
+                      
                         //focusMode = false;
                         //cam.fieldOfView = zoomLevels[currentZoomLevel]; -> moved to end of photo animation in TakePhotoScreenshotWithFeedback
                     }
@@ -331,8 +335,10 @@ public class LimitedCamera : MonoBehaviour
 
         if (TapeManager.instance.reachedLimit)
         {
-            //ControlCorrectPhotos(); TODO: only in the last level, add level check
-            GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
+            if (MissionManager.sharedInstance.currentMission < 3)
+            {
+                GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
+            }
         }
     }
 
