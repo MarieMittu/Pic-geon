@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class AbilityManager : MonoBehaviour
 {
     public ApplyImageEffectScript imageEffectScript;
     public Image heatVisionTimer;
+    public GameObject heatVisionText;
 
     float remainingAbilityTime = 0;
 
@@ -38,6 +40,11 @@ public class AbilityManager : MonoBehaviour
         if (imageEffectScript == null)
         {
             imageEffectScript = GetComponent<ApplyImageEffectScript>();
+        }
+        if (heatVisionText == null)
+        {
+            heatVisionText = heatVisionTimer.transform.GetChild(0).gameObject;
+            heatVisionText.SetActive(false);
         }
         abilities = new Ability[] {
             new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision)
@@ -86,7 +93,11 @@ public class AbilityManager : MonoBehaviour
     {
         if (activeAbilityIndex == -1) return;
         abilities[activeAbilityIndex].setActive(false);
-        if (abilities[activeAbilityIndex].name == "Thermal Vision") heatVisionTimer.fillAmount = 0;
+        if (abilities[activeAbilityIndex].name == "Thermal Vision")
+        {
+            heatVisionTimer.fillAmount = 0;
+            heatVisionText.SetActive(false);
+        }
         activeAbilityIndex = -1;
     }
 
@@ -94,5 +105,10 @@ public class AbilityManager : MonoBehaviour
     {
         abilities[index].setActive(true);
         activeAbilityIndex = index;
+        if (abilities[activeAbilityIndex].name == "Thermal Vision")
+        {
+            heatVisionTimer.fillAmount = 1;
+            heatVisionText.SetActive(true);
+        }
     }
 }

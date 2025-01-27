@@ -123,6 +123,7 @@ public class LimitedCamera : MonoBehaviour
                     {
                         focusMode = true;
                         cam.fieldOfView *= 0.9f;
+                        BatteryManager.instance.useCharge(1);
                     }
                 }
 
