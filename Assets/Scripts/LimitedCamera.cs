@@ -41,6 +41,7 @@ public class LimitedCamera : MonoBehaviour
     private int correctPhotosAmount = 0;
     public RawImage screenshotImage;
     public RawImage flashImage;
+    public ZoomUI zoomUI;
     bool photoAnimationInProgress = false;
     public bool savePhotos = false;
     Camera cam;
@@ -64,6 +65,9 @@ public class LimitedCamera : MonoBehaviour
         dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
         dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
         dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
+
+        zoomUI.SetZoomRatios(zoomLevels);
+        zoomUI.SetZoomLevel(currentZoomLevel);
     }
 
     // Update is called once per frame
@@ -85,6 +89,7 @@ public class LimitedCamera : MonoBehaviour
 
                     cam.fieldOfView = zoomLevels[currentZoomLevel];
                     dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
+                    zoomUI.SetZoomLevel(currentZoomLevel);
                 }
             }
             else

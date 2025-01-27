@@ -333,6 +333,7 @@ public class AIBirdController : MonoBehaviour
                 blockStateTransition = true;
                 stateTime = 20; // state time is used as a limit for how long the bird tries to get to the spline
                 animator.CrossFade("03_Walking_Idle", 0.1f);
+                Debug.Log(name + "STARTING THE PATH: " + closestSpline.name);
             }
             else
             {
@@ -346,10 +347,12 @@ public class AIBirdController : MonoBehaviour
             SplineAnimate splineAnim = GetComponent<SplineAnimate>();
             if (!splineAnim.enabled && (stateTime <= 0 || agent.pathStatus != NavMeshPathStatus.PathComplete))
             {
+                Debug.Log(name + "HAVE FAILED THE PATH: " + closestSpline.name);
                 ForceStateChange();
             }
             else if (Vector3.Distance(transform.position, closestSpline.EvaluatePosition(0, 0f)) <= 0.5f && !splineAnim.enabled)
             {
+                Debug.Log(name + "AM AT THE PATH: " + closestSpline.name);
                 // if destination was reached, start flight
                 agent.ResetPath();
                 agent.enabled = false;
@@ -360,6 +363,7 @@ public class AIBirdController : MonoBehaviour
             }
             else if (splineAnim.enabled && splineAnim.NormalizedTime >= 1)
             {
+                Debug.Log(name + "HAVE LEFT THE PATH: " + closestSpline.name);
                 // when flight along the spline is finished
                 splineAnim.enabled = false;
                 agent.enabled = true;
@@ -378,6 +382,10 @@ public class AIBirdController : MonoBehaviour
                 blockAutoAnimation = false;
                 actionTime = 0f;
                 stateTime = 5f;
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.P)) Debug.Log(name + "WALKING TO THE PATH: " + closestSpline.name);
             }
         }
     }

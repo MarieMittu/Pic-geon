@@ -353,17 +353,14 @@ MonoBehaviour:
   minVerticalRotation: -20.9
   maxVerticalRotation: 15.6
   zoomLevels:
-  - 60
   - 30
   - 10
   - 5
   zoomLevelsDepthOfField:
-  - 20
   - 10
   - 5
   - 2
   zoomLevelsMouseSensitivity:
-  - 3
   - 2
   - 1
   - 0.5
@@ -511,3 +508,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imageEffectScript: {fileID: 0}
+  heatVisionTimer: {fileID: 0}
+  heatVisionText: {fileID: 0}
