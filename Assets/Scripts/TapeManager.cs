@@ -40,14 +40,14 @@ public class TapeManager : MonoBehaviour
 
         }
 
-        tapeText.text = usedTape + "/" + tapeLimit + " tape used";
+        tapeText.text = usedTape + "/" + tapeLimit;
     }
 
     public void AddUsedTape()
     {
         usedTape++;
         PlayerPrefs.SetInt("usedtape", usedTape);
-        tapeText.text = usedTape + "/" + tapeLimit + " tape used";
+        tapeText.text = usedTape + "/" + tapeLimit;
 
         if (usedTape == tapeLimit)
         {
