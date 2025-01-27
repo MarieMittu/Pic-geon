@@ -5165,6 +5165,11 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!1 &973862976 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+  m_PrefabInstance: {fileID: 4887386168576983837}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1041570245
 GameObject:
   m_ObjectHideFlags: 0
@@ -5243,7 +5248,7 @@ MonoBehaviour:
   bigPhotoImage: {fileID: 737828752}
   isGamePaused: 0
   hasEvidence: 0
-  hasCorrectPhotos: 0
+  hasEnoughCorrectPhotos: 0
   wantsToExit: 0
   camera1: {fileID: 4887386168576983838}
   camera2: {fileID: 593376189}
@@ -6574,6 +6579,7 @@ MonoBehaviour:
   currentMission: 1
   maxMissions: 3
   selectedMission: 1
+  requiredPhotosForMissions: 01000000020000000300000004000000
   isTutorial: 0
 --- !u!4 &1399647249
 Transform:
@@ -9291,6 +9297,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 4a33d92365e4cd6438495705a77306eb, type: 2}
     - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: glitchMat
+      value: 
+      objectReference: {fileID: 2100000, guid: dafcc7f3e8d763e408cae4e3d0c27d43, type: 2}
+    - target: {fileID: 4739496552211864261, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
@@ -9310,6 +9320,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7229078716807553216, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: airVent
+      value: 
+      objectReference: {fileID: 3268138461105073101, guid: 6bf7255e642b045ba85b0c8a9f0940be, type: 3}
     - target: {fileID: 7229078716807553216, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: heatVisionTimer
       value: 
@@ -9373,13 +9387,28 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 4887386168576983844}
   m_SourcePrefab: {fileID: 100100000, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
 --- !u!20 &4887386168576983838 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 3609844334328307765, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
   m_PrefabInstance: {fileID: 4887386168576983837}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4887386168576983844
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 973862976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa9d9f8ff13a42099d8b71804e621a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
