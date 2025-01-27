@@ -249,16 +249,23 @@ public class LimitedCamera : MonoBehaviour
                         {
                             if (isFullDetection)
                             {
-                                correctPhotosAmount++;
-                                GameManager.sharedInstance.hasCorrectPhotos = true;
-                                Debug.Log("sus bird on photo " + correctPhotosAmount);
-
-                                if (MissionManager.sharedInstance.isTutorial)
+                                if (!robotScript.hasBeenCaught)
                                 {
-                                    TutorialManager.sharedInstance.showRobot = false;
-                                    Debug.Log("CHANGE SHOW ROBOT");
-                                }
+                                    if (!MissionManager.sharedInstance.isTutorial) robotScript.hasBeenCaught = true;
+                                    correctPhotosAmount++;
+                                    if (correctPhotosAmount >= MissionManager.sharedInstance.GetRequiredPhotos()) GameManager.sharedInstance.hasEnoughCorrectPhotos = true;
+                                    Debug.Log("sus bird on photo " + correctPhotosAmount);
 
+                                    if (MissionManager.sharedInstance.isTutorial)
+                                    {
+                                        TutorialManager.sharedInstance.showRobot = false;
+                                        Debug.Log("CHANGE SHOW ROBOT");
+                                    }
+                                }
+                                else
+                                {
+                                    Debug.Log("already caught before");
+                                }
                             } else
                             {
                                 

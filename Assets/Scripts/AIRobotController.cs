@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class AIRobotController : AIBirdController
 {
     [HideInInspector] public bool isSpying = false;
+    [HideInInspector] public bool hasBeenCaught = false;
 
     public Vector3 rectangleSize = new Vector3(20, 0, 10);
     private Coroutine slidingCoroutine;

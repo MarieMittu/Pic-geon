@@ -3292,15 +3292,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c6a719971d5474871b7806594d3f728a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.04
+      value: -0.866
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c6a719971d5474871b7806594d3f728a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.56
+      value: -1.865
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c6a719971d5474871b7806594d3f728a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 9.16
+      value: -0.394
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: c6a719971d5474871b7806594d3f728a, type: 3}
       propertyPath: m_LocalRotation.w
@@ -13643,7 +13643,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: maxFocusDistance
-      value: 75
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: minFocusDistance

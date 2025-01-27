@@ -11,6 +11,8 @@ public class MissionManager : MonoBehaviour
     public int maxMissions = 4;
     public int selectedMission = 1;
 
+    public int[] requiredPhotosForMissions = { 1, 2, 3, 4 };
+
     private HashSet<int> unlockedMissions = new HashSet<int> { 1 };
 
     public bool isTutorial = false;
@@ -96,5 +98,10 @@ public class MissionManager : MonoBehaviour
     public List<int> GetUnlockedMissions()
     {
         return new List<int>(unlockedMissions);
+    }
+
+    public int GetRequiredPhotos()
+    {
+        return requiredPhotosForMissions[currentMission - 1];
     }
 }
