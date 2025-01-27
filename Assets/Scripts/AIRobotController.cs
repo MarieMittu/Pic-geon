@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -6,6 +8,8 @@ public class AIRobotController : AIBirdController
     [HideInInspector] public bool isSpying = false;
 
     public Vector3 rectangleSize = new Vector3(20, 0, 10);
+    private Coroutine slidingCoroutine;
+    private Coroutine hoveringCoroutine;
 
     private void Update()
     {
@@ -17,6 +21,10 @@ public class AIRobotController : AIBirdController
         {
             shallWeLog = false;
             Debug.Log("State: " + currentState.name);
+        }
+        if (currentState.name != "sitting")
+        {
+            StopSliding();
         }
     }
 
@@ -50,7 +58,7 @@ public class AIRobotController : AIBirdController
             (1.0f, "R02_Sitting_Idle_Head"),
             (1.0f, "R02_Sitting_Idle_Tweak"),
             (1.0f, "R02_Sitting_Idle_Shutter"),
-        });
+        }, SittingBehavior);
         states["sleeping"] = new State("sleeping", new (float, string)[]{
             (1.0f, "02_Sitting_Sleeping_Idle"),
             (1.0f, "R02_Sitting_Sleeping_Antenna"),
@@ -132,6 +140,130 @@ public class AIRobotController : AIBirdController
         {
             Gizmos.color = Color.magenta; // Destination point color
             Gizmos.DrawSphere(agent.destination, 0.1f); // Visualize the agent's current destination
+        }
+    }
+
+    private IEnumerator SlidingMovement()
+    {
+        float slideSpeed = 1.0f;
+        float slideTime = 1.0f;
+        float pauseTime = 1.0f;
+        Vector3 slideDirection = transform.forward;
+
+        while (true)
+        {
+            float elapsedTime = 0f;
+
+            while (elapsedTime < slideTime)
+            {
+                Vector3 newPosition = transform.position + slideDirection * slideSpeed * Time.deltaTime;
+
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(newPosition, out hit, 1.0f, NavMesh.AllAreas))
+                {
+                    transform.position = hit.position;
+                    elapsedTime += Time.deltaTime;
+                }
+                else
+                {
+                    StopSliding();
+                    yield break;
+                }
+
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(pauseTime);
+        }
+    }
+
+    private void StopSliding()
+    {
+        if (slidingCoroutine != null)
+        {
+            StopCoroutine(slidingCoroutine);
+            slidingCoroutine = null;
+        }
+    }
+
+
+
+
+    public void SittingBehavior()
+    {
+        if (animator == null) return;
+
+        var clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        if (clipInfo.Length > 0)
+        {
+            string currentClipName = clipInfo[0].clip.name;
+
+            if (currentClipName == "02_Sitting_Idle")
+            {
+                if (slidingCoroutine == null)
+                {
+                    StopHovering();
+                    slidingCoroutine = StartCoroutine(SlidingMovement());
+                }
+
+                if (hoveringCoroutine == null)
+                {
+                    hoveringCoroutine = StartCoroutine(MovingUp(0.5f, transform.position, new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)));
+                }
+            }
+            else if (currentClipName == "02_Sitting_Sleeping_Idle")
+            {
+                StopSliding(); 
+                if (hoveringCoroutine == null)
+                {
+                    hoveringCoroutine = StartCoroutine(MovingUp(0.5f, transform.position, new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)));
+                }
+            }
+            else
+            {
+                StopSliding();
+                StopHovering();
+            }
+        }
+        else
+        {
+            StopSliding();
+            StopHovering();
+        }
+    }
+
+    IEnumerator MovingUp(float time, Vector3 startpos, Vector3 endpos)
+    {
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < time)
+        {
+            transform.position = Vector3.Lerp(startpos, endpos, (elapsedTime / time));
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < time)
+        {
+            transform.position = Vector3.Lerp(endpos, startpos, (elapsedTime / time));
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+
+
+
+    private void StopHovering()
+    {
+        if (hoveringCoroutine != null)
+        {
+            StopCoroutine(hoveringCoroutine);
+            hoveringCoroutine = null;
         }
     }
 
