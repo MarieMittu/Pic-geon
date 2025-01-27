@@ -4,12 +4,15 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class AbilityManager : MonoBehaviour
 {
     public ApplyImageEffectScript imageEffectScript;
     public Image heatVisionTimer;
     public GameObject heatVisionText;
+
+    public XRayEffect xrayEffectScript;
 
     float remainingAbilityTime = 0;
 
@@ -46,8 +49,13 @@ public class AbilityManager : MonoBehaviour
             heatVisionText = heatVisionTimer.transform.GetChild(0).gameObject;
             heatVisionText.SetActive(false);
         }
+        if (xrayEffectScript == null)
+        {
+            xrayEffectScript = GetComponent<XRayEffect>();
+        }
         abilities = new Ability[] {
-            new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision)
+            new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision),
+            new Ability("Xray Vision", KeyCode.Alpha2, 10, 0.3f, xrayEffectScript.ActivateXRay)
         };
     }
 
