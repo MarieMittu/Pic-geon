@@ -89,6 +89,12 @@ public class ScenesController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
+    public void GameWon()
+    {
+        SceneManager.LoadScene("WinScene");
+        Cursor.lockState = CursorLockMode.None;
+    }
+
     public void RetryMission()
     {
         switch (MissionManager.sharedInstance.currentMission)
