@@ -8,6 +8,7 @@ public class AIRobotController : AIBirdController
     [HideInInspector] public bool isSpying = false;
 
     public Vector3 rectangleSize = new Vector3(20, 0, 10);
+    public float walkRotationAngle;
     private Coroutine slidingCoroutine;
     private Coroutine hoveringCoroutine;
 
@@ -118,10 +119,15 @@ public class AIRobotController : AIBirdController
 
         float randomX = Random.Range(-halfX, halfX);
         float randomZ = Random.Range(-halfZ, halfZ);
-        Vector3 randomPoint = new Vector3(center.x + randomX, center.y, center.z + randomZ);
+        Vector3 localRandomPoint = new Vector3(randomX, 0, randomZ);
+
+        Quaternion floorRotation = Quaternion.Euler(0, walkRotationAngle, 0); 
+        Vector3 rotatedPoint = floorRotation * localRandomPoint;
+
+        Vector3 worldPoint = center + rotatedPoint;
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(worldPoint, out hit, 10.0f, NavMesh.AllAreas))
         {
             result = hit.position;
             return true;
@@ -133,15 +139,16 @@ public class AIRobotController : AIBirdController
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(centrePoint, rectangleSize);
+        if (!Application.isPlaying) return;
 
-         if (agent != null && agent.hasPath)
-        {
-            Gizmos.color = Color.magenta; // Destination point color
-            Gizmos.DrawSphere(agent.destination, 0.1f); // Visualize the agent's current destination
-        }
+        Gizmos.color = Color.magenta;
+
+        Quaternion floorRotation = Quaternion.Euler(0, walkRotationAngle, 0);
+
+        Gizmos.matrix = Matrix4x4.TRS(centrePoint, floorRotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, rectangleSize); 
     }
+
 
     private IEnumerator SlidingMovement()
     {
