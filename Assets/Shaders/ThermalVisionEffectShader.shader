@@ -46,7 +46,7 @@ Shader "Hidden/ThermalVisionEffectShader"
                 float3 colorRamp[8];// must be colSeg + 1
                 colorRamp[0] = float3(0,0,0.01);
                 colorRamp[1] = float3(0,0,1);
-                colorRamp[2] = float3(1,0,1);
+                colorRamp[2] = float3(0,0.5,0.5);
                 colorRamp[3] = float3(1,0,0);
                 colorRamp[4] = float3(1,0.2,0);
                 colorRamp[5] = float3(1,0.5,0);

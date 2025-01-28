@@ -9,7 +9,7 @@ public class BatteryManager : MonoBehaviour
 
     float charge;
     public float maxCharge;
-    public Text batteryText;
+    public BatteryUI batteryUI;
 
     private void Awake()
     {
@@ -19,7 +19,7 @@ public class BatteryManager : MonoBehaviour
     void Start()
     {
         charge = maxCharge;
-        updateBatteryText();
+        updateBatteryUI();
     }
 
     void Update()
@@ -55,7 +55,7 @@ public class BatteryManager : MonoBehaviour
             charge -= amount;
             usedCharge = amount;
         }
-        updateBatteryText();
+        updateBatteryUI();
         if (charge <= 0)
         {
             GameManager.sharedInstance.TriggerGameOver();
@@ -68,8 +68,8 @@ public class BatteryManager : MonoBehaviour
         charge = maxCharge;
     }
 
-    void updateBatteryText()
+    void updateBatteryUI()
     {
-        batteryText.text = "Battery Charge: " + charge + "/" + maxCharge;
+        batteryUI.SetBatteryLevel((int)charge);
     }
 }

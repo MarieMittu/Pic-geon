@@ -10,6 +10,7 @@ public class AIBirdController : MonoBehaviour
     public float finalRange;
 
     private float actionTime; //waiting time between start of random actions
+    private float stateTime; //waiting time between changing states
     private bool isTransitioning = false;
     public delegate void RandomActions();
 
@@ -17,18 +18,64 @@ public class AIBirdController : MonoBehaviour
 
     public Animator animator;
 
-    protected bool isSitting;
-    private bool isWalking;
-    private bool isFlying;
-    private bool isSleeping;
+    private bool blockStateTransition = false;
+    private bool blockAutoAnimation = false;
+    public bool shallWeLog = false;
 
     [HideInInspector] public NavMeshAgent agent;
     public float walkRadius ; //radius of sphere to walk around
 
     public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which bird walks
 
-    protected Dictionary<RandomActions, List<System.Tuple<float, RandomActions>>> states = new Dictionary<RandomActions, List<System.Tuple<float, RandomActions>>>();
-    protected RandomActions currentState;
+    protected Dictionary<string, State> states = new Dictionary<string, State>();
+    protected State currentState;
+
+    protected class State
+    {
+        public string name;
+        // (weight, (transition animations, state))
+        public (float, (string[], State))[] transitions;
+        // (weight, animation name)
+        (float, string)[] animations;
+        public RandomActions stateAction = null;
+
+        public State(string name, (float, string)[] animations, RandomActions stateAction = null)
+        {
+            this.name = name;
+            this.animations = animations;
+            this.stateAction = stateAction;
+        }
+
+        public string GetRandomAnimation()
+        {
+            return ChooseRandomWeighted<string>(animations);
+        }
+        public (string, State) GetRandomTransition()
+        {
+            var trans = ChooseRandomWeighted(transitions);
+            if (trans.Item1 == null || trans.Item1.Length == 0) return (null, trans.Item2);
+            return (trans.Item1[Random.Range(0, trans.Item1.Length)], trans.Item2);
+        }
+        private static T ChooseRandomWeighted<T>((float, T)[] c)
+        {
+            float weightSum = 0;
+            foreach (var e in c)
+            {
+                weightSum += e.Item1;
+            }
+            float rand = Random.Range(0, weightSum);
+            for (int i = 0; i < c.Length; i++)
+            {
+                var e = c[i];
+                rand -= e.Item1;
+                if (rand <= 0)
+                {
+                    return c[i].Item2;
+                }
+            }
+            return default;
+        }
+    }
 
     private void Awake()
     {
@@ -38,6 +85,7 @@ public class AIBirdController : MonoBehaviour
     private void Start()
     {
         actionTime = 1;
+        stateTime = 2;
         rb = gameObject.GetComponent<Rigidbody>();
 
         agent = GetComponent<NavMeshAgent>();
@@ -47,108 +95,106 @@ public class AIBirdController : MonoBehaviour
 
     protected virtual void InitializeStates()
     {
-        RandomActions sitDownAction = () => SitDown(standUpAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking");
-        RandomActions sleepAction = () => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking");
+        // states
+        states["standing"] = new State("standing", new (float, string)[]{
+            (1.0f, "01_Standing_Idle"),
+            (1.0f, "01_Standing_Cleaning"),
+            (1.0f, "01_Standing_Picking_1"),
+            (1.0f, "01_Standing_Picking_2"),
+        });
 
-        currentState = StandStill;
-        states[StandStill] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.05f, StandStill),
-            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
-            new System.Tuple<float, RandomActions>(0.25f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.6f, Fly),
+        states["sitting"] = new State("sitting", new (float, string)[]{
+            (1.0f, "02_Sitting_Idle"),
+        });
+        states["sleeping"] = new State("sleeping", new (float, string)[]{
+            (1.0f, "02_Sitting_Sleeping_Idle"),
+        });
+
+        states["walking"] = new State("walking", new (float, string)[]{
+            (1.0f, "03_Walking_Idle"),
+            (1.0f, "03_Walking_Bending_Down_Picking_Bending_Up"),
+        }, WalkAround);
+
+        states["flying"] = new State("flying", new (float, string)[]{
+            (1.0f, "03_Walking_Idle"),
+        }, Fly);
+
+        // state transitions
+        states["standing"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Down" }, states["sitting"])),
+            (1.0f, (new string[]{  }, states["walking"])),
+            (1.0f, (new string[]{  }, states["flying"])),
         };
-        states[CleanItself] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.05f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.3f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
-            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.2f, Fly),
+
+        states["sitting"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Standing_up", "02_Sitting_Standing_Up_Picking" }, states["standing"])),
+            (1.0f, (new string[]{ "02_Sitting_Falling_Asleep" }, states["sleeping"])),
         };
-        states[sitDownAction] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.4f, sleepAction),
-            new System.Tuple<float, RandomActions>(0.3f, StandStill),
+        states["sleeping"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Waking_up" }, states["sitting"])),
         };
-        states[sleepAction] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.2f, sleepAction),
+
+        states["walking"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{  }, states["standing"])),
         };
-        states[PickFoodStanding] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
-            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.2f, Fly),
+
+        states["flying"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{  }, states["standing"])),
         };
-        states[PickFoodWalking] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
-            new System.Tuple<float, RandomActions>(0.0f, PickFoodWalking),
-            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.4f, Fly),
-        };
-        states[WalkAround] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
-            new System.Tuple<float, RandomActions>(0.0f, PickFoodWalking),
-            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.3f, Fly),
-        };
-        states[Fly] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.2f, PickFoodStanding),
-            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.1f, Fly),
-        };
+
+        // starting state
+        currentState = states["standing"];
     }
 
     private void Update()
     {
+        var action = currentState.stateAction;
+        if (action != null) action();
         PerformActionsSequence();
+        if (shallWeLog)
+        {
+            shallWeLog = false;
+            Debug.Log("State: " + currentState.name);
+        }
     }
 
     public void PerformActionsSequence()
     {
-        if (isTransitioning) return;
         actionTime -= Time.deltaTime;
-        if (actionTime <= 0)
+        stateTime -= Time.deltaTime;
+        if (isTransitioning) return;
+        if (stateTime <= 0 && !blockStateTransition)
         {
-            PerformRandomAction();
-            actionTime = Random.Range(startRange, finalRange);
-
+            TransitionToNextState();
+            stateTime = Random.Range(startRange, finalRange);
+            actionTime = 0;
+        }
+        else if (!blockAutoAnimation && (actionTime <= 0 || (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1 && animator.GetCurrentAnimatorClipInfo(0).Length != 0)))
+        {
+            string anim = PerformRandomAction();
+            actionTime = ActionDuration(anim);
         }
     }
 
-    public virtual void PerformRandomAction()
+    public virtual string PerformRandomAction()
     {
-        var transitions = states[currentState];
-        float weightSum = 0;
-        foreach (var transition in transitions)
-        {
-            weightSum += transition.Item1;
-        }
-        float rand = Random.Range(0, weightSum);
-        for (int i = 0; i < transitions.Count; i++)
-        {
-            var transition = transitions[i];
-            rand -= transition.Item1;
-            if (rand <= 0)
-            {
-                currentState = transitions[i].Item2;
-                currentState();
-                return;
-            }
-        }
+        var anim = currentState.GetRandomAnimation();
+        animator.CrossFade(anim, 0.1f);
+        return anim;
+    }
+
+    protected void TransitionToNextState()
+    {
+        var trans = currentState.GetRandomTransition();
+        var anim = trans.Item1;
+        if(!string.IsNullOrEmpty(anim)) StartCoroutine(Transit(anim));
+        currentState = trans.Item2;
+        blockStateTransition = false;
     }
 
     // helpers
@@ -184,136 +230,41 @@ public class AIBirdController : MonoBehaviour
 
     // normal actions
 
-    public void StandStill()
-    {
-        if (!isWalking && !isFlying && !isSitting)
-        {
-            animator.CrossFade("01_Standing_Idle", 0.1f);
-        }
-        
-    }
-
-    public void CleanItself()
-    {
-        if (!isWalking && !isFlying && !isSitting)
-        {
-            animator.CrossFade("01_Standing_Cleaning", 0.1f);
-        }
-       
-    }
-
-    public void SitDown(string standUpAnim)
-    {
-        if (!isWalking && !isFlying && !isSitting)
-        {
-            StartCoroutine(StaySit(standUpAnim));
-        }
-       
-    }
-
-    private IEnumerator StaySit(string standUpAnim)
-    {
-        isSitting = true;
-        yield return StartCoroutine(Transit("02_Sitting_Down", "02_Sitting_Idle"));
-
-        if (!isSleeping) StartCoroutine(StandUp(standUpAnim));
-
-    }
-
-    private IEnumerator StandUp(string standUpAnim)
-    {
-            float waitTime = Random.Range(8f, 12f);
-            yield return new WaitForSeconds(waitTime);
-
-            //string standUpAnim = Random.Range(0, 2) == 0 ? "02_Sitting_Standing_up" : "02_Sitting_Standing_Up_Picking";
-        yield return StartCoroutine(Transit(standUpAnim, "01_Standing_Idle"));
-        isSitting = false;
-
-    }
-
-    public void PickFoodStanding()
-    {
-        if (!isWalking && !isFlying && !isSitting)
-        {
-            StartCoroutine(Transit("01_Standing_Picking_1", "01_Standing_Idle"));
-        }
-        
-    }
-
-    public void PickFoodWalking()
-    {
-        if (isWalking)
-        {
-            StartCoroutine(Transit("03_Walking_Bending_Down_Picking_Bending_Up", "03_Walking_Ilde"));
-        }
-        
-    }
-
-
-    public void Sleep(string anim, string standupAnim)
-    {
-        if (isSitting && !isSleeping) StartCoroutine(StayAsleep(anim, standupAnim));
-    }
-
-    private IEnumerator StayAsleep(string anim, string standupAnim)
-    {
-        isSleeping = true;
-        yield return StartCoroutine(Transit("02_Sitting_Falling_Asleep"));
-
-        animator.CrossFade(anim, 0.1f);
-
-        yield return new WaitForSeconds(Random.Range(4f, 8f)); 
-
-        yield return StartCoroutine(Transit("02_Sitting_Waking_up"));
-        isSleeping = false;
-
-        animator.CrossFade("02_Sitting_Idle", 0.1f);
-
-        if (!isSleeping) StartCoroutine(StandUp(standupAnim));
-    }
-
-
-
     public void WalkAround()
     {
-        if (!isWalking && !isSitting && !isFlying && agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
+        // start new path
+        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
         {
+            if (blockStateTransition)
+            {
+                stateTime = 0;
+                blockStateTransition = false;
+                return;
+            }
             Vector3 point;
             if (RandomPoint(centrePoint, walkRadius, out point)) // Pass in our centre point and radius of area
             {
                 Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); // So you can see the point with gizmos
-                StartCoroutine(RotateAndMoveToPoint(point));
+                agent.SetDestination(point);
             }
         }
-
+        // while on path
+        else
+        {
+            blockStateTransition = true;
+            DuringWalk();
+        }
     }
 
-    private IEnumerator RotateAndMoveToPoint(Vector3 targetPoint)
+    private void DuringWalk()
     {
-        isWalking = true;
-
-        agent.SetDestination(targetPoint);
-        animator.CrossFade("03_Walking_Ilde", 0.1f);
-
-      
-        
-        while (agent.remainingDistance > agent.stoppingDistance || agent.pathPending)
+        if (agent.velocity.sqrMagnitude > 0.01f)
         {
-            if (agent.velocity.sqrMagnitude > 0.01f)
-            {
-                Vector3 moveDirection = agent.velocity.normalized;
+            Vector3 moveDirection = agent.velocity.normalized;
 
-                Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
 
-                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); 
-            }
-            yield return null;
-        }
-
-        if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
-        {
-            isWalking = false;
-            StandStill();
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
         }
     }
 
@@ -345,84 +296,105 @@ public class AIBirdController : MonoBehaviour
         if (agent != null && agent.hasPath)
         {
             Gizmos.color = Color.red; // Destination point color
-            Gizmos.DrawSphere(agent.destination, 0.5f); // Visualize the agent's current destination
+            Gizmos.DrawSphere(agent.destination, 0.1f); // Visualize the agent's current destination
         }
     }
 
-
-    public void Fly()
+    protected void Fly()
     {
-        if (!isSitting)
-        StartCoroutine(FlyPreparation());
-    }
-
-    private IEnumerator FlyPreparation()
-    {
-        // check if a flight path spline starts near this bird
         GameObject[] flightPaths = GameObject.FindGameObjectsWithTag("FlightPath");
-        foreach (GameObject flightPath in flightPaths)
+        Vector3 closestStart = flightPaths[0].GetComponent<SplineContainer>().EvaluatePosition(0, 0f);
+        SplineContainer closestSpline = flightPaths[0].GetComponent<SplineContainer>();
+        // just started fly state
+        if (!blockStateTransition)
         {
-            SplineContainer sc = flightPath.GetComponent<SplineContainer>();
-            Vector3 startPos = sc.EvaluatePosition(0, 0f);
-            if (Vector3.Distance(startPos, transform.position) < 10) // this number may need to change once in a real scene
+            // get nearest flight path
+            foreach (GameObject flightPath in flightPaths)
             {
-                NavMeshHit hit;
-                if (NavMesh.SamplePosition(startPos, out hit, 15.0f, NavMesh.AllAreas))
+                SplineContainer sc = flightPath.GetComponent<SplineContainer>();
+                Vector3 startPos = sc.EvaluatePosition(0, 0f);
+                if (Vector3.Distance(transform.position, startPos) < Vector3.Distance(transform.position, closestStart))
                 {
-                    Debug.DrawRay(hit.position, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
-                    // starts moving to point
-
-                    Vector3 direction = (hit.position - transform.position).normalized;
-                    Quaternion targetRotation = Quaternion.LookRotation(direction);
-
-                    float rotationSpeed = 5f;
-                    while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
-                    {
-                        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * rotationSpeed);
-                        yield return null;
-                    }
-
-
-                    agent.SetDestination(hit.position);
-                    StartCoroutine(GetToFlightPathAndStartFlight(sc));
+                    closestStart = startPos;
+                    closestSpline = sc;
                 }
+            }
+            NavMeshHit hit;
+            if (NavMesh.SamplePosition(closestStart, out hit, 1.0f, NavMesh.AllAreas))
+            {
+                Debug.DrawRay(hit.position, Vector3.up, Color.red, 1.0f); //so you can see with gizmos
+                                                                          // starts moving to point
+                agent.SetDestination(hit.position);
+                if (Vector3.Distance(agent.destination, closestStart) > 1)
+                {
+                    ForceStateChange();
+                    return;
+                }
+                blockStateTransition = true;
+                stateTime = 20; // state time is used as a limit for how long the bird tries to get to the spline
+                animator.CrossFade("03_Walking_Idle", 0.1f);
+                Debug.Log(name + "STARTING THE PATH: " + closestSpline.name);
+            }
+            else
+            {
+                ForceStateChange();
+                return;
+            }
+        }
+        else
+        {
+            blockAutoAnimation = true; // prevent automatic animation switch
+            SplineAnimate splineAnim = GetComponent<SplineAnimate>();
+            if (!splineAnim.enabled && (stateTime <= 0 || agent.pathStatus != NavMeshPathStatus.PathComplete))
+            {
+                Debug.Log(name + "HAVE FAILED THE PATH: " + closestSpline.name);
+                ForceStateChange();
+            }
+            else if (Vector3.Distance(transform.position, closestSpline.EvaluatePosition(0, 0f)) <= 0.5f && !splineAnim.enabled)
+            {
+                Debug.Log(name + "AM AT THE PATH: " + closestSpline.name);
+                // if destination was reached, start flight
+                agent.ResetPath();
+                agent.enabled = false;
+                animator.CrossFade("04_Flying", 0.1f);
+                splineAnim.Container = closestSpline;
+                splineAnim.enabled = true;
+                splineAnim.Play();
+            }
+            else if (splineAnim.enabled && splineAnim.NormalizedTime >= 1)
+            {
+                Debug.Log(name + "HAVE LEFT THE PATH: " + closestSpline.name);
+                // when flight along the spline is finished
+                splineAnim.enabled = false;
+                agent.enabled = true;
+                agent.ResetPath();
+                // force walking state to get the bird away from the landing zone
+                blockStateTransition = false;
+                Vector3 point;
+                // smaller radius than normal for walking state
+                if (RandomPoint(transform.position, 2f, out point))
+                {
+                    Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); // So you can see the point with gizmos
+                    agent.SetDestination(point);
+                    blockStateTransition = true;
+                }
+                currentState = states["walking"];
+                blockAutoAnimation = false;
+                actionTime = 0f;
+                stateTime = 5f;
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.P)) Debug.Log(name + "WALKING TO THE PATH: " + closestSpline.name);
             }
         }
     }
 
-    IEnumerator GetToFlightPathAndStartFlight(SplineContainer splineContainer)
+    private void ForceStateChange()
     {
-        isWalking = true;
-        float maxDuration = 20;
-        float timer = 0f;
-        animator.Play("03_Walking_Ilde");
-        // wait until destination is reached or timer runs out
-        while (timer < maxDuration && Vector3.Distance(agent.destination, transform.position) >= 0.5)
-        {
-
-            timer += Time.deltaTime;
-            yield return null;
-        }
-
-        SplineAnimate splineAnim = GetComponent<SplineAnimate>();
-        // if destination was reached, start flight
-        if (Vector3.Distance(agent.destination, transform.position) <= 0.5)
-        {
-            agent.ResetPath();
-            agent.enabled = false;
-            animator.CrossFade("04_Flying", 0.1f);
-            isFlying = true;
-            splineAnim.Container = splineContainer;
-            splineAnim.enabled = true;
-            isWalking = false;
-            splineAnim.Play();
-        }
-        while (splineAnim.NormalizedTime < 1)
-            yield return new WaitForSeconds(0.01f);
-        agent.enabled = true;
-        isFlying = false;
-        isWalking = false;
-        // change to courutine take off - fly - land
-        animator.CrossFade("01_Standing_Idle", 0.2f);
+        agent.ResetPath();
+        stateTime = 0;
+        blockStateTransition = false;
+        blockAutoAnimation = false;
     }
 }

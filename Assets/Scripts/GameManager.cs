@@ -23,7 +23,7 @@ public class GameManager : MonoBehaviour
 
     public bool isGamePaused;
     public bool hasEvidence;
-    public bool hasCorrectPhotos;
+    public bool hasEnoughCorrectPhotos;
     public bool wantsToExit;
 
     public Camera camera1;
@@ -46,7 +46,7 @@ public class GameManager : MonoBehaviour
             timer.fillAmount = 1f;
         }
         hasEvidence = false;
-        hasCorrectPhotos = false;
+        hasEnoughCorrectPhotos = false;
         //SetUpCameras();
 
         noFiles.SetActive(true);
@@ -123,6 +123,12 @@ public class GameManager : MonoBehaviour
         FindObjectOfType<ScenesController>().GameOver();
     }
 
+    public void TriggerVictory()
+    {
+        FindObjectOfType<ScenesController>().GameWon();
+    }
+
+
     public void TriggerNextLevel()
     {
         FindObjectOfType<ScenesController>().OpenIntermediateScene();
@@ -147,10 +153,17 @@ public class GameManager : MonoBehaviour
 
    public void ControlEvidence()
    {
-        if (hasCorrectPhotos)
+        if (hasEnoughCorrectPhotos)
         {
-            MissionManager.sharedInstance.NextMission();
-            TriggerNextLevel();
+            if (MissionManager.sharedInstance.currentMission < 3)
+            {
+                MissionManager.sharedInstance.NextMission();
+                TriggerNextLevel();
+            } else
+            {
+                TriggerVictory();
+            }
+            
         } else
         {
             TriggerGameOver();

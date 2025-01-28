@@ -1,11 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using static UnityEngine.GraphicsBuffer;
 
 public class AbilityManager : MonoBehaviour
 {
     public ApplyImageEffectScript imageEffectScript;
+    public Image heatVisionTimer;
+    public GameObject heatVisionText;
+
+    public XRayEffect xrayEffectScript;
 
     float remainingAbilityTime = 0;
 
@@ -37,8 +44,18 @@ public class AbilityManager : MonoBehaviour
         {
             imageEffectScript = GetComponent<ApplyImageEffectScript>();
         }
+        if (heatVisionText == null)
+        {
+            heatVisionText = heatVisionTimer.transform.GetChild(0).gameObject;
+            heatVisionText.SetActive(false);
+        }
+        if (xrayEffectScript == null)
+        {
+            xrayEffectScript = GetComponent<XRayEffect>();
+        }
         abilities = new Ability[] {
-            new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision)
+            new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision),
+            new Ability("Xray Vision", KeyCode.Alpha2, 10, 0.3f, xrayEffectScript.ActivateXRay)
         };
     }
 
@@ -69,6 +86,11 @@ public class AbilityManager : MonoBehaviour
 
         remainingAbilityTime -= Time.deltaTime;
 
+        if (activeAbilityIndex != -1 && abilities[activeAbilityIndex].name == "Thermal Vision")
+        {
+            heatVisionTimer.fillAmount = remainingAbilityTime / abilities[activeAbilityIndex].duration;
+        }
+
         if (remainingAbilityTime <= 0)
         {
             deactivateActiveAbility();
@@ -79,6 +101,11 @@ public class AbilityManager : MonoBehaviour
     {
         if (activeAbilityIndex == -1) return;
         abilities[activeAbilityIndex].setActive(false);
+        if (abilities[activeAbilityIndex].name == "Thermal Vision")
+        {
+            heatVisionTimer.fillAmount = 0;
+            heatVisionText.SetActive(false);
+        }
         activeAbilityIndex = -1;
     }
 
@@ -86,5 +113,10 @@ public class AbilityManager : MonoBehaviour
     {
         abilities[index].setActive(true);
         activeAbilityIndex = index;
+        if (abilities[activeAbilityIndex].name == "Thermal Vision")
+        {
+            heatVisionTimer.fillAmount = 1;
+            heatVisionText.SetActive(true);
+        }
     }
 }

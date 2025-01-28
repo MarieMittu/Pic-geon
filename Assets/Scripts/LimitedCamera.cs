@@ -8,7 +8,7 @@ using UnityEngine.UI;
 public class LimitedCamera : MonoBehaviour
 {
     [Header("Camera Rotation")]
-    public float mouseSensitivity = 2f;
+    //public float mouseSensitivity = 2f;
     float cameraVerticalRotation = 0f;
     float cameraHorizontalRotation = 0f;
 
@@ -27,6 +27,7 @@ public class LimitedCamera : MonoBehaviour
     [Range(0, 90)] public float[] zoomLevels = { 60, 30, 10 };
     //[Range(0, 10)]
     public float[] zoomLevelsDepthOfField = { 3, 2, 1 };
+    public float[] zoomLevelsMouseSensitivity = { 3, 2, 1 };
     public float minFocusDistance = 0;
     public float maxFocusDistance = 3;
     int currentZoomLevel = 0;
@@ -40,6 +41,7 @@ public class LimitedCamera : MonoBehaviour
     private int correctPhotosAmount = 0;
     public RawImage screenshotImage;
     public RawImage flashImage;
+    public ZoomUI zoomUI;
     bool photoAnimationInProgress = false;
     public bool savePhotos = false;
     Camera cam;
@@ -57,11 +59,15 @@ public class LimitedCamera : MonoBehaviour
 
         UnityEngine.Cursor.lockState = CursorLockMode.Locked;
 
+        cam.fieldOfView = zoomLevels[currentZoomLevel];
         peripheryBlurRadius = maxPeripheryBlurRadius;
         Material dofShaderMat = effectScript.dofMat;
         dofShaderMat.SetFloat("_FocusDistance", (minFocusDistance+maxFocusDistance)/2);
         dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
         dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
+
+        zoomUI.SetZoomRatios(zoomLevels);
+        zoomUI.SetZoomLevel(currentZoomLevel);
     }
 
     // Update is called once per frame
@@ -72,8 +78,8 @@ public class LimitedCamera : MonoBehaviour
             Material dofShaderMat = effectScript.dofMat;
             if (!focusMode)
             {
-                float inputX = Input.GetAxis("Mouse X") * mouseSensitivity;
-                float inputY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+                float inputX = Input.GetAxis("Mouse X") * zoomLevelsMouseSensitivity[currentZoomLevel];
+                float inputY = Input.GetAxis("Mouse Y") * zoomLevelsMouseSensitivity[currentZoomLevel];
                 ProcessCameraMovement(inputX, inputY);
                 // scroll = change fov zoom level and apply respective depth of field
                 if (Input.mouseScrollDelta != Vector2.zero)
@@ -83,6 +89,7 @@ public class LimitedCamera : MonoBehaviour
 
                     cam.fieldOfView = zoomLevels[currentZoomLevel];
                     dofShaderMat.SetFloat("_DepthOfFieldSize", zoomLevelsDepthOfField[currentZoomLevel]);
+                    zoomUI.SetZoomLevel(currentZoomLevel);
                 }
             }
             else
@@ -109,18 +116,23 @@ public class LimitedCamera : MonoBehaviour
                 {
                     if (focusMode)
                     {
-                        DetectBirdsOnPhoto(true);
-                        StartCoroutine(TakePhotoScreenshotWithFeedback());
-                        GetComponent<AudioSource>().Play();
-                        TrackTapeAmount();
-                        GameManager.sharedInstance.hasEvidence = true;
-                        focusMode = false;
+                        if (!TapeManager.instance.reachedLimit)
+                        {
+                            DetectBirdsOnPhoto(true);
+                            StartCoroutine(TakePhotoScreenshotWithFeedback());
+                            GetComponent<AudioSource>().Play();
+                            TrackTapeAmount();
+                            GameManager.sharedInstance.hasEvidence = true;
+                        }
+                      
+                        //focusMode = false;
                         //cam.fieldOfView = zoomLevels[currentZoomLevel]; -> moved to end of photo animation in TakePhotoScreenshotWithFeedback
                     }
                     else
                     {
                         focusMode = true;
                         cam.fieldOfView *= 0.9f;
+                        BatteryManager.instance.useCharge(1);
                     }
                 }
 
@@ -246,16 +258,23 @@ public class LimitedCamera : MonoBehaviour
                         {
                             if (isFullDetection)
                             {
-                                correctPhotosAmount++;
-                                GameManager.sharedInstance.hasCorrectPhotos = true;
-                                Debug.Log("sus bird on photo " + correctPhotosAmount);
-
-                                if (MissionManager.sharedInstance.isTutorial)
+                                if (!robotScript.hasBeenCaught)
                                 {
-                                    TutorialManager.sharedInstance.showRobot = false;
-                                    Debug.Log("CHANGE SHOW ROBOT");
-                                }
+                                    if (!MissionManager.sharedInstance.isTutorial) robotScript.hasBeenCaught = true;
+                                    correctPhotosAmount++;
+                                    if (correctPhotosAmount >= MissionManager.sharedInstance.GetRequiredPhotos()) GameManager.sharedInstance.hasEnoughCorrectPhotos = true;
+                                    Debug.Log("sus bird on photo " + correctPhotosAmount);
 
+                                    if (MissionManager.sharedInstance.isTutorial)
+                                    {
+                                        TutorialManager.sharedInstance.showRobot = false;
+                                        Debug.Log("CHANGE SHOW ROBOT");
+                                    }
+                                }
+                                else
+                                {
+                                    Debug.Log("already caught before");
+                                }
                             } else
                             {
                                 
@@ -321,8 +340,10 @@ public class LimitedCamera : MonoBehaviour
 
         if (TapeManager.instance.reachedLimit)
         {
-            //ControlCorrectPhotos(); TODO: only in the last level, add level check
-            GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
+            if (MissionManager.sharedInstance.currentMission < 3)
+            {
+                GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
+            }
         }
     }
 
@@ -432,7 +453,7 @@ public class LimitedCamera : MonoBehaviour
         flashImage.gameObject.SetActive(true);
         float timeElapsed = 0;
         float flashUpTime = 0.1f;
-        float flashDownTime = 0.2f;
+        float flashDownTime = 0.35f;
         while (timeElapsed < flashUpTime + flashDownTime)
         {
             if (timeElapsed < flashUpTime)
@@ -450,8 +471,8 @@ public class LimitedCamera : MonoBehaviour
         flashImage.gameObject.SetActive(false);
 
         // continue showing the photo for a time
-        yield return new WaitForSeconds(1);
-        resetAfterFocusMode();
+        yield return new WaitForSeconds(2);
+        //resetAfterFocusMode();
         photoAnimationInProgress = false;
         // minimize image animation
         timeElapsed = 0;

@@ -86,7 +86,7 @@ public class TutorialManager : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            normalMarker.SetActive(true);
+            if (currentIndex == 11) normalMarker.SetActive(true);
             ShowNextTutorial(12);
         }
 

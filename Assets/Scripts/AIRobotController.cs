@@ -6,13 +6,28 @@ using UnityEngine.AI;
 public class AIRobotController : AIBirdController
 {
     [HideInInspector] public bool isSpying = false;
+    [HideInInspector] public bool hasBeenCaught = false;
 
     public Vector3 rectangleSize = new Vector3(20, 0, 10);
+    public float walkRotationAngle;
+    private Coroutine slidingCoroutine;
+    private Coroutine hoveringCoroutine;
 
     private void Update()
     {
         CheckIfSpying();
+        var action = currentState.stateAction;
+        if (action != null) action();
         PerformActionsSequence();
+        if (shallWeLog)
+        {
+            shallWeLog = false;
+            Debug.Log("State: " + currentState.name);
+        }
+        if (currentState.name != "sitting")
+        {
+            StopSliding();
+        }
     }
 
     protected void CheckIfSpying()
@@ -29,61 +44,73 @@ public class AIRobotController : AIBirdController
 
     protected override void InitializeStates()
     {
-        RandomActions sitDownAction = () => SitDown(standUpAnim: "02_Sitting_Standing_up");
-        RandomActions sleepAction = () => Sleep(anim: "02_Sitting_Sleeping_Idle", standupAnim: "02_Sitting_Standing_up");
-        
-        currentState = StandStill;
-        states[StandStill] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.05f, TweakStanding),
-            //new System.Tuple<float, RandomActions>(0.05f, StandStill),
-            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.8f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.15f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.1f, Fly),
+
+        // states
+        states["standing"] = new State("standing", new (float, string)[]{
+            (1.0f, "01_Standing_Idle"),
+            (1.0f, "01_Standing_Cleaning"),
+            (1.0f, "R01_Standing_Idle_Antenna"),
+            (1.0f, "R01_Standing_Idle_Head"),
+            (1.0f, "R01_Standing_Idle_Shutter"),
+            (1.0f, "R01_Standing_Idle_Tweak"),
+        });
+
+        states["sitting"] = new State("sitting", new (float, string)[]{
+            (1.0f, "02_Sitting_Idle"),
+            (1.0f, "R02_Sitting_Idle_Head"),
+            (1.0f, "R02_Sitting_Idle_Tweak"),
+            (1.0f, "R02_Sitting_Idle_Shutter"),
+        }, SittingBehavior);
+        states["sleeping"] = new State("sleeping", new (float, string)[]{
+            (1.0f, "02_Sitting_Sleeping_Idle"),
+            (1.0f, "R02_Sitting_Sleeping_Antenna"),
+            (1.0f, "R02_Sitting_Sleeping_Idle_Tweak"),
+        });
+
+        states["walking"] = new State("walking", new (float, string)[]{
+            (1.0f, "03_Walking_Idle"),
+            (1.0f, "R03_Walking_Idle_Tweak"),
+            (1.0f, "R03_Walking_Picking_Shutter"),
+            (1.0f, "R03_Walking_Picking_Stiff"),
+            (1.0f, "R03_Walking_Idle_Shutter"),
+        }, WalkAround);
+
+        states["flying"] = new State("flying", new (float, string)[]{
+            (1.0f, "03_Walking_Idle"),
+        }, Fly);
+
+        // state transitions
+        states["standing"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Down" }, states["sitting"])),
+            (1.0f, (new string[]{  }, states["walking"])),
+            (1.0f, (new string[]{  }, states["flying"])),
         };
-        states[CleanItself] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.05f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.7f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.2f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.1f, Fly),
+
+        states["sitting"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Standing_up" }, states["standing"])),
+            (1.0f, (new string[]{ "02_Sitting_Falling_Asleep" }, states["sleeping"])),
         };
-        states[sitDownAction] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.9f, ShowAntenna),
-            new System.Tuple<float, RandomActions>(0.3f, StandStill),
+        states["sleeping"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{ "02_Sitting_Waking_up" }, states["sitting"])),
         };
-        states[WalkAround] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.7f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.15f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.2f, Fly),
+
+        states["walking"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{  }, states["standing"])),
         };
-        states[ShowAntenna] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.5f, ShowAntenna),
-            new System.Tuple<float, RandomActions>(0.3f, StandStill),
+
+        states["flying"].transitions = new (float, (string[], State))[]
+        {
+            (1.0f, (new string[]{  }, states["standing"])),
         };
-        states[Fly] = new List<System.Tuple<float, RandomActions>> {
-            new System.Tuple<float, RandomActions>(0.2f, StandStill),
-            new System.Tuple<float, RandomActions>(0.2f, CleanItself),
-            new System.Tuple<float, RandomActions>(0.4f, sitDownAction),
-            new System.Tuple<float, RandomActions>(0.0f, ShowAntenna),
-            new System.Tuple<float, RandomActions>(0.3f, WalkAround),
-            new System.Tuple<float, RandomActions>(0.05f, Fly),
-        };
+
+        // starting state
+        currentState = states["standing"];
     }
 
-    public void ShowAntenna()
-    {
-        Sleep("R02_Sitting_Sleeping", "02_Sitting_Standing_up");
-        isSpying = true;
-    }
-
-    public void TweakStanding()
-    {
-          animator.CrossFade("R01_Standing_Idle_Antenna", 0.1f);
-        
-    }
 
     protected override bool RandomPoint(Vector3 center, float range, out Vector3 result)
     {
@@ -93,10 +120,15 @@ public class AIRobotController : AIBirdController
 
         float randomX = Random.Range(-halfX, halfX);
         float randomZ = Random.Range(-halfZ, halfZ);
-        Vector3 randomPoint = new Vector3(center.x + randomX, center.y, center.z + randomZ);
+        Vector3 localRandomPoint = new Vector3(randomX, 0, randomZ);
+
+        Quaternion floorRotation = Quaternion.Euler(0, walkRotationAngle, 0); 
+        Vector3 rotatedPoint = floorRotation * localRandomPoint;
+
+        Vector3 worldPoint = center + rotatedPoint;
 
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(worldPoint, out hit, 10.0f, NavMesh.AllAreas))
         {
             result = hit.position;
             return true;
@@ -108,13 +140,138 @@ public class AIRobotController : AIBirdController
 
     void OnDrawGizmos()
     {
-        Gizmos.color = Color.magenta;
-        Gizmos.DrawWireCube(centrePoint, rectangleSize);
+        if (!Application.isPlaying) return;
 
-         if (agent != null && agent.hasPath)
+        Gizmos.color = Color.magenta;
+
+        Quaternion floorRotation = Quaternion.Euler(0, walkRotationAngle, 0);
+
+        Gizmos.matrix = Matrix4x4.TRS(centrePoint, floorRotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, rectangleSize); 
+    }
+
+
+    private IEnumerator SlidingMovement()
+    {
+        float slideSpeed = 1.0f;
+        float slideTime = 1.0f;
+        float pauseTime = 1.0f;
+        Vector3 slideDirection = transform.forward;
+
+        while (true)
         {
-            Gizmos.color = Color.magenta; // Destination point color
-            Gizmos.DrawSphere(agent.destination, 0.5f); // Visualize the agent's current destination
+            float elapsedTime = 0f;
+
+            while (elapsedTime < slideTime)
+            {
+                Vector3 newPosition = transform.position + slideDirection * slideSpeed * Time.deltaTime;
+
+                NavMeshHit hit;
+                if (NavMesh.SamplePosition(newPosition, out hit, 1.0f, NavMesh.AllAreas))
+                {
+                    transform.position = hit.position;
+                    elapsedTime += Time.deltaTime;
+                }
+                else
+                {
+                    StopSliding();
+                    yield break;
+                }
+
+                yield return null;
+            }
+
+            yield return new WaitForSeconds(pauseTime);
+        }
+    }
+
+    private void StopSliding()
+    {
+        if (slidingCoroutine != null)
+        {
+            StopCoroutine(slidingCoroutine);
+            slidingCoroutine = null;
+        }
+    }
+
+
+
+
+    public void SittingBehavior()
+    {
+        if (animator == null) return;
+
+        var clipInfo = animator.GetCurrentAnimatorClipInfo(0);
+        if (clipInfo.Length > 0)
+        {
+            string currentClipName = clipInfo[0].clip.name;
+
+            if (currentClipName == "02_Sitting_Idle")
+            {
+                if (slidingCoroutine == null)
+                {
+                    StopHovering();
+                    slidingCoroutine = StartCoroutine(SlidingMovement());
+                }
+
+                if (hoveringCoroutine == null)
+                {
+                    hoveringCoroutine = StartCoroutine(MovingUp(0.5f, transform.position, new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)));
+                }
+            }
+            else if (currentClipName == "02_Sitting_Sleeping_Idle")
+            {
+                StopSliding(); 
+                if (hoveringCoroutine == null)
+                {
+                    hoveringCoroutine = StartCoroutine(MovingUp(0.5f, transform.position, new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z)));
+                }
+            }
+            else
+            {
+                StopSliding();
+                StopHovering();
+            }
+        }
+        else
+        {
+            StopSliding();
+            StopHovering();
+        }
+    }
+
+    IEnumerator MovingUp(float time, Vector3 startpos, Vector3 endpos)
+    {
+
+        float elapsedTime = 0;
+
+        while (elapsedTime < time)
+        {
+            transform.position = Vector3.Lerp(startpos, endpos, (elapsedTime / time));
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+
+        while (elapsedTime < time)
+        {
+            transform.position = Vector3.Lerp(endpos, startpos, (elapsedTime / time));
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+    }
+
+
+
+    private void StopHovering()
+    {
+        if (hoveringCoroutine != null)
+        {
+            StopCoroutine(hoveringCoroutine);
+            hoveringCoroutine = null;
         }
     }
 
