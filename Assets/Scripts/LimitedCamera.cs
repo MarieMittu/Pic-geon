@@ -42,6 +42,7 @@ public class LimitedCamera : MonoBehaviour
     public RawImage screenshotImage;
     public RawImage flashImage;
     public ZoomUI zoomUI;
+    public FocusBoxUI focusBoxUI;
     bool photoAnimationInProgress = false;
     public bool savePhotos = false;
     Camera cam;
@@ -68,6 +69,7 @@ public class LimitedCamera : MonoBehaviour
 
         zoomUI.SetZoomRatios(zoomLevels);
         zoomUI.SetZoomLevel(currentZoomLevel);
+        ResetAfterFocusMode();
     }
 
     // Update is called once per frame
@@ -98,6 +100,7 @@ public class LimitedCamera : MonoBehaviour
                 {
                     peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, maxPeripheryBlurRadius);
                     dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
+                    focusBoxUI.SetFocusSize(peripheryBlurRadius);
                 }
             }
 
@@ -133,6 +136,9 @@ public class LimitedCamera : MonoBehaviour
                         focusMode = true;
                         cam.fieldOfView *= 0.9f;
                         BatteryManager.instance.useCharge(1);
+                        peripheryBlurRadius = maxPeripheryBlurRadius;
+                        focusBoxUI.gameObject.SetActive(true);
+                        focusBoxUI.SetFocusSize(peripheryBlurRadius);
                     }
                 }
 
@@ -140,7 +146,8 @@ public class LimitedCamera : MonoBehaviour
             // cancel photo
             if (focusMode && Input.GetMouseButtonDown(1))
             {
-                resetAfterFocusMode();
+                focusBoxUI.SetFocusSize(maxPeripheryBlurRadius);
+                ResetAfterFocusMode();
             }
         }
 
@@ -324,11 +331,13 @@ public class LimitedCamera : MonoBehaviour
         TutorialManager.sharedInstance.showRobot = true;
     }
 
-    void resetAfterFocusMode()
+    void ResetAfterFocusMode()
     {
         focusMode = false;
         cam.fieldOfView = zoomLevels[currentZoomLevel];
         peripheryBlurRadius = maxPeripheryBlurRadius;
+        focusBoxUI.SetFocusSize(peripheryBlurRadius);
+        focusBoxUI.gameObject.SetActive(false);
 
         Material dofShaderMat = effectScript.dofMat;
         dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);

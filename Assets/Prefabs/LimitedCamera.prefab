@@ -259,6 +259,7 @@ GameObject:
   - component: {fileID: 3609844334328307765}
   - component: {fileID: 4999416068894824822}
   - component: {fileID: 4739496552211864261}
+  - component: {fileID: 1284771776722567478}
   - component: {fileID: 8750381331898453074}
   - component: {fileID: 6593473375721480845}
   - component: {fileID: 7229078716807553216}
@@ -370,6 +371,8 @@ MonoBehaviour:
   maxPeripheryBlurRadius: 0.5
   screenshotImage: {fileID: 7576610554782536271}
   flashImage: {fileID: 7422457346622540831}
+  zoomUI: {fileID: 0}
+  focusBoxUI: {fileID: 0}
   savePhotos: 0
 --- !u!114 &4739496552211864261
 MonoBehaviour:
@@ -391,6 +394,18 @@ MonoBehaviour:
   thermalMat: {fileID: 0}
   dofMat: {fileID: 0}
   glitchMat: {fileID: 0}
+--- !u!114 &1284771776722567478
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7221969038424430605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: faa9d9f8ff13a42099d8b71804e621a1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!82 &8750381331898453074
 AudioSource:
   m_ObjectHideFlags: 0
@@ -510,3 +525,4 @@ MonoBehaviour:
   imageEffectScript: {fileID: 0}
   heatVisionTimer: {fileID: 0}
   heatVisionText: {fileID: 0}
+  xrayEffectScript: {fileID: 0}
