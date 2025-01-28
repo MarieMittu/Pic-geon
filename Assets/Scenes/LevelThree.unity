@@ -5154,11 +5154,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pooledBirds: []
   birdsToPool:
-  - {fileID: 5930485210797420366, guid: c4b55a20ba27442719109856a17d116c, type: 3}
+  - {fileID: 5930485210797420366, guid: aa5106f76f1c54286971ffab47cdf165, type: 3}
   birdsAmountToPool: 20
   pooledRobots: []
   robotsToPool:
-  - {fileID: 3268138461105073101, guid: 6bf7255e642b045ba85b0c8a9f0940be, type: 3}
+  - {fileID: 3268138461105073101, guid: a65ffb22c46d0472aa945632b5da4aca, type: 3}
   robotsAmountToPool: 10
 --- !u!114 &1041570248
 MonoBehaviour:
@@ -6161,11 +6161,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -5754060345647867467, guid: 0626d82931ccb4dc0a6066effd296358, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -5569043992460113364, guid: 0626d82931ccb4dc0a6066effd296358, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -3410185793394415013, guid: 0626d82931ccb4dc0a6066effd296358, type: 3}
       propertyPath: m_IsActive
@@ -6177,7 +6177,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8009987137999418058, guid: 0626d82931ccb4dc0a6066effd296358, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
