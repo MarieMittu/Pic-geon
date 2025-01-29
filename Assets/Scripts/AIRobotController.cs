@@ -14,6 +14,9 @@ public class AIRobotController : AIBirdController
     private void Update()
     {
         CheckIfSpying();
+
+        CheckAudio();
+
         var action = currentState.stateAction;
         if (action != null) action();
         PerformActionsSequence();
@@ -37,6 +40,20 @@ public class AIRobotController : AIBirdController
         }
         catch { 
             isSpying = false;
+        }
+    }
+
+    protected void CheckAudio()
+    {
+        try {
+            string anim = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
+            if (anim.Contains("Antenna")) {
+                var audio = GetComponent<AudioSource>();
+                if (audio != null && !audio.isPlaying) audio.Play();
+            }
+        }
+        catch { 
+
         }
     }
 
