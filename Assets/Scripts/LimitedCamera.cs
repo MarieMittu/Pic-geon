@@ -201,10 +201,13 @@ public class LimitedCamera : MonoBehaviour
         float minVRot = referenceVerticalRotation + minVerticalRotation;
         float maxVRot = referenceVerticalRotation + maxVerticalRotation;
 
+        var fovDiffV = (zoomLevels[0] - zoomLevels[currentZoomLevel])/2;
+        var fovDiffH = cam.aspect * fovDiffV;
+
         cameraVerticalRotation -= inputY;
-        cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, minVRot, maxVRot);
+        cameraVerticalRotation = Mathf.Clamp(cameraVerticalRotation, minVRot-fovDiffV, maxVRot+fovDiffV);
         cameraHorizontalRotation += inputX;
-        cameraHorizontalRotation = Mathf.Clamp(cameraHorizontalRotation, minHRot, maxHRot);
+        cameraHorizontalRotation = Mathf.Clamp(cameraHorizontalRotation, minHRot-fovDiffH, maxHRot+fovDiffH);
         transform.localEulerAngles = Vector3.right * cameraVerticalRotation + Vector3.up * cameraHorizontalRotation;
     }
 
