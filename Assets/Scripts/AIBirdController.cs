@@ -26,6 +26,8 @@ public class AIBirdController : MonoBehaviour
     public float walkRadius ; //radius of sphere to walk around
 
     public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which bird walks
+    public Vector3 rectangleSize = new Vector3(20, 0, 10);
+    public float walkRotationAngle;
 
     protected Dictionary<string, State> states = new Dictionary<string, State>();
     protected State currentState;
@@ -242,7 +244,7 @@ public class AIBirdController : MonoBehaviour
                 return;
             }
             Vector3 point;
-            if (RandomPoint(centrePoint, walkRadius, out point)) // Pass in our centre point and radius of area
+            if (RandomPoint(centrePoint, rectangleSize, walkRotationAngle, out point)) // Pass in our centre point and radius of area
             {
                 Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); // So you can see the point with gizmos
                 agent.SetDestination(point);
@@ -268,12 +270,25 @@ public class AIBirdController : MonoBehaviour
         }
     }
 
-    protected virtual bool RandomPoint(Vector3 center, float range, out Vector3 result)
+    protected virtual bool RandomPoint(Vector3 center, Vector3 rectangleSize, float rotationAngle, out Vector3 result)
     {
 
-        Vector3 randomPoint = center + Random.insideUnitSphere * range; //random point in a sphere 
+        float halfX = rectangleSize.x / 2;
+        float halfZ = rectangleSize.z / 2;
+
+        float randomX = Random.Range(-halfX, halfX);
+        float randomZ = Random.Range(-halfZ, halfZ);
+        Vector3 localRandomPoint = new Vector3(randomX, 0, randomZ);
+
+        // Apply rotation to the rectangle
+        Quaternion rotation = Quaternion.Euler(0, rotationAngle, 0);
+        Vector3 rotatedPoint = rotation * localRandomPoint;
+
+        // Transform to world space
+        Vector3 worldPoint = center + rotatedPoint;
+
         NavMeshHit hit;
-        if (NavMesh.SamplePosition(randomPoint, out hit, 10.0f, NavMesh.AllAreas)) //documentation: https://docs.unity3d.com/ScriptReference/AI.NavMesh.SamplePosition.html
+        if (NavMesh.SamplePosition(worldPoint, out hit, 10.0f, NavMesh.AllAreas)) //documentation: https://docs.unity3d.com/ScriptReference/AI.NavMesh.SamplePosition.html
         {
             //the 1.0f is the max distance from the random point to a point on the navmesh, might want to increase if range is big
             //or add a for loop like in the documentation
@@ -288,15 +303,18 @@ public class AIBirdController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Draw the walkable area as a circle
-        Gizmos.color = Color.red; // Circle color
-        Gizmos.DrawWireSphere(centrePoint, walkRadius); // Visualize the walk radius from the center point
+        // Draw the walkable rectangle
+        Gizmos.color = Color.red;
+        Quaternion rotation = Quaternion.Euler(0, walkRotationAngle, 0);
 
-        // Optional: Draw the agent's current destination if the agent is moving
+        Gizmos.matrix = Matrix4x4.TRS(centrePoint, rotation, Vector3.one);
+        Gizmos.DrawWireCube(Vector3.zero, rectangleSize);
+
+        // Optional: Draw the agent's current destination
         if (agent != null && agent.hasPath)
         {
-            Gizmos.color = Color.red; // Destination point color
-            Gizmos.DrawSphere(agent.destination, 0.1f); // Visualize the agent's current destination
+            Gizmos.color = Color.red;
+            Gizmos.DrawSphere(agent.destination, 0.1f);
         }
     }
 
@@ -372,7 +390,7 @@ public class AIBirdController : MonoBehaviour
                 blockStateTransition = false;
                 Vector3 point;
                 // smaller radius than normal for walking state
-                if (RandomPoint(transform.position, 2f, out point))
+                if (RandomPoint(transform.position, new Vector3(2f, 0f, 2f), walkRotationAngle, out point))
                 {
                     Debug.DrawRay(point, Vector3.up, Color.red, 2.0f); // So you can see the point with gizmos
                     agent.SetDestination(point);

@@ -20,6 +20,12 @@ public class BatteryUI : MonoBehaviour
 
     public void SetBatteryLevel(int level)
     {
+        if (emptySlots == null)
+        {
+            emptySlots = transform.Find("EmptySlots");
+            halfsSlots = transform.Find("HalfSlots");
+            fullSlots = transform.Find("FullSlots");
+        }
         batteryLevel = level;
         for (int i = 0; i < emptySlots.childCount; i++)
         {

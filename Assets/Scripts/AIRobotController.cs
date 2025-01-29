@@ -8,8 +8,6 @@ public class AIRobotController : AIBirdController
     [HideInInspector] public bool isSpying = false;
     [HideInInspector] public bool hasBeenCaught = false;
 
-    public Vector3 rectangleSize = new Vector3(20, 0, 10);
-    public float walkRotationAngle;
     private Coroutine slidingCoroutine;
     private Coroutine hoveringCoroutine;
 
@@ -112,30 +110,10 @@ public class AIRobotController : AIBirdController
     }
 
 
-    protected override bool RandomPoint(Vector3 center, float range, out Vector3 result)
+    protected override bool RandomPoint(Vector3 center, Vector3 rectangleSize, float rotationAngle, out Vector3 result)
     {
-
-        float halfX = rectangleSize.x / 2;
-        float halfZ = rectangleSize.z / 2;
-
-        float randomX = Random.Range(-halfX, halfX);
-        float randomZ = Random.Range(-halfZ, halfZ);
-        Vector3 localRandomPoint = new Vector3(randomX, 0, randomZ);
-
-        Quaternion floorRotation = Quaternion.Euler(0, walkRotationAngle, 0); 
-        Vector3 rotatedPoint = floorRotation * localRandomPoint;
-
-        Vector3 worldPoint = center + rotatedPoint;
-
-        NavMeshHit hit;
-        if (NavMesh.SamplePosition(worldPoint, out hit, 10.0f, NavMesh.AllAreas))
-        {
-            result = hit.position;
-            return true;
-        }
-
-        result = Vector3.zero;
-        return false;
+        // Use the parent logic but customize rectangle dimensions if needed
+        return base.RandomPoint(center, rectangleSize, rotationAngle, out result);
     }
 
     void OnDrawGizmos()

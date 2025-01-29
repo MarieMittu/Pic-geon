@@ -3481,6 +3481,8 @@ MonoBehaviour:
   agent: {fileID: 0}
   walkRadius: 15
   centrePoint: {x: 4.4, y: 4.63, z: -4.5}
+  rectangleSize: {x: 30, y: 0, z: 15}
+  walkRotationAngle: 0
 --- !u!195 &7137864355522252569
 NavMeshAgent:
   m_ObjectHideFlags: 0

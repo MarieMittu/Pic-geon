@@ -22,6 +22,7 @@ public class ApplyImageEffectScript : MonoBehaviour
     [HideInInspector] public Material glitchMat;
     int glitchMatIndex;
 
+
     void Start()
     {
         enabledMaterials = Enumerable.Repeat(true, materials.Length).ToArray();
@@ -132,4 +133,5 @@ public class ApplyImageEffectScript : MonoBehaviour
     }
 
     public bool isThermalActive() { return thermalActive; }
+
 }

@@ -6,7 +6,6 @@ public class XRayEffect : MonoBehaviour
 {
 
     bool xRayActive = false;
-    private Material[][] originalMaterials;
 
     public void ActivateXRay(bool enabled)
     {
@@ -17,27 +16,7 @@ public class XRayEffect : MonoBehaviour
         roboBirds.CopyTo(allBirds, 0);
         realBirds.CopyTo(allBirds, roboBirds.Length);
 
-        if (originalMaterials == null)
-        {
-            originalMaterials = new Material[allBirds.Length][];
-            for (int i = 0; i < allBirds.Length; i++)
-            {
-                // Store original materials for each bird part
-                BirdMaterialVariator materialVariator = allBirds[i].GetComponent<BirdMaterialVariator>();
-                if (materialVariator != null)
-                {
-                    originalMaterials[i] = new Material[materialVariator.bodyParts.Length];  
-                    for (int j = 0; j < materialVariator.bodyParts.Length; j++)
-                    {
-                        SkinnedMeshRenderer renderer = materialVariator.bodyParts[j].GetComponent<SkinnedMeshRenderer>();
-                        if (renderer != null)
-                        {
-                            originalMaterials[i][j] = renderer.material;
-                        }
-                    }
-                }
-            }
-        }
+        
         xRayActive = enabled;
 
         foreach (GameObject bird in allBirds)
@@ -103,12 +82,17 @@ public class XRayEffect : MonoBehaviour
 
     void RestoreOriginalMaterials(BirdMaterialVariator materialVariator)
     {
-        for (int i = 0; i < materialVariator.bodyParts.Length; i++)
+        for (int i = 0; i < materialVariator.slots.Length; i++)
         {
-            SkinnedMeshRenderer renderer = materialVariator.bodyParts[i].GetComponent<SkinnedMeshRenderer>();
-            if (renderer != null && originalMaterials != null)
+            GameObject[] parts = materialVariator.slots[i];
+            for (int j = 0; j < parts.Length; j++)
             {
-                renderer.material = originalMaterials[i][i];  
+                SkinnedMeshRenderer renderer = parts[j].GetComponent<SkinnedMeshRenderer>();
+                Material originalMaterial = BirdMaterialVariator.materialCache[materialVariator.variation][i];
+                if (renderer != null && originalMaterial != null)
+                {
+                    renderer.material = originalMaterial;
+                }
             }
         }
     }

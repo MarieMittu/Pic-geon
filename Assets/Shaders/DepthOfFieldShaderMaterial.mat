@@ -30,8 +30,8 @@ Material:
     m_Ints:
     - _GridSize: 20
     m_Floats:
-    - _DepthOfFieldSize: 1.5
-    - _FocusDistance: 1.5
+    - _DepthOfFieldSize: 10
+    - _FocusDistance: 25
     - _PeripheryBlurRadius: 0.5
     - _TransitionSize: 1
     m_Colors: []

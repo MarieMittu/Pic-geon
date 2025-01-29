@@ -25,7 +25,7 @@ public class BirdMaterialVariator : MonoBehaviour
     public GameObject[] lidsParts;
     public GameObject[] thighParts;
 
-    GameObject[][] slots;
+    public GameObject[][] slots;
     static string[] slotTextureNames =
     {
         "body_BaseColor-min",
