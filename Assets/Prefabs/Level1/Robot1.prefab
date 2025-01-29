@@ -3058,10 +3058,11 @@ MonoBehaviour:
   shallWeLog: 0
   agent: {fileID: 0}
   walkRadius: 5
-  centrePoint: {x: -2.8, y: 4.63, z: 6.1}
-  isSpying: 0
-  rectangleSize: {x: 17, y: 0, z: 30}
+  centrePoint: {x: 8.5, y: 4.63, z: -12.2}
+  rectangleSize: {x: 25, y: 0, z: 45}
   walkRotationAngle: -35.63
+  isSpying: 0
+  hasBeenCaught: 0
 --- !u!195 &5181826920925210693
 NavMeshAgent:
   m_ObjectHideFlags: 0

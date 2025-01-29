@@ -3480,8 +3480,8 @@ MonoBehaviour:
   shallWeLog: 0
   agent: {fileID: 0}
   walkRadius: 15
-  centrePoint: {x: -2.8, y: 4.63, z: 6.1}
-  rectangleSize: {x: 20, y: 0, z: 10}
+  centrePoint: {x: 8.5, y: 4.63, z: -12.2}
+  rectangleSize: {x: 25, y: 0, z: 50}
   walkRotationAngle: -35.63
 --- !u!195 &7137864355522252569
 NavMeshAgent:
