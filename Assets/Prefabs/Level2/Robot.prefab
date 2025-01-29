@@ -1395,6 +1395,7 @@ Transform:
   m_Children:
   - {fileID: 1898009063888708072}
   - {fileID: 2588063249229402209}
+  - {fileID: 4096940471496524405}
   m_Father: {fileID: 900023458773526192}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1144374334506342534
@@ -2948,7 +2949,6 @@ Transform:
   - {fileID: 7720484637887876502}
   - {fileID: 267064956391511967}
   - {fileID: 4179441596681979383}
-  - {fileID: 4096940471496524405}
   - {fileID: 1578994989951597430}
   - {fileID: 8349383781752752823}
   - {fileID: 3491826455512435639}
@@ -3058,12 +3058,12 @@ MonoBehaviour:
   animator: {fileID: 7063825414732274203}
   shallWeLog: 0
   agent: {fileID: 0}
-  walkRadius: 5
+  walkRadius: 10
   centrePoint: {x: -0.6, y: 4.63, z: -1.8}
-  isSpying: 0
-  hasBeenCaught: 0
   rectangleSize: {x: 30, y: 0, z: 10}
   walkRotationAngle: 0
+  isSpying: 0
+  hasBeenCaught: 0
 --- !u!195 &5181826920925210693
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -8376,59 +8376,59 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 5021066695862831559}
+    m_TransformParent: {fileID: 1682116783440334247}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.7
+      value: 0.0048344783
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.7
+      value: 0.004834479
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.7
+      value: 0.00483448
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.4
+      value: 0.0005
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.2
+      value: 0.0346
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.8
+      value: -0.0158
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.72087014
+      value: 0.66984844
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.6450333
+      value: 0.0992031
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.16906025
+      value: 0.15675773
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.18893668
+      value: -0.71894985
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 60.007
+      value: 64.107
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 77.206
+      value: 171.126
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 78.873
+      value: 77.237
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
       propertyPath: m_ConstrainProportionsScale
