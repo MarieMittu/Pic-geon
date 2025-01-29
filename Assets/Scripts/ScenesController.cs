@@ -31,6 +31,11 @@ public class ScenesController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
+    public void ExitToMenu()
+    {
+        Invoke("GoToMenu", 1f);
+    }
+
     public void LoadNextLevel()
     {
         switch (MissionManager.sharedInstance.currentMission)
@@ -100,16 +105,16 @@ public class ScenesController : MonoBehaviour
         switch (MissionManager.sharedInstance.currentMission)
             {
                 case 1:
-                Invoke("StartGame", 0.6f);
+                Invoke("StartGame", 1f);
                 break;
                 case 2:
-                Invoke("LoadMissionOne", 0.6f);
+                Invoke("LoadMissionOne", 1f);
                 break;
                 case 3:
-                Invoke("LoadMissionTwo", 0.6f);
+                Invoke("LoadMissionTwo", 1f);
                 break;
                 case 4:
-                Invoke("LoadMissionThree", 0.6f);
+                Invoke("LoadMissionThree", 1f);
                 break;
             }
              
