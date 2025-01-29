@@ -426,8 +426,6 @@ public class LimitedCamera : MonoBehaviour
         TapeManager.instance.gameObject.GetComponent<Canvas>().enabled = false;
         yield return new WaitForEndOfFrame();
         Texture2D texture = ScreenCapture.CaptureScreenshotAsTexture();
-        //reactivate UI for photo
-        TapeManager.instance.gameObject.GetComponent<Canvas>().enabled = true;
         // save image
         if (savePhotos)
         {
@@ -482,6 +480,8 @@ public class LimitedCamera : MonoBehaviour
         // continue showing the photo for a time
         yield return new WaitForSeconds(2);
         //resetAfterFocusMode();
+        //reactivate UI for photo
+        TapeManager.instance.gameObject.GetComponent<Canvas>().enabled = true;
         photoAnimationInProgress = false;
         // minimize image animation
         timeElapsed = 0;

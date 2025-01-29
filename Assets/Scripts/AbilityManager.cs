@@ -59,22 +59,29 @@ public class AbilityManager : MonoBehaviour
             nightVisionScript = GetComponent<NightVision>();
             if (nightVisionScript != null) nightVisionScript.ReturnLights();
         }
-        if (nightVisionScript == null)
+        switch (MissionManager.sharedInstance.currentMission)
         {
-            abilities = new Ability[] {
-                new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision),
-                new Ability("Xray Vision", KeyCode.Alpha2, 10, 0.3f, xrayEffectScript.ActivateXRay)
-            };
+            case 1: // tutorial
+                abilities = new Ability[] {
+                    new Ability("Thermal Vision", KeyCode.F, 10, 0.3f, imageEffectScript.SetThermalVision)
+                };
+                break;
+            case 2: // lvl one: plaza
+                abilities = new Ability[] {
+                    new Ability("Thermal Vision", KeyCode.F, 10, 0.3f, imageEffectScript.SetThermalVision)
+                };
+                break;
+            case 3: // lvl two: rooftop
+                abilities = new Ability[] {
+                    new Ability("Xray Vision", KeyCode.F, 10, 0.3f, xrayEffectScript.ActivateXRay)
+                };
+                break;
+            case 4: // lvl three: train station
+                abilities = new Ability[] {
+                    new Ability("Night Vision", KeyCode.F, 10, 0.3f, nightVisionScript.ActivateNightVision)
+                };
+                break;
         }
-        else
-        {
-            abilities = new Ability[] {
-                new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision),
-                new Ability("Xray Vision", KeyCode.Alpha2, 10, 0.3f, xrayEffectScript.ActivateXRay),
-                new Ability("Night Vision", KeyCode.Alpha3, 10, 0.3f, nightVisionScript.ActivateNightVision)
-            };
-        }
-        
     }
 
     void Update()
