@@ -15,6 +15,8 @@ public class AbilityUI : MonoBehaviour
         "Night Vision"
     };
 
+    int activatedAbility = -1;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -44,6 +46,11 @@ public class AbilityUI : MonoBehaviour
         {
             b.transform.GetChild(1).gameObject.SetActive(false);
         }
+
+        if (activatedAbility != -1)
+        {
+            EnableAbility(abilityNames[activatedAbility]);
+        }
     }
 
     // Update is called once per frame
@@ -60,10 +67,18 @@ public class AbilityUI : MonoBehaviour
     public void EnableAbility(string name)
     {
         int index = GetIndex(name);
-        buttons[index].color = Color.white;
-        timers[index].color = Color.white;
-        timers[index].fillAmount = 0;
-        buttons[index].transform.GetChild(1).gameObject.SetActive(true);
+        activatedAbility = index;
+        try
+        {
+            buttons[index].color = Color.white;
+            timers[index].color = Color.white;
+            timers[index].fillAmount = 0;
+            buttons[index].transform.GetChild(1).gameObject.SetActive(true);
+        }
+        catch
+        {
+            
+        }
     }
     public void EnableAbilityText(string name, bool enable)
     {
