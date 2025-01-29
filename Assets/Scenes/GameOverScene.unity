@@ -245,8 +245,6 @@ MonoBehaviour:
   alert: {fileID: 0}
   photosLibrary: {fileID: 0}
   submitOption: {fileID: 0}
-  retryBtn: {fileID: 268065455}
-  exitBtn: {fileID: 608367830}
   isPaused: 0
   isAlerting: 0
 --- !u!114 &28141652
