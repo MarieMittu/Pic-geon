@@ -646,7 +646,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: To use abilities press 1, 2, 3
+  m_Text: To use abilities press F
 --- !u!222 &116262273
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -14660,7 +14660,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: maxHorizontalRotation
-      value: 10
+      value: 7.7
       objectReference: {fileID: 0}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: minHorizontalRotation
