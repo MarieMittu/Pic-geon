@@ -646,7 +646,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: To use abilities press 1, 2, 3
+  m_Text: To use abilities press F
 --- !u!222 &116262273
 CanvasRenderer:
   m_ObjectHideFlags: 0

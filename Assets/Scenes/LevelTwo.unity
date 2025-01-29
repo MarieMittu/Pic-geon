@@ -6985,7 +6985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9035b8d5197de46a79fbe094a7b3c6c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMission: 1
+  currentMission: 3
   maxMissions: 3
   selectedMission: 1
   requiredPhotosForMissions: 01000000020000000300000004000000
