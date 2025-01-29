@@ -13,6 +13,7 @@ public class AbilityManager : MonoBehaviour
     public GameObject heatVisionText;
 
     public XRayEffect xrayEffectScript;
+    public NightVision nightVisionScript;
 
     float remainingAbilityTime = 0;
 
@@ -53,9 +54,15 @@ public class AbilityManager : MonoBehaviour
         {
             xrayEffectScript = GetComponent<XRayEffect>();
         }
+        if ( nightVisionScript == null)
+        {
+            nightVisionScript = GetComponent<NightVision>();
+            nightVisionScript.ReturnLights();
+        }
         abilities = new Ability[] {
             new Ability("Thermal Vision", KeyCode.Alpha1, 10, 0.3f, imageEffectScript.SetThermalVision),
-            new Ability("Xray Vision", KeyCode.Alpha2, 10, 0.3f, xrayEffectScript.ActivateXRay)
+            new Ability("Xray Vision", KeyCode.Alpha2, 10, 0.3f, xrayEffectScript.ActivateXRay),
+            new Ability("Night Vision", KeyCode.Alpha3, 10, 0.3f, nightVisionScript.ActivateNightVision)
         };
     }
 

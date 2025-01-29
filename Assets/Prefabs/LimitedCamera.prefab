@@ -513,6 +513,7 @@ MonoBehaviour:
   heatVisionTimer: {fileID: 0}
   heatVisionText: {fileID: 0}
   xrayEffectScript: {fileID: 0}
+  nightVisionScript: {fileID: 0}
 --- !u!114 &880292807367458303
 MonoBehaviour:
   m_ObjectHideFlags: 0
