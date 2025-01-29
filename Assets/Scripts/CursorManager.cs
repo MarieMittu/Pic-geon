@@ -8,6 +8,11 @@ public class CursorManager : MonoBehaviour
     public Texture2D cursor_normal;
     public Texture2D cursor_onClick;
 
+     void Awake()
+    {
+        Cursor.SetCursor(cursor_normal, Vector2.zero, CursorMode.Auto);
+    }
+
     // Update is called once per frame
     void Update()
     {
