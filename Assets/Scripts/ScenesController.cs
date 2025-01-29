@@ -31,6 +31,11 @@ public class ScenesController : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
     }
 
+    public void ExitToMenu()
+    {
+        Invoke("GoToMenu", 1f);
+    }
+
     public void LoadNextLevel()
     {
         switch (MissionManager.sharedInstance.currentMission)
@@ -72,7 +77,7 @@ public class ScenesController : MonoBehaviour
     {
         MissionManager.sharedInstance.SetMission(4);
         MissionManager.sharedInstance.StartSelectedMission();
-        SceneManager.LoadScene("LevelTwo"); // to change
+        SceneManager.LoadScene("LevelThree"); 
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
     }
@@ -98,22 +103,23 @@ public class ScenesController : MonoBehaviour
     public void RetryMission()
     {
         switch (MissionManager.sharedInstance.currentMission)
-        {
-            case 1:
-                StartGame();
+            {
+                case 1:
+                Invoke("StartGame", 1f);
                 break;
-            case 2:
-                LoadMissionOne();
+                case 2:
+                Invoke("LoadMissionOne", 1f);
                 break;
-            case 3:
-                LoadMissionTwo();
+                case 3:
+                Invoke("LoadMissionTwo", 1f);
                 break;
-            case 4:
-                LoadMissionThree();
+                case 4:
+                Invoke("LoadMissionThree", 1f);
                 break;
-        }
-            
+            }
+             
     }
+
 
     public void Pause()
     {

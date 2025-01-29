@@ -2910,9 +2910,9 @@ GameObject:
   - component: {fileID: 7523777177948137681}
   - component: {fileID: 524992532063890113}
   - component: {fileID: 5898224107915330681}
-  - component: {fileID: 8497643822281500201}
+  - component: {fileID: 7827824767465788941}
   m_Layer: 0
-  m_Name: Robot3
+  m_Name: Robot1
   m_TagString: RobotBird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3059,9 +3059,14 @@ MonoBehaviour:
   shallWeLog: 0
   agent: {fileID: 0}
   walkRadius: 5
-  centrePoint: {x: -0.6, y: 4.63, z: -1.8}
-  rectangleSize: {x: 30, y: 0, z: 60}
-  walkRotationAngle: -33
+<<<<<<< HEAD
+  centrePoint: {x: -2.8, y: 4.63, z: 6.1}
+  rectangleSize: {x: 17, y: 0, z: 30}
+=======
+  centrePoint: {x: 8.5, y: 4.63, z: -12.2}
+  rectangleSize: {x: 25, y: 0, z: 45}
+>>>>>>> origin/colorfbx
+  walkRotationAngle: -35.63
   isSpying: 0
   hasBeenCaught: 0
 --- !u!195 &5181826920925210693
@@ -3174,7 +3179,7 @@ MonoBehaviour:
   thighParts:
   - {fileID: 563581554114477386}
   - {fileID: 6006197093236247617}
---- !u!82 &8497643822281500201
+--- !u!82 &7827824767465788941
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

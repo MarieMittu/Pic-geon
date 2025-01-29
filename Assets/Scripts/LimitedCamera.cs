@@ -248,11 +248,12 @@ public class LimitedCamera : MonoBehaviour
     void DetectBirdsOnPhoto(bool isFullDetection)
     {
         GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
+        var xrayScript = GetComponent<XRayEffect>();
         foreach (GameObject rb in roboBirds)
         {
             // is a visible pigeon showing suspicious behaviour?
             var robotScript = rb.GetComponent<AIRobotController>();
-            if (rb.GetComponent<MeshRenderer>() && robotScript.isSpying)
+            if (rb.GetComponent<MeshRenderer>() && (robotScript.isSpying || (MissionManager.sharedInstance.currentMission == 3 && xrayScript.IsXRayActive()))) //add gear xray cindition
             {
                 // test if pigeon is obstructed
                 RaycastHit hit;
