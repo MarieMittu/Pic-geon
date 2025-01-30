@@ -55,13 +55,13 @@ public class MenusController : MonoBehaviour
 
         if (upButton != null)
         {
-            upButton.onClick.RemoveAllListeners(); // Remove existing listeners
+            upButton.onClick.RemoveAllListeners();
             upButton.onClick.AddListener(() => OnUpButtonClicked());
         }
 
         if (downButton != null)
         {
-            downButton.onClick.RemoveAllListeners(); // Remove existing listeners
+            downButton.onClick.RemoveAllListeners(); 
             downButton.onClick.AddListener(() => OnDownButtonClicked());
         }
 
@@ -107,19 +107,19 @@ public class MenusController : MonoBehaviour
             
         }
 
-        //if (Input.GetKeyDown(KeyCode.Return) && !isReturnPressed)
-        //{
-        //    Debug.Log("Return key pressed");
-        //    isReturnPressed = true;
-        //    PressButton(okButton);
-        //    PressOKButton();
-        //}
-        //else if (isReturnPressed && !Input.GetKey(KeyCode.Return))
-        //{
-        //    Debug.Log("Return key released (manual detection)");
-        //    isReturnPressed = false;
-        //    ReleaseButton(okButton);
-        //}
+        if (Input.GetKeyDown(KeyCode.Return) && !isReturnPressed)
+        {
+            Debug.Log("Return key pressed");
+            //isReturnPressed = true;
+            PressButton(okButton);
+            PressOKButton();
+        }
+        else if (isReturnPressed && !Input.GetKey(KeyCode.Return))
+        {
+            Debug.Log("Return key released (manual detection)");
+            isReturnPressed = false;
+            ReleaseButton(okButton);
+        }
     }
 
     private void AssignHorizKeyboard()
@@ -298,13 +298,13 @@ public class MenusController : MonoBehaviour
 
     private void PressButton(Button button)
     {
-        var clickDown = new PointerEventData(eventSystem);
-        ExecuteEvents.Execute(button.gameObject, clickDown, ExecuteEvents.pointerDownHandler);
+        //var clickDown = new PointerEventData(eventSystem);
+        //ExecuteEvents.Execute(button.gameObject, clickDown, ExecuteEvents.pointerDownHandler);
     }
     private void ReleaseButton(Button button)
     {
-        var clickUp = new PointerEventData(eventSystem);
-        ExecuteEvents.Execute(button.gameObject, clickUp, ExecuteEvents.pointerUpHandler);
+        //var clickUp = new PointerEventData(eventSystem);
+        //ExecuteEvents.Execute(button.gameObject, clickUp, ExecuteEvents.pointerUpHandler);
     }
 
     // for photo library
