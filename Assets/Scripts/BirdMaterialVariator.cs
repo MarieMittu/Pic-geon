@@ -24,6 +24,8 @@ public class BirdMaterialVariator : MonoBehaviour
     public GameObject[] eyesParts;
     public GameObject[] lidsParts;
     public GameObject[] thighParts;
+    public GameObject[] antenna;
+    public GameObject[] gears;
 
     public GameObject[][] slots;
     static string[] slotTextureNames =

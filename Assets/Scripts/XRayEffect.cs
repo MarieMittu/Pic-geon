@@ -27,10 +27,12 @@ public class XRayEffect : MonoBehaviour
                 if (xRayActive)
                 {
                     ApplyTransparencyToBirdParts(materialVariator);
+                    ApplyLightBlueHue(materialVariator);
                 }
                 else
                 {
                     RestoreOriginalMaterials(materialVariator);
+                    RemoveLightBlueHue(materialVariator);
                 }
             }
         }
@@ -68,6 +70,53 @@ public class XRayEffect : MonoBehaviour
         }
     }
 
+    void ApplyLightBlueHue(BirdMaterialVariator materialVariator)
+    {
+        ApplyColorToParts(materialVariator.antenna, new Color(0.5f, 0.8f, 1f)); // Light blue
+        ApplyColorToParts(materialVariator.gears, new Color(0.5f, 0.8f, 1f));   // Light blue
+    }
+
+    void RemoveLightBlueHue(BirdMaterialVariator materialVariator)
+    {
+        RestoreOriginalMaterialsForParts(materialVariator.antenna);
+        RestoreOriginalMaterialsForParts(materialVariator.gears);
+    }
+
+    void ApplyColorToParts(GameObject[] parts, Color color)
+    {
+        foreach (GameObject part in parts)
+        {
+            SkinnedMeshRenderer skinnedMeshRenderer = part.GetComponent<SkinnedMeshRenderer>();
+            if (skinnedMeshRenderer != null)
+            {
+                Material material = new Material(skinnedMeshRenderer.material);
+                material.color = color;
+                skinnedMeshRenderer.material = material;
+            }
+        }
+    }
+
+    void RestoreOriginalMaterialsForParts(GameObject[] parts)
+    {
+        foreach (GameObject part in parts)
+        {
+            SkinnedMeshRenderer skinnedMeshRenderer = part.GetComponent<SkinnedMeshRenderer>();
+            if (skinnedMeshRenderer != null)
+            {
+                int variation = part.GetComponentInParent<BirdMaterialVariator>().variation;
+                int slotIndex = FindSlotIndex(part);
+                if (slotIndex >= 0)
+                {
+                    Material originalMaterial = BirdMaterialVariator.materialCache[variation][slotIndex];
+                    if (originalMaterial != null)
+                    {
+                        skinnedMeshRenderer.material = originalMaterial;
+                    }
+                }
+            }
+        }
+    }
+
     void SetMaterialToTransparent(Material material)
     {
         material.SetFloat("_Mode", 3); // 3 corresponds to Transparent mode
@@ -95,6 +144,21 @@ public class XRayEffect : MonoBehaviour
                 }
             }
         }
+    }
+
+    int FindSlotIndex(GameObject part)
+    {
+        BirdMaterialVariator materialVariator = part.GetComponentInParent<BirdMaterialVariator>();
+        if (materialVariator == null) return -1;
+
+        for (int i = 0; i < materialVariator.slots.Length; i++)
+        {
+            if (System.Array.Exists(materialVariator.slots[i], element => element == part))
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 
     public bool IsXRayActive() { return xRayActive; }
