@@ -153,6 +153,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1071146049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &60344477
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 60344478}
+  m_Layer: 0
+  m_Name: BirdsPos (11)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &60344478
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 60344477}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 22.578, y: 9, z: -13.822}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1071146049}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &67831283
 GameObject:
   m_ObjectHideFlags: 0
@@ -534,6 +565,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1071146049}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &188885028
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 188885029}
+  m_Layer: 0
+  m_Name: BirdsPos (13)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &188885029
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 188885028}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.30212033, z: 0, w: 0.95326984}
+  m_LocalPosition: {x: 9.12, y: 10, z: -19.612}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1071146049}
+  m_LocalEulerAnglesHint: {x: 0, y: -35.17, z: 0}
 --- !u!1 &212740631 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: -8666074373035820856, guid: 5f453400c5afe48289991cc409bbbc84, type: 3}
@@ -1434,7 +1496,7 @@ Transform:
   m_GameObject: {fileID: 466838984}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 11.85, y: 10, z: -21.05}
+  m_LocalPosition: {x: 12.18, y: 10, z: -21.97}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1720,6 +1782,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507535701}
   m_CullTransparentMesh: 1
+--- !u!1 &510777699
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 510777700}
+  m_Layer: 0
+  m_Name: BirdsPos (10)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &510777700
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 510777699}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 24.855, y: 9, z: -13.49}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1071146049}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &550130251
 GameObject:
   m_ObjectHideFlags: 0
@@ -3989,6 +4082,12 @@ MonoBehaviour:
   - {fileID: 554674457}
   - {fileID: 1771297988}
   - {fileID: 345742468}
+  - {fileID: 510777700}
+  - {fileID: 60344478}
+  - {fileID: 1361234745}
+  - {fileID: 188885029}
+  - {fileID: 1625269609}
+  - {fileID: 1306780001}
   robotsPositions:
   - {fileID: 574010167}
   - {fileID: 8088575}
@@ -4010,11 +4109,17 @@ Transform:
   m_Children:
   - {fileID: 1789320321}
   - {fileID: 466838985}
+  - {fileID: 188885029}
+  - {fileID: 1625269609}
   - {fileID: 550130252}
   - {fileID: 174521451}
   - {fileID: 345742468}
   - {fileID: 1739463762}
+  - {fileID: 1306780001}
   - {fileID: 1708309022}
+  - {fileID: 510777700}
+  - {fileID: 60344478}
+  - {fileID: 1361234745}
   - {fileID: 554674457}
   - {fileID: 1771297988}
   - {fileID: 1949641984}
@@ -4648,6 +4753,68 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e7bf94c658aab74d9f9c500dd73ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1306780000
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1306780001}
+  m_Layer: 0
+  m_Name: BirdsPos (15)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1306780001
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1306780000}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -1.205, y: 8, z: -15.322}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1071146049}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1361234744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1361234745}
+  m_Layer: 0
+  m_Name: BirdsPos (12)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1361234745
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1361234744}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.33314863, z: 0, w: 0.9428743}
+  m_LocalPosition: {x: 17.856, y: 9, z: -18.088}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1071146049}
+  m_LocalEulerAnglesHint: {x: 0, y: -38.92, z: 0}
 --- !u!1 &1388879993
 GameObject:
   m_ObjectHideFlags: 0
@@ -5132,6 +5299,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1585445413}
   m_CullTransparentMesh: 1
+--- !u!1 &1625269608
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1625269609}
+  m_Layer: 0
+  m_Name: BirdsPos (14)
+  m_TagString: Untagged
+  m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1625269609
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1625269608}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: -0.30212033, z: 0, w: 0.95326984}
+  m_LocalPosition: {x: 12.131, y: 10, z: -19.342}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1071146049}
+  m_LocalEulerAnglesHint: {x: 0, y: -35.17, z: 0}
 --- !u!1001 &1644293496
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6527,6 +6725,14 @@ PrefabInstance:
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: savePhotos
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: maxFocusDistance
+      value: 64
+      objectReference: {fileID: 0}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: focusDistanceSpeed
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: maxVerticalRotation
