@@ -3176,9 +3176,9 @@ MonoBehaviour:
   - {fileID: 563581554114477386}
   - {fileID: 6006197093236247617}
   antenna:
-  - {fileID: 0}
+  - {fileID: 3794013339456058659}
   gears:
-  - {fileID: 0}
+  - {fileID: 3715629166457559247}
 --- !u!82 &4579100816217530277
 AudioSource:
   m_ObjectHideFlags: 0
@@ -8544,6 +8544,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
+--- !u!1 &3715629166457559247 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
+  m_PrefabInstance: {fileID: 4562701519195317662}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4096940471496524405 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9599c0776d09e4b6694488ebbc53584f, type: 3}
