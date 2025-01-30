@@ -7435,6 +7435,14 @@ PrefabInstance:
       propertyPath: maxHorizontalRotation
       value: 23.7
       objectReference: {fileID: 0}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: zoomLevelsDepthOfField.Array.data[1]
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: zoomLevelsDepthOfField.Array.data[2]
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: m_Name
       value: LimitedCamera
