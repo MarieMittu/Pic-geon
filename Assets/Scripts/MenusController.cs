@@ -110,7 +110,7 @@ public class MenusController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Return) && !isReturnPressed)
         {
             Debug.Log("Return key pressed");
-            isReturnPressed = true;
+            //isReturnPressed = true;
             PressButton(okButton);
             PressOKButton();
         }
@@ -298,13 +298,13 @@ public class MenusController : MonoBehaviour
 
     private void PressButton(Button button)
     {
-        var clickDown = new PointerEventData(eventSystem);
-        ExecuteEvents.Execute(button.gameObject, clickDown, ExecuteEvents.pointerDownHandler);
+        //var clickDown = new PointerEventData(eventSystem);
+        //ExecuteEvents.Execute(button.gameObject, clickDown, ExecuteEvents.pointerDownHandler);
     }
     private void ReleaseButton(Button button)
     {
-        var clickUp = new PointerEventData(eventSystem);
-        ExecuteEvents.Execute(button.gameObject, clickUp, ExecuteEvents.pointerUpHandler);
+        //var clickUp = new PointerEventData(eventSystem);
+        //ExecuteEvents.Execute(button.gameObject, clickUp, ExecuteEvents.pointerUpHandler);
     }
 
     // for photo library

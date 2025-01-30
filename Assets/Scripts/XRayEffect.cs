@@ -6,6 +6,7 @@ public class XRayEffect : MonoBehaviour
 {
 
     bool xRayActive = false;
+    private Dictionary<GameObject, Material> originalGearsMaterials = new Dictionary<GameObject, Material>();
 
     public void ActivateXRay(bool enabled)
     {
@@ -27,12 +28,12 @@ public class XRayEffect : MonoBehaviour
                 if (xRayActive)
                 {
                     ApplyTransparencyToBirdParts(materialVariator);
-                    ApplyLightBlueHue(materialVariator);
+                    ApplyGlowingBlueEffect(materialVariator);
                 }
                 else
                 {
                     RestoreOriginalMaterials(materialVariator);
-                    RemoveLightBlueHue(materialVariator);
+                    RemoveGlowingBlueEffect(materialVariator);
                 }
             }
         }
@@ -70,28 +71,72 @@ public class XRayEffect : MonoBehaviour
         }
     }
 
-    void ApplyLightBlueHue(BirdMaterialVariator materialVariator)
+    void ApplyGlowingBlueEffect(BirdMaterialVariator materialVariator)
     {
-        ApplyColorToParts(materialVariator.antenna, new Color(0.5f, 0.8f, 1f)); // Light blue
-        ApplyColorToParts(materialVariator.gears, new Color(0.5f, 0.8f, 1f));   // Light blue
+        // Apply glowing blue effect to the antenna
+        ApplyGlowToParts(materialVariator.antenna, Color.cyan);
+
+        // Apply glowing effect to gears, handling the default material issue
+        foreach (GameObject gear in materialVariator.gears)
+        {
+            SkinnedMeshRenderer renderer = gear.GetComponent<SkinnedMeshRenderer>();
+            if (renderer != null)
+            {
+                if (renderer.material.name == "Default-Material" || renderer.material.name.Contains("Default"))
+                {
+                    Debug.Log("Replacing Default-Material with a custom emissive material for gears.");
+
+                    // Create a new material with the Standard shader
+                    Material newGlowingMaterial = new Material(Shader.Find("Standard"));
+
+                    // Enable emission
+                    newGlowingMaterial.EnableKeyword("_EMISSION");
+                    newGlowingMaterial.SetColor("_EmissionColor", new Color(0.2f, 0.7f, 1f) * 5.0f); // Bright blue glow
+                    newGlowingMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+
+                    // Assign the new glowing material to the gears
+                    renderer.material = newGlowingMaterial;
+                }
+                else
+                {
+                    // If the material is not Default-Material, modify its emission
+                    Material glowingMaterial = new Material(renderer.material);
+                    glowingMaterial.EnableKeyword("_EMISSION");
+                    glowingMaterial.SetColor("_EmissionColor", new Color(0.2f, 0.7f, 1f) * 5.0f);
+                    glowingMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
+                    renderer.material = glowingMaterial;
+                }
+            }
+        }
     }
 
-    void RemoveLightBlueHue(BirdMaterialVariator materialVariator)
+    void RemoveGlowingBlueEffect(BirdMaterialVariator materialVariator)
     {
+        // Restore original materials for antenna
         RestoreOriginalMaterialsForParts(materialVariator.antenna);
-        RestoreOriginalMaterialsForParts(materialVariator.gears);
+
+        // Restore original materials for gears
+        foreach (GameObject gear in materialVariator.gears)
+        {
+            SkinnedMeshRenderer renderer = gear.GetComponent<SkinnedMeshRenderer>();
+            if (renderer != null && originalGearsMaterials.ContainsKey(gear))
+            {
+                renderer.material = originalGearsMaterials[gear]; // Restore original material
+            }
+        }
     }
 
-    void ApplyColorToParts(GameObject[] parts, Color color)
+    void ApplyGlowToParts(GameObject[] parts, Color glowColor)
     {
         foreach (GameObject part in parts)
         {
-            SkinnedMeshRenderer skinnedMeshRenderer = part.GetComponent<SkinnedMeshRenderer>();
-            if (skinnedMeshRenderer != null)
+            SkinnedMeshRenderer renderer = part.GetComponent<SkinnedMeshRenderer>();
+            if (renderer != null)
             {
-                Material material = new Material(skinnedMeshRenderer.material);
-                material.color = color;
-                skinnedMeshRenderer.material = material;
+                Material material = new Material(renderer.material);
+                material.EnableKeyword("_EMISSION");
+                material.SetColor("_EmissionColor", glowColor * 2.5f); // Amplify the glow
+                renderer.material = material;
             }
         }
     }
