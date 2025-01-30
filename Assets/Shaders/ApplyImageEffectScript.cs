@@ -99,6 +99,10 @@ public class ApplyImageEffectScript : MonoBehaviour
         {
             // update glitch effect intensity so it gradually gets stronger towards the end of the mission
             float normalizedMissionTime = 1 - GameManager.sharedInstance.missionDuration / GameManager.sharedInstance.startMissionDuration;
+            if (MissionManager.sharedInstance.isTutorial)
+            {
+                normalizedMissionTime = 1 - GameManager.sharedInstance.missionDuration / 100;
+            }
             float glitchIntensity = Math.Clamp(normalizedMissionTime - startOfGlitch, 0, 1) / (1 - startOfGlitch);
             //// make glitch more noticeable once it starts and give some time at full intensity
             //if (glitchIntensity > 0) glitchIntensity = Math.Clamp(glitchIntensity + 0.2f, 0, 1);
