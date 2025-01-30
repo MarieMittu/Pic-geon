@@ -72,7 +72,7 @@ public class AbilityManager : MonoBehaviour
                 break;
             case 4: // lvl three: train station
                 abilities = new Ability[] {
-                    new Ability("Night Vision", KeyCode.F, 10, 0.3f, nightVisionScript.ActivateNightVision)
+                    new Ability("Night Vision", KeyCode.F, 10, 2/10.0f, nightVisionScript.ActivateNightVision)
                 };
                 break;
         }
