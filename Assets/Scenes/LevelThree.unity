@@ -5875,7 +5875,7 @@ MonoBehaviour:
   currentMission: 4
   maxMissions: 3
   selectedMission: 1
-  requiredPhotosForMissions: 01000000020000000300000004000000
+  requiredPhotosForMissions: 01000000010000000200000003000000
   isTutorial: 0
 --- !u!4 &1399647249
 Transform:
