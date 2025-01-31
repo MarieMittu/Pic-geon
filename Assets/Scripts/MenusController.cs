@@ -31,6 +31,8 @@ public class MenusController : MonoBehaviour
     public Button leftButton;
     public Button rightButton;
     public Button okButton;
+    public GameObject stickyNote;
+    public Button stickTriggerButton;
 
     private EventSystem eventSystem;
     private int selection = 0;
@@ -39,13 +41,18 @@ public class MenusController : MonoBehaviour
 
     private int okCheck = 0;
     private bool isReturnPressed = false;
+    private Animator stickAnimator;
 
     // for photo library
     public Transform photoGridContent; 
     private List<SelectablePhoto> photos = new List<SelectablePhoto>();
     public int photoColumns = 3; 
-    private int currentGridIndex = 0; 
+    private int currentGridIndex = 0;
 
+    private void Awake()
+    {
+        
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -365,4 +372,24 @@ public class MenusController : MonoBehaviour
             }
         }
     }
+
+    public void ShowStickyNote()
+    {
+
+        StartCoroutine(PlayStickyNoteAnimation());
+        
+    }
+
+    private IEnumerator PlayStickyNoteAnimation()
+    {
+        stickAnimator = stickyNote.GetComponent<Animator>();
+        stickAnimator.updateMode = AnimatorUpdateMode.UnscaledTime; ;
+        stickAnimator.Play("StickFlyIn", 0, 0f);
+        Debug.Log("stickcstick " + stickAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.name);
+        stickTriggerButton.interactable = false;
+        yield return new WaitForSeconds(stickAnimator.GetCurrentAnimatorStateInfo(0).length);
+
+        stickAnimator.Play("StickIdle");
+    }
+
 }
