@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.08843251, g: 0.054200795, b: 0.3962264, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
@@ -5659,7 +5659,7 @@ MonoBehaviour:
   currentMission: 4
   maxMissions: 3
   selectedMission: 1
-  requiredPhotosForMissions: 01000000020000000300000004000000
+  requiredPhotosForMissions: 01000000010000000200000003000000
   isTutorial: 0
 --- !u!4 &1399647249
 Transform:

@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.75294244, g: 0.61720675, b: 0.48514998, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 0
+  m_AmbientMode: 3
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 94c91df5447be4ebd859738e157c5921, type: 2}
   m_HaloStrength: 0.5
@@ -5270,7 +5270,7 @@ MonoBehaviour:
   currentMission: 3
   maxMissions: 3
   selectedMission: 1
-  requiredPhotosForMissions: 01000000020000000300000004000000
+  requiredPhotosForMissions: 01000000010000000200000003000000
   isTutorial: 0
 --- !u!4 &1399647249
 Transform:
