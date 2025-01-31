@@ -10,6 +10,8 @@ public class NightVision : MonoBehaviour
     public Light[] normalLights;
     public Light[] hiddenLights;
     public GameObject nightImage;
+    public GameObject grayLevel;
+    public GameObject colorLevel;
 
     [Header("Night Vision Light Parameters")]
     public float night_NormalIntensity = 100f;
@@ -39,6 +41,8 @@ public class NightVision : MonoBehaviour
             hiddenLights[i].intensity = night_HiddenIntensity;
         }
         nightImage.SetActive(true);
+        grayLevel.SetActive(true);
+        colorLevel.SetActive(false);
     }
 
     public void ReturnLights()
@@ -53,6 +57,9 @@ public class NightVision : MonoBehaviour
             hiddenLights[i].intensity = standard_HiddenIntensity;
         }
         nightImage.SetActive(false);
+        grayLevel.SetActive(false);
+        colorLevel.SetActive(true);
+
     }
 
     public bool IsNightVisionActive() { return nightActive; }
