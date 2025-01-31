@@ -2928,7 +2928,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.049999997, y: 0.049999997, z: 0.049999997}
+  m_LocalScale: {x: 0.06, y: 0.06, z: 0.06}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6123249466813792647}
@@ -3174,6 +3174,8 @@ MonoBehaviour:
   thighParts:
   - {fileID: 563581554114477386}
   - {fileID: 6006197093236247617}
+  antenna: []
+  gears: []
 --- !u!82 &8497643822281500201
 AudioSource:
   m_ObjectHideFlags: 0
