@@ -1946,6 +1946,72 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 507535701}
   m_CullTransparentMesh: 1
+--- !u!1001 &521936669
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 27
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -40
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8809899
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0.4731351
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 56.476
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_Name
+      value: Third_Level_Gray
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+--- !u!1 &521936670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: f8081e2aea17647fcbe1bb4cbe2ebbbe, type: 3}
+  m_PrefabInstance: {fileID: 521936669}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &539279273
 GameObject:
   m_ObjectHideFlags: 0
@@ -4109,6 +4175,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
   m_PrefabInstance: {fileID: 4887386168576983837}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &975598039 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 0626d82931ccb4dc0a6066effd296358, type: 3}
+  m_PrefabInstance: {fileID: 1365728129}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1014464023
 GameObject:
   m_ObjectHideFlags: 0
@@ -5597,6 +5668,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 0626d82931ccb4dc0a6066effd296358, type: 3}
       propertyPath: m_Name
       value: Third_Level
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 0626d82931ccb4dc0a6066effd296358, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8009987137999418058, guid: 0626d82931ccb4dc0a6066effd296358, type: 3}
       propertyPath: m_IsActive
@@ -7776,6 +7851,8 @@ MonoBehaviour:
   - {fileID: 1662734185}
   - {fileID: 1102144743}
   nightImage: {fileID: 1738414814}
+  grayLevel: {fileID: 521936670}
+  colorLevel: {fileID: 975598039}
   night_NormalIntensity: 100
   night_HiddenIntensity: 0.5
   standard_NormalIntensity: 1
@@ -7807,3 +7884,4 @@ SceneRoots:
   - {fileID: 676281192}
   - {fileID: 4852074}
   - {fileID: 1599009892}
+  - {fileID: 521936669}
