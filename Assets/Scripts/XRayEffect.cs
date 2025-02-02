@@ -57,7 +57,7 @@ public class XRayEffect : MonoBehaviour
             SkinnedMeshRenderer skinnedMeshRenderer = part.GetComponent<SkinnedMeshRenderer>();
             if (skinnedMeshRenderer != null)
             {
-                Material material = new Material(skinnedMeshRenderer.material);
+                Material material = new Material(skinnedMeshRenderer.sharedMaterial);
 
                 SetMaterialToTransparent(material);
 
@@ -65,7 +65,7 @@ public class XRayEffect : MonoBehaviour
                 Color transparentColor = new Color(currentColor.r, currentColor.g, currentColor.b, 0.5f);
                 material.color = transparentColor;
 
-                skinnedMeshRenderer.material = material;
+                skinnedMeshRenderer.sharedMaterial = material;
             }
             
         }
@@ -100,11 +100,11 @@ public class XRayEffect : MonoBehaviour
                 else
                 {
                     // If the material is not Default-Material, modify its emission
-                    Material glowingMaterial = new Material(renderer.material);
+                    Material glowingMaterial = new Material(renderer.sharedMaterial);
                     glowingMaterial.EnableKeyword("_EMISSION");
                     glowingMaterial.SetColor("_EmissionColor", new Color(0.2f, 0.7f, 1f) * 5.0f);
                     glowingMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
-                    renderer.material = glowingMaterial;
+                    renderer.sharedMaterial = glowingMaterial;
                 }
             }
         }
@@ -121,7 +121,7 @@ public class XRayEffect : MonoBehaviour
             SkinnedMeshRenderer renderer = gear.GetComponent<SkinnedMeshRenderer>();
             if (renderer != null && originalGearsMaterials.ContainsKey(gear))
             {
-                renderer.material = originalGearsMaterials[gear]; // Restore original material
+                renderer.sharedMaterial = originalGearsMaterials[gear]; // Restore original material
             }
         }
     }
@@ -133,10 +133,10 @@ public class XRayEffect : MonoBehaviour
             SkinnedMeshRenderer renderer = part.GetComponent<SkinnedMeshRenderer>();
             if (renderer != null)
             {
-                Material material = new Material(renderer.material);
+                Material material = new Material(renderer.sharedMaterial);
                 material.EnableKeyword("_EMISSION");
                 material.SetColor("_EmissionColor", glowColor * 2.5f); // Amplify the glow
-                renderer.material = material;
+                renderer.sharedMaterial = material;
             }
         }
     }
@@ -155,7 +155,7 @@ public class XRayEffect : MonoBehaviour
                     Material originalMaterial = BirdMaterialVariator.materialCache[variation][slotIndex];
                     if (originalMaterial != null)
                     {
-                        skinnedMeshRenderer.material = originalMaterial;
+                        skinnedMeshRenderer.sharedMaterial = originalMaterial;
                     }
                 }
             }
@@ -164,7 +164,7 @@ public class XRayEffect : MonoBehaviour
 
     void SetMaterialToTransparent(Material material)
     {
-        material.SetFloat("_Mode", 3); // 3 corresponds to Transparent mode
+        material.SetOverrideTag("RenderType", "Transparent");
         material.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
         material.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
         material.SetInt("_ZWrite", 0);
@@ -172,7 +172,11 @@ public class XRayEffect : MonoBehaviour
         material.EnableKeyword("_ALPHABLEND_ON");
         material.DisableKeyword("_ALPHAPREMULTIPLY_ON");
         material.renderQueue = (int)UnityEngine.Rendering.RenderQueue.Transparent;
+
+        Color currentColor = material.color;
+        material.color = new Color(currentColor.r, currentColor.g, currentColor.b, 0.5f); // 50% transparent
     }
+
 
     void RestoreOriginalMaterials(BirdMaterialVariator materialVariator)
     {
@@ -185,7 +189,7 @@ public class XRayEffect : MonoBehaviour
                 Material originalMaterial = BirdMaterialVariator.materialCache[materialVariator.variation][i];
                 if (renderer != null && originalMaterial != null)
                 {
-                    renderer.material = originalMaterial;
+                    renderer.sharedMaterial = originalMaterial;
                 }
             }
         }
