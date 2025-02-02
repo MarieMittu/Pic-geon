@@ -3968,6 +3968,7 @@ MonoBehaviour:
   submitOption: {fileID: 2059832550}
   isPaused: 0
   isAlerting: 0
+  introTime: 0
 --- !u!114 &1041570250
 MonoBehaviour:
   m_ObjectHideFlags: 0

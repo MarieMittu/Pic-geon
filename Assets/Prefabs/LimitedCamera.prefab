@@ -373,6 +373,7 @@ MonoBehaviour:
   flashImage: {fileID: 7422457346622540831}
   zoomUI: {fileID: 0}
   focusBoxUI: {fileID: 0}
+  pigeonsFoundUI: {fileID: 0}
   savePhotos: 0
 --- !u!114 &4739496552211864261
 MonoBehaviour:
@@ -406,6 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faa9d9f8ff13a42099d8b71804e621a1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  transparentMaterial: {fileID: 2100000, guid: 62f47f6d17386904c8d14bf43dd5d6da, type: 2}
 --- !u!82 &8750381331898453074
 AudioSource:
   m_ObjectHideFlags: 0
@@ -523,7 +525,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   imageEffectScript: {fileID: 4739496552211864261}
-  heatVisionTimer: {fileID: 0}
-  heatVisionText: {fileID: 0}
+  abilityUI: {fileID: 0}
   xrayEffectScript: {fileID: 0}
   nightVisionScript: {fileID: 0}

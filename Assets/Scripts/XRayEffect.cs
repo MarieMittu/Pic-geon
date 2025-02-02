@@ -8,6 +8,7 @@ public class XRayEffect : MonoBehaviour
     bool xRayActive = false;
     private Dictionary<GameObject, Material> originalGearsMaterials = new Dictionary<GameObject, Material>();
 
+    public Material transparentMaterial;
     public void ActivateXRay(bool enabled)
     {
         GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
@@ -57,9 +58,11 @@ public class XRayEffect : MonoBehaviour
             SkinnedMeshRenderer skinnedMeshRenderer = part.GetComponent<SkinnedMeshRenderer>();
             if (skinnedMeshRenderer != null)
             {
-                Material material = new Material(skinnedMeshRenderer.sharedMaterial);
+                //Material material = new Material(skinnedMeshRenderer.sharedMaterial);
+                Material material = new Material(transparentMaterial);
+                material.mainTexture = skinnedMeshRenderer.material.mainTexture;
 
-                SetMaterialToTransparent(material);
+                //SetMaterialToTransparent(material);
 
                 Color currentColor = material.color;
                 Color transparentColor = new Color(currentColor.r, currentColor.g, currentColor.b, 0.5f);
