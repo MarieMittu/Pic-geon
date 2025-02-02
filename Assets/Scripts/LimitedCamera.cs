@@ -366,7 +366,7 @@ public class LimitedCamera : MonoBehaviour
     {
         if (GameManager.sharedInstance.missionDuration <= 0)
         {
-            ControlCorrectPhotos(); 
+            GameManager.sharedInstance.TriggerGameOver();
         }
     }
 

@@ -57,7 +57,7 @@ public class XRayEffect : MonoBehaviour
             SkinnedMeshRenderer skinnedMeshRenderer = part.GetComponent<SkinnedMeshRenderer>();
             if (skinnedMeshRenderer != null)
             {
-                Material material = new Material(skinnedMeshRenderer.sharedMaterial);
+                Material material = new Material(skinnedMeshRenderer.material);
 
                 SetMaterialToTransparent(material);
 
@@ -65,7 +65,7 @@ public class XRayEffect : MonoBehaviour
                 Color transparentColor = new Color(currentColor.r, currentColor.g, currentColor.b, 0.5f);
                 material.color = transparentColor;
 
-                skinnedMeshRenderer.sharedMaterial = material;
+                skinnedMeshRenderer.material = material;
             }
             
         }
@@ -100,11 +100,11 @@ public class XRayEffect : MonoBehaviour
                 else
                 {
                     // If the material is not Default-Material, modify its emission
-                    Material glowingMaterial = new Material(renderer.sharedMaterial);
+                    Material glowingMaterial = new Material(renderer.material);
                     glowingMaterial.EnableKeyword("_EMISSION");
                     glowingMaterial.SetColor("_EmissionColor", new Color(0.2f, 0.7f, 1f) * 5.0f);
                     glowingMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
-                    renderer.sharedMaterial = glowingMaterial;
+                    renderer.material = glowingMaterial;
                 }
             }
         }
@@ -121,7 +121,7 @@ public class XRayEffect : MonoBehaviour
             SkinnedMeshRenderer renderer = gear.GetComponent<SkinnedMeshRenderer>();
             if (renderer != null && originalGearsMaterials.ContainsKey(gear))
             {
-                renderer.sharedMaterial = originalGearsMaterials[gear]; // Restore original material
+                renderer.material = originalGearsMaterials[gear]; // Restore original material
             }
         }
     }
@@ -133,10 +133,10 @@ public class XRayEffect : MonoBehaviour
             SkinnedMeshRenderer renderer = part.GetComponent<SkinnedMeshRenderer>();
             if (renderer != null)
             {
-                Material material = new Material(renderer.sharedMaterial);
+                Material material = new Material(renderer.material);
                 material.EnableKeyword("_EMISSION");
                 material.SetColor("_EmissionColor", glowColor * 2.5f); // Amplify the glow
-                renderer.sharedMaterial = material;
+                renderer.material = material;
             }
         }
     }
@@ -155,7 +155,7 @@ public class XRayEffect : MonoBehaviour
                     Material originalMaterial = BirdMaterialVariator.materialCache[variation][slotIndex];
                     if (originalMaterial != null)
                     {
-                        skinnedMeshRenderer.sharedMaterial = originalMaterial;
+                        skinnedMeshRenderer.material = originalMaterial;
                     }
                 }
             }
@@ -189,7 +189,7 @@ public class XRayEffect : MonoBehaviour
                 Material originalMaterial = BirdMaterialVariator.materialCache[materialVariator.variation][i];
                 if (renderer != null && originalMaterial != null)
                 {
-                    renderer.sharedMaterial = originalMaterial;
+                    renderer.material = originalMaterial;
                 }
             }
         }
