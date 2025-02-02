@@ -15,6 +15,27 @@ public class ScenesController : MonoBehaviour
     public bool isPaused = false;
     public bool isAlerting = false;
 
+    public float introTime;
+    Scene currentScene;
+    private string sceneName;
+
+    private void Awake()
+    {
+        currentScene = SceneManager.GetActiveScene();
+        sceneName = currentScene.name;
+    }
+
+    private void Update()
+    {
+        if (sceneName == "IntroScene")
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            introTime -= Time.deltaTime;
+
+            if (introTime <= 0) GoToMenu();
+        }
+    }
+
     public void StartGame()
     {
         MissionManager.sharedInstance.SetMission(1);
