@@ -74,9 +74,8 @@ public class GameManager : MonoBehaviour
         {
             if (FindObjectOfType<ScenesController>().isPaused)
             {
-                //Cursor.lockState = CursorLockMode.Locked;
                 FindObjectOfType<ScenesController>().Resume();
-                
+                Cursor.lockState = CursorLockMode.Locked;
             } else
             {
                 FindObjectOfType<ScenesController>().Pause();
