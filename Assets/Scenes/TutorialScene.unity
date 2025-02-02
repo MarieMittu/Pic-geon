@@ -12102,7 +12102,7 @@ MonoBehaviour:
   - {fileID: 1835895132}
   - {fileID: 907280615}
   - {fileID: 626377569}
-  focusTimer: 5
+  focusTimer: 2
   normalMarker: {fileID: 1811825684}
   robotMarker: {fileID: 594843488}
   currentIndex: 0

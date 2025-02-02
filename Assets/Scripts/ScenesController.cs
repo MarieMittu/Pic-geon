@@ -33,26 +33,31 @@ public class ScenesController : MonoBehaviour
 
     public void ExitToMenu()
     {
+        Debug.Log("pressing exit menu");
         Invoke("GoToMenu", 1f);
     }
 
     public void LoadNextLevel()
     {
+        Debug.Log("pressing next lvl");
         switch (MissionManager.sharedInstance.currentMission)
         {
             case 2:
-                LoadMissionOne(); 
+                Invoke("LoadMissionOne", 1f);
+                //LoadMissionOne(); 
                 break;
             case 3:
-                LoadMissionTwo();
+                Invoke("LoadMissionTwo", 1f);
+                //LoadMissionTwo();
                 break;
             case 4:
-                LoadMissionThree(); 
+                Invoke("LoadMissionThree", 1f);
+                //LoadMissionThree(); 
                 break;
         }
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Time.timeScale = 1f;
+        //Cursor.lockState = CursorLockMode.Locked;
+        //Time.timeScale = 1f;
     }
 
     public void LoadMissionOne()
@@ -84,20 +89,23 @@ public class ScenesController : MonoBehaviour
 
     public void OpenIntermediateScene()
     {
-        SceneManager.LoadScene("NextLevelScene");
+        SceneManager.LoadScene("NextLevelSceneV");
         Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 1f;
     }
 
     public void GameOver()
     {
         SceneManager.LoadScene("GameOverScene");
         Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 1f;
     }
 
     public void GameWon()
     {
         SceneManager.LoadScene("WinScene");
         Cursor.lockState = CursorLockMode.None;
+        Time.timeScale = 1f;
     }
 
     public void RetryMission()
