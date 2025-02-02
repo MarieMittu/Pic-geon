@@ -1415,6 +1415,10 @@ PrefabInstance:
       propertyPath: focusBoxUI
       value: 
       objectReference: {fileID: 1488200155}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: pigeonsFoundUI
+      value: 
+      objectReference: {fileID: 423114012}
     - target: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: m_Name
       value: LimitedCamera (2)
@@ -2395,6 +2399,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 392101292}
   m_CullTransparentMesh: 1
+--- !u!114 &423114012 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2292008349463468721, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+  m_PrefabInstance: {fileID: 2067417337}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8889a4d223768f84998030f4abfb770d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &423767664
 GameObject:
   m_ObjectHideFlags: 0
@@ -3603,6 +3618,10 @@ PrefabInstance:
       propertyPath: focusBoxUI
       value: 
       objectReference: {fileID: 1488200155}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: pigeonsFoundUI
+      value: 
+      objectReference: {fileID: 423114012}
     - target: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: m_Name
       value: LimitedCamera (1)
@@ -12358,6 +12377,10 @@ PrefabInstance:
       propertyPath: savePhotos
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: pigeonsFoundUI
+      value: 
+      objectReference: {fileID: 423114012}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: maxFocusDistance
       value: 80

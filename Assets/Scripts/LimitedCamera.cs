@@ -43,6 +43,7 @@ public class LimitedCamera : MonoBehaviour
     public RawImage flashImage;
     public ZoomUI zoomUI;
     public FocusBoxUI focusBoxUI;
+    public PigeonsToFindUI pigeonsFoundUI;
     bool photoAnimationInProgress = false;
     public bool savePhotos = false;
     Camera cam;
@@ -273,6 +274,7 @@ public class LimitedCamera : MonoBehaviour
                                 {
                                     if (!MissionManager.sharedInstance.isTutorial) robotScript.hasBeenCaught = true;
                                     correctPhotosAmount++;
+                                    pigeonsFoundUI.SetFound(correctPhotosAmount);
                                     if (correctPhotosAmount >= MissionManager.sharedInstance.GetRequiredPhotos()) GameManager.sharedInstance.hasEnoughCorrectPhotos = true;
                                     Debug.Log("sus bird on photo " + correctPhotosAmount);
 

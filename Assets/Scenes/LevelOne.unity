@@ -672,6 +672,10 @@ PrefabInstance:
       propertyPath: focusBoxUI
       value: 
       objectReference: {fileID: 1300462626}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: pigeonsFoundUI
+      value: 
+      objectReference: {fileID: 1300462629}
     - target: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: m_Name
       value: LimitedCamera (2)
@@ -1103,6 +1107,11 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.009999999, y: 0.009999999, z: 0.009999999}
   m_Center: {x: 0.00000011920929, y: -0.0000000018626451, z: 0}
+--- !u!1 &392048026 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8321431436670227217, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+  m_PrefabInstance: {fileID: 1300462624}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &396351178
 GameObject:
   m_ObjectHideFlags: 0
@@ -2022,6 +2031,10 @@ PrefabInstance:
       propertyPath: focusBoxUI
       value: 
       objectReference: {fileID: 1300462626}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: pigeonsFoundUI
+      value: 
+      objectReference: {fileID: 1300462629}
     - target: {fileID: 7221969038424430605, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: m_Name
       value: LimitedCamera (1)
@@ -4676,7 +4689,10 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6706539124547346181, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 835948706}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8321431436670227217, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1300462630}
   m_SourcePrefab: {fileID: 100100000, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
 --- !u!224 &1300462625 stripped
 RectTransform:
@@ -4716,6 +4732,113 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e7bf94c658aab74d9f9c500dd73ced7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1300462629 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2292008349463468721, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+  m_PrefabInstance: {fileID: 1300462624}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392048026}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8889a4d223768f84998030f4abfb770d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!82 &1300462630
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 392048026}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: f5bf43609a31628499e170c9883de4e9, type: 3}
+  m_PlayOnAwake: 0
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &1306780000
 GameObject:
   m_ObjectHideFlags: 0
@@ -7020,6 +7143,10 @@ PrefabInstance:
       propertyPath: savePhotos
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
+      propertyPath: pigeonsFoundUI
+      value: 
+      objectReference: {fileID: 1300462629}
     - target: {fileID: 4999416068894824822, guid: 0d3fb8fa012b42948a36aef465913252, type: 3}
       propertyPath: maxFocusDistance
       value: 64
