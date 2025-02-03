@@ -77,7 +77,7 @@ public class XRayEffect : MonoBehaviour
     void ApplyGlowingBlueEffect(BirdMaterialVariator materialVariator)
     {
         // Apply glowing blue effect to the antenna
-        ApplyGlowToParts(materialVariator.antenna, Color.cyan);
+        //ApplyGlowToParts(materialVariator.antenna, Color.cyan);
 
         // Apply glowing effect to gears, handling the default material issue
         foreach (GameObject gear in materialVariator.gears)
