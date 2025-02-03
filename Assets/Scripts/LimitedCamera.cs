@@ -355,9 +355,13 @@ public class LimitedCamera : MonoBehaviour
 
         if (TapeManager.instance.reachedLimit)
         {
-            if (MissionManager.sharedInstance.currentMission < 3)
+            if (MissionManager.sharedInstance.currentMission < 4)
             {
                 GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
+            }
+            else if (correctPhotosAmount < MissionManager.sharedInstance.GetRequiredPhotos())
+            {
+                GameManager.sharedInstance.TriggerGameOver();
             }
         }
     }

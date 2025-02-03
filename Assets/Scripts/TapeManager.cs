@@ -30,7 +30,7 @@ public class TapeManager : MonoBehaviour
     {
         Debug.Log("mission check " + MissionManager.sharedInstance.currentMission);
 
-        if (MissionManager.sharedInstance.currentMission == 1)
+        if (MissionManager.sharedInstance.currentMission < 3) // reset in tutorial and level 1 (photos in tutorial don't count)
         {
             ResetTape();
         }
