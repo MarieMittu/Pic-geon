@@ -313,7 +313,7 @@ public class LimitedCamera : MonoBehaviour
             }
             else if (rb.GetComponent<MeshRenderer>().isVisible && !robotScript.isSpying)
             {
-                if (isFullDetection)
+                if (isFullDetection) // used in missions
                 {
                     Debug.Log("wrong timing");
                 } else

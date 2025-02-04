@@ -23,10 +23,9 @@ public class AIBirdController : MonoBehaviour
     public bool shallWeLog = false;
 
     [HideInInspector] public NavMeshAgent agent;
-    public float walkRadius ; //radius of sphere to walk around
 
-    public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which bird walks
-    public Vector3 rectangleSize = new Vector3(20, 0, 10);
+    public Vector3 centrePoint = new Vector3(0, 0, 0); //point around which walking area is generated
+    public Vector3 rectangleSize = new Vector3(20, 0, 10); // walking area
     public float walkRotationAngle;
 
     protected Dictionary<string, State> states = new Dictionary<string, State>();
@@ -280,11 +279,11 @@ public class AIBirdController : MonoBehaviour
         float randomZ = Random.Range(-halfZ, halfZ);
         Vector3 localRandomPoint = new Vector3(randomX, 0, randomZ);
 
-        // Apply rotation to the rectangle
+        // apply rotation to the rectangle
         Quaternion rotation = Quaternion.Euler(0, rotationAngle, 0);
         Vector3 rotatedPoint = rotation * localRandomPoint;
 
-        // Transform to world space
+        // transform to world space
         Vector3 worldPoint = center + rotatedPoint;
 
         NavMeshHit hit;
@@ -303,14 +302,12 @@ public class AIBirdController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        // Draw the walkable rectangle
         Gizmos.color = Color.red;
         Quaternion rotation = Quaternion.Euler(0, walkRotationAngle, 0);
 
         Gizmos.matrix = Matrix4x4.TRS(centrePoint, rotation, Vector3.one);
         Gizmos.DrawWireCube(Vector3.zero, rectangleSize);
 
-        // Optional: Draw the agent's current destination
         if (agent != null && agent.hasPath)
         {
             Gizmos.color = Color.red;

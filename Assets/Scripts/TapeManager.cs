@@ -20,12 +20,6 @@ public class TapeManager : MonoBehaviour
         instance = this;
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-   
-    }
-
     private void OnEnable()
     {
         Debug.Log("mission check " + MissionManager.sharedInstance.currentMission);
@@ -55,7 +49,7 @@ public class TapeManager : MonoBehaviour
         }
     }
 
-    public void ResetTape() //TODO: call it when the very first mission starts, need camera track
+    public void ResetTape() 
     {
         usedTape = 0;
         PlayerPrefs.SetInt("usedtape", usedTape);

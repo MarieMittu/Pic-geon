@@ -65,20 +65,16 @@ public class ScenesController : MonoBehaviour
         {
             case 2:
                 Invoke("LoadMissionOne", 1f);
-                //LoadMissionOne(); 
                 break;
             case 3:
                 Invoke("LoadMissionTwo", 1f);
-                //LoadMissionTwo();
                 break;
             case 4:
                 Invoke("LoadMissionThree", 1f);
-                //LoadMissionThree(); 
                 break;
         }
 
-        //Cursor.lockState = CursorLockMode.Locked;
-        //Time.timeScale = 1f;
+      
     }
 
     public void LoadMissionOne()

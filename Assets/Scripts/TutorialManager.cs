@@ -8,7 +8,7 @@ public class TutorialManager : MonoBehaviour
     public static TutorialManager sharedInstance;
 
     public GameObject[] tutorials;
-    public float focusTimer = 6;
+    public float focusTimer = 6; // time needed to remain focused on normal bird to proceed
     public GameObject normalMarker;
     public GameObject robotMarker;
 
@@ -142,12 +142,7 @@ public class TutorialManager : MonoBehaviour
 
             }
         }
-        
-        
-        
-
-
-        
+          
     }
 
     private void ActivateTutorial(int index)

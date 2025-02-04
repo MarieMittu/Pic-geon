@@ -5,8 +5,8 @@ using UnityEngine;
 public class CursorManager : MonoBehaviour
 {
 
-    public Texture2D cursor_normal;
-    public Texture2D cursor_onClick;
+    public Texture2D cursor_normal; // default cursor image
+    public Texture2D cursor_onClick; // cursor image when clicked
 
      void Awake()
     {

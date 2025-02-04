@@ -13,11 +13,11 @@ public class NightVision : MonoBehaviour
     public GameObject grayLevel;
     public GameObject colorLevel;
 
-    [Header("Night Vision Light Parameters")]
-    public float night_NormalIntensity = 100f;
-    public float night_HiddenIntensity = 0.5f;
+    [Header("Night Vision Light Parameters")] // when night vision is activated
+    public float night_NormalIntensity = 100f; // for lamps
+    public float night_HiddenIntensity = 0.5f; // for ambient light
 
-    [Header("Standard Light Parameters")]
+    [Header("Standard Light Parameters")] // when night vision is deactivated
     public float standard_NormalIntensity = 1f;
     public float standard_HiddenIntensity = 0.03f;
 

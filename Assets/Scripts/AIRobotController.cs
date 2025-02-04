@@ -129,8 +129,7 @@ public class AIRobotController : AIBirdController
 
     protected override bool RandomPoint(Vector3 center, Vector3 rectangleSize, float rotationAngle, out Vector3 result)
     {
-        // Use the parent logic but customize rectangle dimensions if needed
-        return base.RandomPoint(center, rectangleSize, rotationAngle, out result);
+        return base.RandomPoint(center, rectangleSize, rotationAngle, out result); 
     }
 
     void OnDrawGizmos()
