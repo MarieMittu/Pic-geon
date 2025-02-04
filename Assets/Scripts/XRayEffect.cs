@@ -76,10 +76,8 @@ public class XRayEffect : MonoBehaviour
 
     void ApplyGlowingBlueEffect(BirdMaterialVariator materialVariator)
     {
-        // Apply glowing blue effect to the antenna
         //ApplyGlowToParts(materialVariator.antenna, Color.cyan);
 
-        // Apply glowing effect to gears, handling the default material issue
         foreach (GameObject gear in materialVariator.gears)
         {
             SkinnedMeshRenderer renderer = gear.GetComponent<SkinnedMeshRenderer>();
@@ -89,20 +87,16 @@ public class XRayEffect : MonoBehaviour
                 {
                     Debug.Log("Replacing Default-Material with a custom emissive material for gears.");
 
-                    // Create a new material with the Standard shader
                     Material newGlowingMaterial = new Material(Shader.Find("Standard"));
 
-                    // Enable emission
                     newGlowingMaterial.EnableKeyword("_EMISSION");
-                    newGlowingMaterial.SetColor("_EmissionColor", new Color(0.2f, 0.7f, 1f) * 5.0f); // Bright blue glow
+                    newGlowingMaterial.SetColor("_EmissionColor", new Color(0.2f, 0.7f, 1f) * 5.0f); // bright blue glow
                     newGlowingMaterial.globalIlluminationFlags = MaterialGlobalIlluminationFlags.RealtimeEmissive;
 
-                    // Assign the new glowing material to the gears
                     renderer.material = newGlowingMaterial;
                 }
                 else
                 {
-                    // If the material is not Default-Material, modify its emission
                     Material glowingMaterial = new Material(renderer.material);
                     glowingMaterial.EnableKeyword("_EMISSION");
                     glowingMaterial.SetColor("_EmissionColor", new Color(0.2f, 0.7f, 1f) * 5.0f);
@@ -115,16 +109,14 @@ public class XRayEffect : MonoBehaviour
 
     void RemoveGlowingBlueEffect(BirdMaterialVariator materialVariator)
     {
-        // Restore original materials for antenna
         RestoreOriginalMaterialsForParts(materialVariator.antenna);
 
-        // Restore original materials for gears
         foreach (GameObject gear in materialVariator.gears)
         {
             SkinnedMeshRenderer renderer = gear.GetComponent<SkinnedMeshRenderer>();
             if (renderer != null && originalGearsMaterials.ContainsKey(gear))
             {
-                renderer.material = originalGearsMaterials[gear]; // Restore original material
+                renderer.material = originalGearsMaterials[gear]; 
             }
         }
     }
@@ -138,7 +130,7 @@ public class XRayEffect : MonoBehaviour
             {
                 Material material = new Material(renderer.material);
                 material.EnableKeyword("_EMISSION");
-                material.SetColor("_EmissionColor", glowColor * 2.5f); // Amplify the glow
+                material.SetColor("_EmissionColor", glowColor * 2.5f); 
                 renderer.material = material;
             }
         }
