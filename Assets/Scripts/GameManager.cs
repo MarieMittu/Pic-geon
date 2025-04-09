@@ -98,14 +98,14 @@ public class GameManager : MonoBehaviour
         }
 
         // quick reset
-        if (isGamePaused && Input.GetKeyDown(KeyCode.R))
+        if (Input.GetKey(KeyCode.LeftControl) && Input.GetKeyDown(KeyCode.R))
         {
             TapeManager.instance = null;
             MissionManager.sharedInstance = null;
             BatteryManager.instance = null;
             GameManager.sharedInstance = null;
 
-            SceneManager.LoadScene("MainMenu");
+            SceneManager.LoadScene("IntroScene");
             Cursor.lockState = CursorLockMode.None;
         }
     }
