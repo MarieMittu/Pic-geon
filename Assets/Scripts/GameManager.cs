@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
@@ -94,6 +95,18 @@ public class GameManager : MonoBehaviour
         if (FindObjectOfType<MenusController>().isHorizontal)
         {
             FindObjectOfType<MenusController>().SetupOptions();
+        }
+
+        // quick reset
+        if (isGamePaused && Input.GetKeyDown(KeyCode.R))
+        {
+            TapeManager.instance = null;
+            MissionManager.sharedInstance = null;
+            BatteryManager.instance = null;
+            GameManager.sharedInstance = null;
+
+            SceneManager.LoadScene("MainMenu");
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 
