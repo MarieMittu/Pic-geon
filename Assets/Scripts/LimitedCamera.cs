@@ -256,6 +256,7 @@ public class LimitedCamera : MonoBehaviour
 
     void DetectBirdsOnPhoto(bool isFullDetection)
     {
+        isRightMomentForPhoto = false;
         GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
         var xrayScript = GetComponent<XRayEffect>();
         foreach (GameObject rb in roboBirds)
@@ -302,7 +303,7 @@ public class LimitedCamera : MonoBehaviour
                                 }
                                 else
                                 {
-                                    isRightMomentForPhoto = false;
+                                    //isRightMomentForPhoto = false;
                                     Debug.Log("already caught before");
                                 }
                             
@@ -310,20 +311,20 @@ public class LimitedCamera : MonoBehaviour
                         }
                         else
                         {
-                            isRightMomentForPhoto = false;
+                            //isRightMomentForPhoto = false;
                             Debug.Log("sus bird on photo, but real bird too");
                         }
                     }
                     else
                     {
-                        isRightMomentForPhoto = false;
+                        //isRightMomentForPhoto = false;
                         Debug.Log("sus bird out of focus");
                     }
 
                 }
                 else
                 {
-                    isRightMomentForPhoto = false;
+                    //isRightMomentForPhoto = false;
                     Debug.Log("sus bird obstructed ");
                     Debug.Log(hit.collider.name);
                 }
@@ -343,7 +344,7 @@ public class LimitedCamera : MonoBehaviour
                         Invoke("ShowTutorialRobot", 3f);
                     } else
                     {
-                        isRightMomentForPhoto = false;
+                        //isRightMomentForPhoto = false;
                     }
                     
                 }
