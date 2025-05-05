@@ -91,8 +91,9 @@ public class AbilityManager : MonoBehaviour
                     // if this ability is already active
                     if (activeAbilityIndex == i)
                     {
-                        deactivateActiveAbility();
-                        remainingAbilityTime = 0;
+                        // removed manual deactivation for now
+                        //deactivateActiveAbility();
+                        //remainingAbilityTime = 0;
                     }
                     else
                     {
