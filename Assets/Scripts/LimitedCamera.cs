@@ -44,6 +44,7 @@ public class LimitedCamera : MonoBehaviour
     public ZoomUI zoomUI;
     public FocusBoxUI focusBoxUI;
     public PigeonsToFindUI pigeonsFoundUI;
+    FocusSliderUI focusSliderUI;
     bool photoAnimationInProgress = false;
     public bool savePhotos = false;
     Camera cam;
@@ -71,6 +72,8 @@ public class LimitedCamera : MonoBehaviour
         zoomUI.SetZoomRatios(zoomLevels);
         zoomUI.SetZoomLevel(currentZoomLevel);
         ResetAfterFocusMode();
+
+        focusSliderUI = focusBoxUI.transform.parent.GetComponentInChildren<FocusSliderUI>();
     }
 
     // Update is called once per frame
@@ -112,6 +115,7 @@ public class LimitedCamera : MonoBehaviour
             float fD = dofShaderMat.GetFloat("_FocusDistance") + focalDepthDirection * focusDistanceSpeed * Time.deltaTime;
             fD = Math.Clamp(fD, minFocusDistance, maxFocusDistance);
             dofShaderMat.SetFloat("_FocusDistance", fD);
+            focusSliderUI.SetFocusDistance(fD, minFocusDistance, maxFocusDistance);
 
             // photo
             if (Input.GetMouseButtonDown(0))
