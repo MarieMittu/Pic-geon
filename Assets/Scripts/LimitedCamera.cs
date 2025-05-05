@@ -36,6 +36,7 @@ public class LimitedCamera : MonoBehaviour
     float peripheryBlurRadius = 0.5f;
     bool focusMode = false;
     bool realBirdInFocus = false;
+    bool isRightMomentForPhoto = false;
 
     [Header("Other")]
     private int correctPhotosAmount = 0;
@@ -100,12 +101,15 @@ public class LimitedCamera : MonoBehaviour
             }
             else
             {
+                DetectBirdsOnPhoto(false);
+                focusBoxUI.SetFocusColor(isRightMomentForPhoto ? new Color(1f, 194f / 255f, 0f) : Color.white);
                 if (Input.mouseScrollDelta != Vector2.zero)
                 {
                     peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, maxPeripheryBlurRadius);
                     dofShaderMat.SetFloat("_PeripheryBlurRadius", peripheryBlurRadius);
                     focusBoxUI.SetFocusSize(peripheryBlurRadius);
                 }
+                
             }
 
             // W/S = change focus distance
@@ -272,45 +276,54 @@ public class LimitedCamera : MonoBehaviour
                         CheckRealBirdInFocus();
                         if (!realBirdInFocus)
                         {
-                            if (isFullDetection)
-                            {
+                            
                                 if (!robotScript.hasBeenCaught)
                                 {
-                                    if (!MissionManager.sharedInstance.isTutorial) robotScript.hasBeenCaught = true;
-                                    correctPhotosAmount++;
-                                    pigeonsFoundUI.SetFound(correctPhotosAmount);
-                                    if (correctPhotosAmount >= MissionManager.sharedInstance.GetRequiredPhotos()) GameManager.sharedInstance.hasEnoughCorrectPhotos = true;
-                                    Debug.Log("sus bird on photo " + correctPhotosAmount);
-
-                                    if (MissionManager.sharedInstance.isTutorial)
+                                    isRightMomentForPhoto = true;
+                                    if (isFullDetection)
                                     {
-                                        TutorialManager.sharedInstance.showRobot = false;
-                                        Debug.Log("CHANGE SHOW ROBOT");
+                                        
+                                        if (!MissionManager.sharedInstance.isTutorial) robotScript.hasBeenCaught = true;
+                                        correctPhotosAmount++;
+                                        pigeonsFoundUI.SetFound(correctPhotosAmount);
+                                        if (correctPhotosAmount >= MissionManager.sharedInstance.GetRequiredPhotos()) GameManager.sharedInstance.hasEnoughCorrectPhotos = true;
+                                        Debug.Log("sus bird on photo " + correctPhotosAmount);
+
+                                        if (MissionManager.sharedInstance.isTutorial)
+                                        {
+                                            TutorialManager.sharedInstance.showRobot = false;
+                                            Debug.Log("CHANGE SHOW ROBOT");
+                                        }
+                                    }
+                                    else
+                                    {
+
                                     }
                                 }
                                 else
                                 {
+                                    isRightMomentForPhoto = false;
                                     Debug.Log("already caught before");
                                 }
-                            } else
-                            {
-                                
-                            }
+                            
                                 
                         }
                         else
                         {
+                            isRightMomentForPhoto = false;
                             Debug.Log("sus bird on photo, but real bird too");
                         }
                     }
                     else
                     {
+                        isRightMomentForPhoto = false;
                         Debug.Log("sus bird out of focus");
                     }
 
                 }
                 else
                 {
+                    isRightMomentForPhoto = false;
                     Debug.Log("sus bird obstructed ");
                     Debug.Log(hit.collider.name);
                 }
@@ -328,6 +341,9 @@ public class LimitedCamera : MonoBehaviour
                         Debug.Log("visible");
                         TutorialManager.sharedInstance.hintRobot = true;
                         Invoke("ShowTutorialRobot", 3f);
+                    } else
+                    {
+                        isRightMomentForPhoto = false;
                     }
                     
                 }
