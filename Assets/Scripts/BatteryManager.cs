@@ -10,6 +10,8 @@ public class BatteryManager : MonoBehaviour
     float charge;
     public float maxCharge;
     public BatteryUI batteryUI;
+    [HideInInspector] public bool isFirstTime = false;
+    public GameObject abilityExplanation;
 
     private void Awake()
     {
@@ -18,6 +20,8 @@ public class BatteryManager : MonoBehaviour
 
     void Start()
     {
+        isFirstTime = true;
+
         charge = maxCharge;
         updateBatteryUI();
     }
@@ -37,6 +41,7 @@ public class BatteryManager : MonoBehaviour
     /// </returns>
     public float useCharge(float amount, bool useInsufficientCharge = true)
     {
+    
         float usedCharge;
         if (charge < amount)
         {
@@ -52,8 +57,17 @@ public class BatteryManager : MonoBehaviour
         }
         else
         {
-            charge -= amount;
-            usedCharge = amount;
+            //try here with no 1st charge and exlain activate
+            
+                if (!isFirstTime) charge -= amount;
+                usedCharge = amount;
+            
+            if (isFirstTime)
+            {
+                abilityExplanation.SetActive(true);
+                isFirstTime = false;
+            }
+           
         }
         updateBatteryUI();
         if (charge <= 0)

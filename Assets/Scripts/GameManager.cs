@@ -12,6 +12,7 @@ public class GameManager : MonoBehaviour
     public float startMissionDuration;
     float secondTimer = 0f;
     public Image timer;
+    public GameObject bonusAbilityMarker;
 
     public GameObject noFiles;
     public GameObject preview;
@@ -52,6 +53,7 @@ public class GameManager : MonoBehaviour
 
         noFiles.SetActive(true);
         preview.SetActive(false);
+        bonusAbilityMarker.SetActive(false);
     }
 
     // Update is called once per frame
@@ -70,6 +72,14 @@ public class GameManager : MonoBehaviour
                 timer.fillAmount = missionDuration / startMissionDuration;
             }
         }
+
+        if (startMissionDuration - missionDuration == 2f)
+        {
+            bonusAbilityMarker.SetActive(true);
+        }
+
+        if (Input.GetKeyDown(KeyCode.F)) bonusAbilityMarker.SetActive(false);
+
 
         if (Input.GetKeyDown(KeyCode.Escape))
         {

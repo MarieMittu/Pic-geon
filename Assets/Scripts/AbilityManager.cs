@@ -14,6 +14,7 @@ public class AbilityManager : MonoBehaviour
     public XRayEffect xrayEffectScript;
     public NightVision nightVisionScript;
 
+
     float remainingAbilityTime = 0;
 
     private class Ability
@@ -77,6 +78,7 @@ public class AbilityManager : MonoBehaviour
                 break;
         }
         abilityUI.EnableAbility(abilities[0].name);
+     
     }
 
     void Update()
@@ -98,7 +100,10 @@ public class AbilityManager : MonoBehaviour
                     else
                     {
                         deactivateActiveAbility();
-                        remainingAbilityTime = BatteryManager.instance.useCharge(ability.duration * ability.chargeUseRate) / ability.chargeUseRate;
+
+                    
+                            remainingAbilityTime = BatteryManager.instance.useCharge(ability.duration * ability.chargeUseRate) / ability.chargeUseRate;
+                        
                         if (remainingAbilityTime > 0) activateAbility(i);
                     }
                 }
@@ -126,6 +131,10 @@ public class AbilityManager : MonoBehaviour
         abilityUI.EnableAbilityText(nm, false);
         abilityUI.SetAbilityFillAmount(nm, 0);
         activeAbilityIndex = -1;
+        if (BatteryManager.instance.abilityExplanation.activeInHierarchy)
+        {
+            BatteryManager.instance.abilityExplanation.SetActive(false);
+        }
     }
 
     void activateAbility(int index)
