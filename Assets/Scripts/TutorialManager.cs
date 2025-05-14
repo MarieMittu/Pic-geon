@@ -110,7 +110,7 @@ public class TutorialManager : MonoBehaviour
         if (currentIndex == 13)
         {
             normalMarker.SetActive(false);
-            robotMarker.SetActive(true);
+            
         }
 
         if (hintRobot)
@@ -118,6 +118,7 @@ public class TutorialManager : MonoBehaviour
             if (currentIndex == 14)
             {
                 ShowNextTutorial(15);
+                robotMarker.SetActive(true);
             }
         }
 

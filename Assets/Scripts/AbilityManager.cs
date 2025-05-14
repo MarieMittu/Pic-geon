@@ -131,10 +131,14 @@ public class AbilityManager : MonoBehaviour
         abilityUI.EnableAbilityText(nm, false);
         abilityUI.SetAbilityFillAmount(nm, 0);
         activeAbilityIndex = -1;
-        if (BatteryManager.instance.abilityExplanation.activeInHierarchy)
+        if (!MissionManager.sharedInstance.isTutorial)
         {
-            BatteryManager.instance.abilityExplanation.SetActive(false);
+            if (BatteryManager.instance.abilityExplanation.activeInHierarchy)
+            {
+                BatteryManager.instance.abilityExplanation.SetActive(false);
+            }
         }
+        
     }
 
     void activateAbility(int index)

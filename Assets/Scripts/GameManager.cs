@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
 
         noFiles.SetActive(true);
         preview.SetActive(false);
-        bonusAbilityMarker.SetActive(false);
+        //bonusAbilityMarker.SetActive(false);
     }
 
     // Update is called once per frame
@@ -73,12 +73,16 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (startMissionDuration - missionDuration == 2f)
+        if (!MissionManager.sharedInstance.isTutorial)
         {
-            bonusAbilityMarker.SetActive(true);
-        }
+            if (startMissionDuration - missionDuration == 2f)
+            {
+                bonusAbilityMarker.SetActive(true);
+            }
 
-        if (Input.GetKeyDown(KeyCode.F)) bonusAbilityMarker.SetActive(false);
+            if (Input.GetKeyDown(KeyCode.F)) bonusAbilityMarker.SetActive(false);
+
+        }
 
 
         if (Input.GetKeyDown(KeyCode.Escape))
