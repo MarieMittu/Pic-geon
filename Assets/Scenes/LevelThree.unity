@@ -591,7 +591,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1819.0001, y: 1749.0007}
-  m_SizeDelta: {x: 377.24567, y: 40.438377}
+  m_SizeDelta: {x: 334.2349, y: 40.438377}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &191740946
 MonoBehaviour:
@@ -1335,8 +1335,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 188.62283, y: -20.219189}
-  m_SizeDelta: {x: 367.24567, y: 30.43838}
+  m_AnchoredPosition: {x: 167.11745, y: -20.219189}
+  m_SizeDelta: {x: 324.2349, y: 30.43838}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &362227822
 MonoBehaviour:
@@ -1371,7 +1371,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Night vision makes your life easier
+  m_Text: Night vision lights up the dark
 --- !u!222 &362227823
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1444,7 +1444,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -54.439697, y: 2034.6683}
-  m_SizeDelta: {x: 193.29198, y: 46.393715}
+  m_SizeDelta: {x: 168.80893, y: 46.393715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &376152215
 MonoBehaviour:
@@ -4220,8 +4220,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 96.64599, y: -23.196857}
-  m_SizeDelta: {x: 183.29198, y: 36.393715}
+  m_AnchoredPosition: {x: 84.404465, y: -23.196857}
+  m_SizeDelta: {x: 158.80893, y: 36.393715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &846561838
 MonoBehaviour:
@@ -4256,9 +4256,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Press F to try the new ability
+  m_Text: 'Press F to activate ability
 
-    No charge for the 1st time'
+    1st use is free of charge'
 --- !u!222 &846561839
 CanvasRenderer:
   m_ObjectHideFlags: 0

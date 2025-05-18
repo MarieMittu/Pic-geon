@@ -3592,8 +3592,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 225.01654, y: -27.828783}
-  m_SizeDelta: {x: 440.03308, y: 45.657566}
+  m_AnchoredPosition: {x: 216.08354, y: -35.76923}
+  m_SizeDelta: {x: 422.16708, y: 61.53846}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &848761325
 MonoBehaviour:
@@ -3617,7 +3617,7 @@ MonoBehaviour:
       m_Calls: []
   m_FontData:
     m_Font: {fileID: 12800000, guid: 610a49e7d6cf2bf4e86c8fdcbc8710d1, type: 3}
-    m_FontSize: 18
+    m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 1
@@ -3628,10 +3628,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Now pay attention to the weird details in birds'' bodies!
+  m_Text: 'Some birds may carry suspicious items,
 
-    Hint: evidences
-    taken with XRay vision are also valid'
+    photos of those are also evidence!'
 --- !u!222 &848761326
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -5571,8 +5570,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1819, y: 1749.0004}
-  m_SizeDelta: {x: 450.03308, y: 55.657566}
+  m_AnchoredPosition: {x: 1756, y: 1749}
+  m_SizeDelta: {x: 432.16708, y: 71.53846}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1568896833
 GameObject:
@@ -5815,7 +5814,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -54.439697, y: 2034.6683}
-  m_SizeDelta: {x: 193.29198, y: 46.393715}
+  m_SizeDelta: {x: 168.80893, y: 46.393715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1687173439
 MonoBehaviour:
@@ -7496,8 +7495,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 96.64599, y: -23.196857}
-  m_SizeDelta: {x: 183.29198, y: 36.393715}
+  m_AnchoredPosition: {x: 84.404465, y: -23.196857}
+  m_SizeDelta: {x: 158.80893, y: 36.393715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2063866782
 MonoBehaviour:
@@ -7532,9 +7531,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Press F to try the new ability
+  m_Text: 'Press F to activate ability
 
-    No charge for the 1st time'
+    1st use is free of charge'
 --- !u!222 &2063866783
 CanvasRenderer:
   m_ObjectHideFlags: 0

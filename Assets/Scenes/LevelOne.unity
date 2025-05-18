@@ -359,7 +359,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -54.439697, y: 2034.6683}
-  m_SizeDelta: {x: 193.29198, y: 46.393715}
+  m_SizeDelta: {x: 168.80893, y: 46.393715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &104586476
 MonoBehaviour:
@@ -510,8 +510,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 96.64599, y: -23.196857}
-  m_SizeDelta: {x: 183.29198, y: 36.393715}
+  m_AnchoredPosition: {x: 84.404465, y: -23.196857}
+  m_SizeDelta: {x: 158.80893, y: 36.393715}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &137240460
 MonoBehaviour:
@@ -546,9 +546,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Press F to try the new ability
+  m_Text: 'Press F to activate ability
 
-    No charge for the 1st time'
+    1st use is free of charge'
 --- !u!222 &137240461
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7094,7 +7094,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 1819, y: 1749}
-  m_SizeDelta: {x: 491.72043, y: 40.438377}
+  m_SizeDelta: {x: 402.3904, y: 40.438377}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1924276086
 MonoBehaviour:
@@ -7239,8 +7239,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 245.86021, y: -20.219189}
-  m_SizeDelta: {x: 481.72043, y: 30.43838}
+  m_AnchoredPosition: {x: 201.1952, y: -20.219189}
+  m_SizeDelta: {x: 392.3904, y: 30.43838}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2041032973
 MonoBehaviour:
@@ -7275,7 +7275,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Now pay attention to the birds' bodies colors!
+  m_Text: Normal birds will give off body heat!
 --- !u!222 &2041032974
 CanvasRenderer:
   m_ObjectHideFlags: 0
