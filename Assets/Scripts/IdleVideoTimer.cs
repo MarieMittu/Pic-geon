@@ -18,6 +18,9 @@ public class IdleVideoTimer : MonoBehaviour
     {
         timeElapsed += Time.deltaTime;
         if (Input.anyKeyDown) timeElapsed = 0;
-        if (timeElapsed > 2 * 60) SceneManager.LoadScene("IdleVideo");
+        if (timeElapsed > (2 * 60)) {
+            SceneManager.LoadScene("IdleVideo");
+            Debug.Log("Transitioning to IdleVideo scene");
+        }
     }
 }
