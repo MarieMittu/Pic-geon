@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
         if (!MissionManager.sharedInstance.isTutorial)
         {
-            if (startMissionDuration - missionDuration == 0.1f)
+            if (startMissionDuration - missionDuration == 0.01f)
             {
                 bonusAbilityMarker.SetActive(true);
             }
