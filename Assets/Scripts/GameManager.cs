@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
 
         if (!MissionManager.sharedInstance.isTutorial)
         {
-            if (startMissionDuration - missionDuration == 0.01f)
+            if (startMissionDuration - missionDuration == 1.0f)
             {
                 bonusAbilityMarker.SetActive(true);
             }
@@ -238,6 +238,11 @@ public class GameManager : MonoBehaviour
     {
         FindObjectOfType<ScenesController>().ShowPhotoLibrary();
         FindObjectOfType<MenusController>().InitializePhotoGrid();
+    }
+
+    public void OpenControls()
+    {
+        FindObjectOfType<ScenesController>().OpenControlsScreen();
     }
 
 }

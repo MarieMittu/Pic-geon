@@ -11,6 +11,7 @@ public class ScenesController : MonoBehaviour
     [SerializeField] GameObject alert;
     [SerializeField] GameObject photosLibrary;
     [SerializeField] GameObject submitOption;
+    [SerializeField] GameObject controlsScreen;
 
     public bool isPaused = false;
     public bool isAlerting = false;
@@ -167,8 +168,13 @@ public class ScenesController : MonoBehaviour
                 photosLibrary.SetActive(false);
                 FindObjectOfType<MenusController>().currentMode = MenusController.MenuMode.OptionsMenu;
             }
-            
-        } else
+
+        } else if (controlsScreen.activeInHierarchy)
+        {
+            controlsScreen.SetActive(false);
+            FindObjectOfType<MenusController>().currentMode = MenusController.MenuMode.OptionsMenu;
+        }
+        else
         {
             if (alert.activeInHierarchy) alert.SetActive(false);
             isAlerting = false;
@@ -201,5 +207,10 @@ public class ScenesController : MonoBehaviour
     public void ShowPhotoLibrary()
     {
         photosLibrary.SetActive(true);
+    }
+
+    public void OpenControlsScreen()
+    {
+        controlsScreen.SetActive(true);
     }
 }
