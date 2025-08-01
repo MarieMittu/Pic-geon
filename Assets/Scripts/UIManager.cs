@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
 {
 
     [SerializeField] GameObject[] newMissions;
+    [SerializeField] GameObject[] newButtons;
 
     private void Start()
     {
@@ -20,6 +21,7 @@ public class UIManager : MonoBehaviour
             bool isUnlocked = MissionManager.sharedInstance.IsMissionUnlocked(missionNum);
 
             newMissions[i].SetActive(isUnlocked);
+            newButtons[i].SetActive(isUnlocked);
 
             // Detailed debug log for each mission
             Debug.Log($"Mission {missionNum} ({newMissions[i].name}) - " +

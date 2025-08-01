@@ -11,6 +11,7 @@ public class ScenesController : MonoBehaviour
     [SerializeField] GameObject alert;
     [SerializeField] GameObject photosLibrary;
     [SerializeField] GameObject submitOption;
+    [SerializeField] GameObject submitButton;
     [SerializeField] GameObject controlsScreen;
 
     public bool isPaused = false;
@@ -202,6 +203,7 @@ public class ScenesController : MonoBehaviour
     public void ActivateSubOption()
     {
         submitOption.SetActive(true);
+        submitButton.SetActive(true);
     }
 
     public void ShowPhotoLibrary()
