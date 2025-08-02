@@ -1006,8 +1006,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -213, y: 82}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: -99.1318, y: -9.2909}
+  m_SizeDelta: {x: 387.7365, y: 212.5818}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &283488908
 MonoBehaviour:
@@ -1030,7 +1030,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 76e18d4e9bc6da5488949028c6422915, type: 3}
     m_FontSize: 14
     m_FontStyle: 0
     m_BestFit: 0
@@ -1042,7 +1042,16 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Controls
+  m_Text: 'RMB - lock/unlock camera
+
+    LMB - take photo
+
+    WS - move focus
+
+    Mouse
+    wheel - adjust focus width
+
+    F - use special ability'
 --- !u!222 &283488909
 CanvasRenderer:
   m_ObjectHideFlags: 0
