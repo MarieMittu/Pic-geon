@@ -9,6 +9,8 @@ public class ScenesController : MonoBehaviour
 
     [SerializeField] GameObject pauseMenu;
     [SerializeField] GameObject alert;
+    [SerializeField] GameObject alertYesBtn;
+    [SerializeField] GameObject alertNoBtn;
     [SerializeField] GameObject photosLibrary;
     [SerializeField] GameObject submitOption;
     [SerializeField] GameObject submitButton;
@@ -177,7 +179,7 @@ public class ScenesController : MonoBehaviour
         }
         else
         {
-            if (alert.activeInHierarchy) alert.SetActive(false);
+            if (alert.activeInHierarchy) DeactivateAlert();
             isAlerting = false;
             pauseMenu.SetActive(false);
             Time.timeScale = 1f;
@@ -187,16 +189,30 @@ public class ScenesController : MonoBehaviour
         
     }
 
+    public void ActivateAlert()
+    {
+        alert.SetActive(true);
+        alertYesBtn.SetActive(true);
+        alertNoBtn.SetActive(true);
+    }
+
+    public void DeactivateAlert()
+    {
+        alert.SetActive(false);
+        alertYesBtn.SetActive(false);
+        alertNoBtn.SetActive(false);
+    }
+
     public void ShowExitAlert()
     {
         GameManager.sharedInstance.wantsToExit = true;
-        alert.SetActive(true);
+        ActivateAlert();
         isAlerting = true;
     }
 
     public void ShowAlert()
     {
-        alert.SetActive(true);
+        ActivateAlert();
         isAlerting = true;
     }
 
