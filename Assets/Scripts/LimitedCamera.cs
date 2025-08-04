@@ -146,23 +146,25 @@ public class LimitedCamera : MonoBehaviour
                         //focusMode = false;
                         //cam.fieldOfView = zoomLevels[currentZoomLevel]; -> moved to end of photo animation in TakePhotoScreenshotWithFeedback
                     }
-                    else
-                    {
-                        focusMode = true;
-                        cam.fieldOfView *= 0.9f;
-                        BatteryManager.instance.useCharge(1);
-                        peripheryBlurRadius = maxPeripheryBlurRadius;
-                        focusBoxUI.gameObject.SetActive(true);
-                        focusBoxUI.SetFocusSize(peripheryBlurRadius);
-                    }
                 }
-
             }
-            // cancel photo
-            if (focusMode && Input.GetMouseButtonDown(1))
+            // enter/cancel focus mode
+            if (Input.GetMouseButtonDown(1))
             {
-                focusBoxUI.SetFocusSize(maxPeripheryBlurRadius);
-                ResetAfterFocusMode();
+                if (focusMode)
+                {
+                    focusBoxUI.SetFocusSize(maxPeripheryBlurRadius);
+                    ResetAfterFocusMode();
+                }
+                else
+                {
+                    focusMode = true;
+                    cam.fieldOfView *= 0.9f;
+                    BatteryManager.instance.useCharge(1);
+                    peripheryBlurRadius = maxPeripheryBlurRadius;
+                    focusBoxUI.gameObject.SetActive(true);
+                    focusBoxUI.SetFocusSize(peripheryBlurRadius);
+                }
             }
         }
 
