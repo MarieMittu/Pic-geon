@@ -18,6 +18,8 @@ public class TapeManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        tapeLimit = MissionManager.sharedInstance.tapeLimitForMissions[MissionManager.sharedInstance.currentMission-1];
+        ResetTape();
     }
 
     private void OnEnable()

@@ -12,6 +12,7 @@ public class MissionManager : MonoBehaviour
     public int selectedMission = 1;
 
     public int[] requiredPhotosForMissions = { 1, 1, 2, 3 };
+    public int[] tapeLimitForMissions = { 11, 9, 8, 7 };
 
     private HashSet<int> unlockedMissions = new HashSet<int> { 1 };
 
