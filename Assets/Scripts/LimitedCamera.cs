@@ -37,6 +37,7 @@ public class LimitedCamera : MonoBehaviour
     bool focusMode = false;
     bool realBirdInFocus = false;
     bool isRightMomentForPhoto = false;
+    public GameObject susLabel;
 
     [Header("Other")]
     private int correctPhotosAmount = 0;
@@ -75,6 +76,8 @@ public class LimitedCamera : MonoBehaviour
         ResetAfterFocusMode();
 
         focusSliderUI = focusBoxUI.transform.parent.GetComponentInChildren<FocusSliderUI>();
+
+        susLabel.SetActive(false);
     }
 
     // Update is called once per frame
@@ -103,6 +106,9 @@ public class LimitedCamera : MonoBehaviour
             {
                 DetectBirdsOnPhoto(false);
                 focusBoxUI.SetFocusColor(isRightMomentForPhoto ? new Color(1f, 194f / 255f, 0f) : Color.white);
+                //activate label sus
+                susLabel.SetActive(isRightMomentForPhoto ? true : false);
+
                 if (Input.mouseScrollDelta != Vector2.zero)
                 {
                     peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, maxPeripheryBlurRadius);
