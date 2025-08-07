@@ -176,6 +176,7 @@ public class LimitedCamera : MonoBehaviour
         }
 
         TrackTime();
+        if (!focusBoxUI.gameObject.activeInHierarchy) susLabel.SetActive(false);
     }
 
     private bool IsWithinFocusedArea(GameObject obj)
