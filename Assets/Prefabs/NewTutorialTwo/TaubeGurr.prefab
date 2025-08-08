@@ -3337,7 +3337,7 @@ GameObject:
   - component: {fileID: 6002145695028023682}
   - component: {fileID: 6253888996438481972}
   m_Layer: 0
-  m_Name: TaubeZero
+  m_Name: TaubeGurr
   m_TagString: RealBird
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
