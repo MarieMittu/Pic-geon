@@ -152,7 +152,12 @@ public class TutorialManager : MonoBehaviour
 
             }
         }
-          
+        if (currentIndex == 18)
+        {
+            Invoke("GoToWinScene", 3f);
+        }
+
+
     }
 
     private void ActivateTutorial(int index)
@@ -214,4 +219,8 @@ public class TutorialManager : MonoBehaviour
         }
     }
 
+    private void GoToWinScene()
+    {
+        GameManager.sharedInstance.TriggerNextLevel();
+    }
 }
