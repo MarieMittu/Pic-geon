@@ -2391,6 +2391,7 @@ MonoBehaviour:
   maxMissions: 4
   selectedMission: 0
   requiredPhotosForMissions: 01000000010000000200000003000000
+  tapeLimitForMissions: 0b000000090000000800000007000000
   isTutorial: 0
 --- !u!4 &1324594400
 Transform:
