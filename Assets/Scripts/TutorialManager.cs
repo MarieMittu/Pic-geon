@@ -9,7 +9,7 @@ public class TutorialManager : MonoBehaviour
 
     public GameObject[] tutorials;
     public float focusTimer = 6; // time needed to remain focused on normal bird to proceed
-    public GameObject normalMarker;
+    public GameObject[] normalMarkers;
     public GameObject robotMarker;
 
     [HideInInspector]
@@ -21,8 +21,7 @@ public class TutorialManager : MonoBehaviour
     private bool isSwitching = false;
     private Dictionary<int, int> tutorialSwitchMap;
 
-    private List<GameObject> normalMarkers = new List<GameObject>();
-    private List<GameObject> robotMarkers = new List<GameObject>();
+  
 
     private void Awake()
     {
@@ -85,7 +84,11 @@ public class TutorialManager : MonoBehaviour
             if (currentIndex == 10)
             {
                 ShowNextTutorial(11);
-                SetNormalMarkersActive(true);
+                foreach (GameObject marker in normalMarkers)
+                {
+                    marker.SetActive(true);
+                }
+                PositionNormalMarkers();
             }
                
         }
@@ -110,7 +113,10 @@ public class TutorialManager : MonoBehaviour
 
         if (currentIndex == 14)
         {
-            SetNormalMarkersActive(false);
+            foreach (GameObject marker in normalMarkers)
+            {
+                marker.SetActive(false);
+            }
             ShowNextTutorial(15);
 
         }
@@ -120,7 +126,8 @@ public class TutorialManager : MonoBehaviour
             if (currentIndex == 15)
             {
 
-                SetRobotMarkersActive(true);
+                robotMarker.SetActive(true);
+                PositionRobotMarker();
             }
         }
 
@@ -140,7 +147,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (currentIndex == 17)
             {
-                SetRobotMarkersActive(false);
+                robotMarker.SetActive(false);
                 ShowNextTutorial(18);
 
             }
@@ -184,31 +191,27 @@ public class TutorialManager : MonoBehaviour
         ActivateTutorial(index);
     }
 
-    public void RegisterNormalMarker(GameObject marker)
+    private void PositionNormalMarkers()
     {
-        if (!normalMarkers.Contains(marker))
-            normalMarkers.Add(marker);
-    }
+        GameObject[] realBirds = GameObject.FindGameObjectsWithTag("RealBird");
+        int count = Mathf.Min(normalMarkers.Length, realBirds.Length);
 
-    public void RegisterRobotMarker(GameObject marker)
-    {
-        if (!robotMarkers.Contains(marker))
-            robotMarkers.Add(marker);
-    }
-
-    private void SetNormalMarkersActive(bool state)
-    {
-        foreach (var marker in normalMarkers)
+        for (int i = 0; i < count; i++)
         {
-            if (marker != null) marker.SetActive(state);
+            Vector3 birdPos = realBirds[i].transform.position;
+            Vector3 markerPos = normalMarkers[i].transform.position;
+            normalMarkers[i].transform.position = new Vector3(birdPos.x, markerPos.y, birdPos.z);
+        }
+    }
+    private void PositionRobotMarker()
+    {
+        GameObject robotBird = GameObject.FindGameObjectWithTag("RobotBird");
+        if (robotBird != null)
+        {
+            Vector3 birdPos = robotBird.transform.position;
+            Vector3 markerPos = robotMarker.transform.position;
+            robotMarker.transform.position = new Vector3(birdPos.x, markerPos.y, birdPos.z);
         }
     }
 
-    private void SetRobotMarkersActive(bool state)
-    {
-        foreach (var marker in robotMarkers)
-        {
-            if (marker != null) marker.SetActive(state);
-        }
-    }
 }
