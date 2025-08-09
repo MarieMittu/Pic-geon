@@ -35,16 +35,12 @@ public class TutorialManager : MonoBehaviour
         tutorialSwitchMap = new Dictionary<int, int>
         {
             { 0, 1 },
-            { 3, 4 },
-            { 5, 6 },
-            { 7, 8 },
-            { 9, 10 },
-            { 13, 14 },
-            { 18, 19 },
-            { 19, 20 },
-            { 20, 21 },
-            { 21, 22 },
-            { 22, 23 }
+            { 1, 2 },
+            { 4, 5 },
+            { 6, 7 },
+            { 8, 9 },
+            { 12, 13 },
+            { 13, 14 }
         };
 
         ActivateTutorial(0);
@@ -60,38 +56,47 @@ public class TutorialManager : MonoBehaviour
         }
         if ((Input.GetAxis("Mouse X") != 0) || (Input.GetAxis("Mouse Y") != 0))
         {
-            ShowNextTutorial(2);
+            ShowNextTutorial(3);
         }
         if (Input.mouseScrollDelta != Vector2.zero)
         {
-            if (currentIndex == 2)
+            if (currentIndex == 3)
             {
-                ShowNextTutorial(3);
-            } else if (currentIndex == 10)
+                ShowNextTutorial(4);
+            } else if (currentIndex == 9)
             {
-                ShowNextTutorial(11);
+                ShowNextTutorial(10);
             }
         }
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
         {
-            ShowNextTutorial(5);
+            ShowNextTutorial(6);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
-            ShowNextTutorial(7);
+            //ShowNextTutorial(7);
         }
-        if (Input.GetMouseButtonDown(0))
-        {
-            ShowNextTutorial(9);
-        }
-
         if (Input.GetMouseButtonDown(1))
         {
-            if (currentIndex == 11) normalMarker.SetActive(true);
-            ShowNextTutorial(12);
+            if (currentIndex == 7) ShowNextTutorial(8);
+            if (currentIndex == 10)
+            {
+                ShowNextTutorial(11);
+                normalMarker.SetActive(true);
+            }
+               
         }
 
-        if (currentIndex == 12)
+        //if (Input.GetMouseButtonDown(1))
+        //{
+        //    //if (currentIndex == 11) normalMarker.SetActive(true);
+        //    //ShowNextTutorial(12);
+        //}
+
+  
+            
+
+        if (currentIndex == 11)
         {
             if (lookingAtNormal)
             {
@@ -99,7 +104,7 @@ public class TutorialManager : MonoBehaviour
 
                 if (focusTimer <= 0)
                 {
-                    ShowNextTutorial(13);
+                    ShowNextTutorial(12);
                     
                     lookingAtNormal = false;
                 }
@@ -107,17 +112,18 @@ public class TutorialManager : MonoBehaviour
             
         }
 
-        if (currentIndex == 13)
+        if (currentIndex == 14)
         {
             normalMarker.SetActive(false);
-            
+            ShowNextTutorial(15);
+
         }
 
         if (hintRobot)
         {
-            if (currentIndex == 14)
+            if (currentIndex == 15)
             {
-                ShowNextTutorial(15);
+                
                 robotMarker.SetActive(true);
             }
         }
