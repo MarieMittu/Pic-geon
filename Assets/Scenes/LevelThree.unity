@@ -4455,7 +4455,7 @@ GameObject:
   m_Component:
   - component: {fileID: 835948706}
   - component: {fileID: 835948708}
-  - component: {fileID: 835948707}
+  - component: {fileID: 835948709}
   m_Layer: 5
   m_Name: PauseScreen
   m_TagString: Untagged
@@ -4505,7 +4505,15 @@ RectTransform:
   m_AnchoredPosition: {x: -3.946167, y: 0.5014038}
   m_SizeDelta: {x: 37.92, y: 35.8551}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &835948707
+--- !u!222 &835948708
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 835948705}
+  m_CullTransparentMesh: 1
+--- !u!114 &835948709
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -4518,14 +4526,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.2264151, g: 0.2253471, b: 0.2253471, a: 0.68235296}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 7b0c72c33d99c2641ba0728d63726237, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -4535,14 +4543,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!222 &835948708
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 835948705}
-  m_CullTransparentMesh: 1
 --- !u!1 &846561836
 GameObject:
   m_ObjectHideFlags: 0
@@ -6840,6 +6840,7 @@ MonoBehaviour:
   maxMissions: 3
   selectedMission: 1
   requiredPhotosForMissions: 01000000010000000200000003000000
+  tapeLimitForMissions: 0b000000090000000800000007000000
   isTutorial: 0
 --- !u!4 &1399647249
 Transform:
