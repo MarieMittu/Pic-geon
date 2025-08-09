@@ -21,6 +21,9 @@ public class TutorialManager : MonoBehaviour
     private bool isSwitching = false;
     private Dictionary<int, int> tutorialSwitchMap;
 
+    private List<GameObject> normalMarkers = new List<GameObject>();
+    private List<GameObject> robotMarkers = new List<GameObject>();
+
     private void Awake()
     {
 
@@ -82,17 +85,10 @@ public class TutorialManager : MonoBehaviour
             if (currentIndex == 10)
             {
                 ShowNextTutorial(11);
-                normalMarker.SetActive(true);
+                SetNormalMarkersActive(true);
             }
                
         }
-
-        //if (Input.GetMouseButtonDown(1))
-        //{
-        //    //if (currentIndex == 11) normalMarker.SetActive(true);
-        //    //ShowNextTutorial(12);
-        //}
-
   
             
 
@@ -114,7 +110,7 @@ public class TutorialManager : MonoBehaviour
 
         if (currentIndex == 14)
         {
-            normalMarker.SetActive(false);
+            SetNormalMarkersActive(false);
             ShowNextTutorial(15);
 
         }
@@ -123,8 +119,8 @@ public class TutorialManager : MonoBehaviour
         {
             if (currentIndex == 15)
             {
-                
-                robotMarker.SetActive(true);
+
+                SetRobotMarkersActive(true);
             }
         }
 
@@ -144,7 +140,7 @@ public class TutorialManager : MonoBehaviour
         {
             if (currentIndex == 17)
             {
-                robotMarker.SetActive(false);
+                SetRobotMarkersActive(false);
                 ShowNextTutorial(18);
 
             }
@@ -186,5 +182,33 @@ public class TutorialManager : MonoBehaviour
         isSwitching = true; 
         yield return new WaitForSeconds(delay); 
         ActivateTutorial(index);
+    }
+
+    public void RegisterNormalMarker(GameObject marker)
+    {
+        if (!normalMarkers.Contains(marker))
+            normalMarkers.Add(marker);
+    }
+
+    public void RegisterRobotMarker(GameObject marker)
+    {
+        if (!robotMarkers.Contains(marker))
+            robotMarkers.Add(marker);
+    }
+
+    private void SetNormalMarkersActive(bool state)
+    {
+        foreach (var marker in normalMarkers)
+        {
+            if (marker != null) marker.SetActive(state);
+        }
+    }
+
+    private void SetRobotMarkersActive(bool state)
+    {
+        foreach (var marker in robotMarkers)
+        {
+            if (marker != null) marker.SetActive(state);
+        }
     }
 }
