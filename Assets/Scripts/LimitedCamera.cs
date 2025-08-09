@@ -108,7 +108,7 @@ public class LimitedCamera : MonoBehaviour
                 focusBoxUI.SetFocusColor(isRightMomentForPhoto ? new Color(1f, 194f / 255f, 0f) : Color.white);
                 //activate label sus
                 susLabel.SetActive(isRightMomentForPhoto ? true : false);
-
+                Debug.Log("right moment " + isRightMomentForPhoto);
                 if (Input.mouseScrollDelta != Vector2.zero)
                 {
                     peripheryBlurRadius = Math.Clamp(peripheryBlurRadius - Input.mouseScrollDelta.y * 0.1f, 0.1f, maxPeripheryBlurRadius);
@@ -168,11 +168,12 @@ public class LimitedCamera : MonoBehaviour
             }
         }
 
-        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex == 14)
+        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex == 17)
         {
             DetectBirdsOnPhoto(false);
+            Debug.Log("DETECTING " + isRightMomentForPhoto);
         }
-        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex >10 && TutorialManager.sharedInstance.currentIndex < 15)
+        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex >10 && TutorialManager.sharedInstance.currentIndex < 18)
         {
             CheckRealBirdInFocus();
         }
@@ -265,31 +266,39 @@ public class LimitedCamera : MonoBehaviour
 
     void DetectBirdsOnPhoto(bool isFullDetection)
     {
+        Debug.Log("decetcTest start calling");
         isRightMomentForPhoto = false;
         GameObject[] roboBirds = GameObject.FindGameObjectsWithTag("RobotBird");
         var xrayScript = GetComponent<XRayEffect>();
         foreach (GameObject rb in roboBirds)
         {
+            Debug.Log("decetcTest behaviour?");
             // is a visible pigeon showing suspicious behaviour?
-            var robotScript = rb.GetComponent<AIRobotController>();
+            var robotScript = MissionManager.sharedInstance.isTutorial ? rb.GetComponent<RobotTutorial>() : rb.GetComponent<AIRobotController>();
+            Debug.Log("decetcTest script " + robotScript.isSpying);
+            Debug.Log("decetcTestBIG " + rb.GetComponent<MeshRenderer>() + " isspy " + robotScript.isSpying);
             if (rb.GetComponent<MeshRenderer>() && (robotScript.isSpying || (MissionManager.sharedInstance.currentMission == 3 && xrayScript.IsXRayActive()))) //add gear xray cindition
             {
+                Debug.Log("decetcTest obstructed");
                 // test if pigeon is obstructed
                 RaycastHit hit;
                 bool didHit = isObstructed(rb, out hit);
                 if (!didHit)
                 {
+                    Debug.Log("decetcTest in focus");
                     // test if pigeon is in focus
                     if (IsWithinFocusedArea(rb) && !IsInPeriphery(rb))
                     {
+                        Debug.Log("decetcTest others");
                         // test if other (real) birds are in focus
                         CheckRealBirdInFocus();
                         if (!realBirdInFocus)
                         {
-                            
-                                if (!robotScript.hasBeenCaught)
+                            Debug.Log("decetcTest no real");
+                            if (!robotScript.hasBeenCaught)
                                 {
-                                    isRightMomentForPhoto = true;
+                                Debug.Log("decetcTest here is moment");
+                                isRightMomentForPhoto = true;
                                     if (isFullDetection)
                                     {
                                         
@@ -350,7 +359,7 @@ public class LimitedCamera : MonoBehaviour
                     {
                         Debug.Log("visible");
                         TutorialManager.sharedInstance.hintRobot = true;
-                        Invoke("ShowTutorialRobot", 3f);
+                        Invoke("ShowTutorialRobot", 4f);
                     } else
                     {
                         //isRightMomentForPhoto = false;
@@ -364,6 +373,7 @@ public class LimitedCamera : MonoBehaviour
 
     void ShowTutorialRobot()
     {
+        Debug.Log("ShowTutorialRobot");
         TutorialManager.sharedInstance.showRobot = true;
     }
 

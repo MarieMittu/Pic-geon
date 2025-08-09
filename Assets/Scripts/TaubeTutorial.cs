@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class TaubeTutorial : AIBirdController
@@ -20,26 +21,40 @@ public class TaubeTutorial : AIBirdController
 
     void PerformRandomActions()
     {
-        int action = Random.Range(0, 2); 
+        string anim = PerformRandomAction();
+        if (!string.IsNullOrEmpty(anim))
+        {
+            animator.CrossFade(anim, 0.1f);
+        }
 
-            if (action == 0)
-            {
-                StandOnStick();
-            }
-            else
-            {
-                CleanOnStick();
-            }
-        
     }
 
-    void StandOnStick()
+    public override string PerformRandomAction()
     {
-        animator.CrossFade("01_Standing_Idle_On_Stick", 0.1f);
+        // Get all states except walking and flying
+        var eligibleStates = states
+            .Where(kvp => kvp.Key != "walking" && kvp.Key != "flying")
+            .Select(kvp => kvp.Value)
+            .ToList();
+
+        if (eligibleStates.Count == 0) return null;
+
+        // Pick a random state weighted by number of animations (or just uniformly)
+        State chosenState = eligibleStates[Random.Range(0, eligibleStates.Count)];
+
+        // Get random animation from chosen state
+        var anim = chosenState.GetRandomAnimation();
+
+        return anim;
     }
 
-    void CleanOnStick()
-    {
-        animator.CrossFade("01_Standing_Idle_On_Stick_Cleaning", 0.1f);
-    }
+    //void StandOnStick()
+    //{
+    //    animator.CrossFade("01_Standing_Idle_On_Stick", 0.1f);
+    //}
+
+    //void CleanOnStick()
+    //{
+    //    animator.CrossFade("01_Standing_Idle_On_Stick_Cleaning", 0.1f);
+    //}
 }

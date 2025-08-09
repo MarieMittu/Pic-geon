@@ -35,8 +35,15 @@ public class AIRobotController : AIBirdController
     {
         try {
             string anim = animator.GetCurrentAnimatorClipInfo(0)[0].clip.name;
-            if (anim.StartsWith('R')) isSpying = true;
+            if (anim.StartsWith('R'))
+            {
+                isSpying = true;
+                Debug.Log("isSpying " + isSpying);
+            }
+                
             else isSpying = false;
+
+            
         }
         catch { 
             isSpying = false;

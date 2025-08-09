@@ -11,7 +11,7 @@ public class AIBirdController : MonoBehaviour
 
     private float actionTime; //waiting time between start of random actions
     private float stateTime; //waiting time between changing states
-    private bool isTransitioning = false;
+    [HideInInspector] public bool isTransitioning = false;
     public delegate void RandomActions();
 
     Rigidbody rb;
@@ -37,7 +37,7 @@ public class AIBirdController : MonoBehaviour
         // (weight, (transition animations, state))
         public (float, (string[], State))[] transitions;
         // (weight, animation name)
-        (float, string)[] animations;
+        public  (float, string)[] animations;
         public RandomActions stateAction = null;
 
         public State(string name, (float, string)[] animations, RandomActions stateAction = null)

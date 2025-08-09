@@ -28,6 +28,12 @@ public class ObjectPool : MonoBehaviour
             pooledBirds.Add(tmpBirds);
         }
 
+        Debug.Log("robotsToPool length: " + (robotsToPool != null ? robotsToPool.Length.ToString() : "null"));
+        if (robotsToPool != null && robotsToPool.Length > 0)
+        {
+            Debug.Log("robotsToPool[0]: " + (robotsToPool[0] != null ? robotsToPool[0].name : "null"));
+        }
+
         pooledRobots = new List<GameObject>();
         for (int i = 0; i < robotsAmountToPool; i++)
         {
@@ -36,6 +42,7 @@ public class ObjectPool : MonoBehaviour
             tmpBirds.SetActive(false);
             pooledRobots.Add(tmpBirds);
         }
+
     }
 
     public GameObject GetPooledBird()
