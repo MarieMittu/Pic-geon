@@ -2937,7 +2937,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.008, y: 0.002, z: 0.016}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
@@ -5165,7 +5165,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.009000001, y: 0.008, z: 0.054}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: -0.004}
   m_TimeToStationary: 0.5
@@ -7041,7 +7041,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.5, y: 0.5, z: 0.5}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
@@ -12440,7 +12440,7 @@ NavMeshObstacle:
   m_Shape: 1
   m_Extents: {x: 0.020000001, y: 0.018000001, z: 0.019000001}
   m_MoveThreshold: 0.1
-  m_Carve: 0
+  m_Carve: 1
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
@@ -15380,6 +15380,7 @@ MonoBehaviour:
   showRobot: 0
   hintRobot: 0
   lookingAtNormal: 0
+  snappedPicture: 0
 --- !u!1 &2114818634
 GameObject:
   m_ObjectHideFlags: 0
