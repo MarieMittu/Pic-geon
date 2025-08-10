@@ -108,12 +108,15 @@ public class TutorialManager : MonoBehaviour
                 {
                     marker.SetActive(true);
                 }
-                PositionNormalMarkers();
+                //PositionNormalMarkers();
             }
                
         }
-  
-            
+
+        foreach (GameObject marker in normalMarkers)
+        {
+            if (marker.activeInHierarchy) PositionNormalMarkers();
+        }
 
         if (GlobalIndex == 11)
         {
@@ -147,9 +150,11 @@ public class TutorialManager : MonoBehaviour
             {
 
                 robotMarker.SetActive(true);
-                PositionRobotMarker();
+                //PositionRobotMarker();
             }
         }
+
+        if (robotMarker.activeInHierarchy) PositionRobotMarker();
 
         if (showRobot)
         {

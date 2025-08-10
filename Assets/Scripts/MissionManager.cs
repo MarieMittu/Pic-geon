@@ -103,6 +103,7 @@ public class MissionManager : MonoBehaviour
 
     public int GetRequiredPhotos()
     {
+        Debug.Log("returnphotos " + requiredPhotosForMissions[currentMission - 1]);
         return requiredPhotosForMissions[currentMission - 1];
     }
 }
