@@ -141,6 +141,10 @@ public class LimitedCamera : MonoBehaviour
                             GetComponent<AudioSource>().Play();
                             TrackTapeAmount();
                             GameManager.sharedInstance.hasEvidence = true;
+                            if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex == 26)
+                            {
+                                TutorialManager.sharedInstance.snappedPicture = true;
+                            }
                         }
                       
                         //focusMode = false;
@@ -277,6 +281,7 @@ public class LimitedCamera : MonoBehaviour
             var robotScript = (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex < 19) ? rb.GetComponent<RobotTutorial>() : rb.GetComponent<AIRobotController>();
             Debug.Log("decetcTest script " + robotScript.isSpying);
             Debug.Log("decetcTestBIG " + rb.GetComponent<MeshRenderer>() + " isspy " + robotScript.isSpying);
+            if (rb.GetComponent<MeshRenderer>().isVisible && MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex == 29) TutorialManager.sharedInstance.ShowNextTutorialGlobal(30);
             if (rb.GetComponent<MeshRenderer>() && (robotScript.isSpying || (MissionManager.sharedInstance.currentMission == 3 && xrayScript.IsXRayActive()))) //add gear xray cindition
             {
                 Debug.Log("decetcTest obstructed");

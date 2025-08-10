@@ -27,6 +27,7 @@ public class TutorialManager : MonoBehaviour
     private Dictionary<int, int> tutorialSwitchMap;
 
     public int GlobalIndex => baseStepOffset + currentIndex;
+    public bool snappedPicture = false;
 
     private void Awake()
     {
@@ -186,7 +187,7 @@ public class TutorialManager : MonoBehaviour
             ShowNextTutorialGlobal(26);
         }
 
-        if (GlobalIndex == 26 && Input.GetMouseButtonDown(0))
+        if (GlobalIndex == 26 && snappedPicture == true) 
         {
             foreach (GameObject marker in normalMarkers)
             {
