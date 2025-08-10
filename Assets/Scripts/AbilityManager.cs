@@ -88,7 +88,7 @@ public class AbilityManager : MonoBehaviour
             var ability = abilities[i];
             if (Input.GetKeyDown(ability.key))
             {
-                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex > 5))
+                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex > 5))
                 {
                     // if this ability is already active
                     if (activeAbilityIndex == i)

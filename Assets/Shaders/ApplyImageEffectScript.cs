@@ -102,7 +102,7 @@ public class ApplyImageEffectScript : MonoBehaviour
             float glitchIntensity = Math.Clamp(normalizedMissionTime - startOfGlitch, 0, 1) / (1 - startOfGlitch);
             if (MissionManager.sharedInstance.isTutorial)
             {
-                if (TutorialManager.sharedInstance.currentIndex >= 22)
+                if (TutorialManager.sharedInstance.GlobalIndex >= 34)
                     glitchIntensity = 1;
             }
             //// make glitch more noticeable once it starts and give some time at full intensity

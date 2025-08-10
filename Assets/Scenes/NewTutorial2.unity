@@ -16264,6 +16264,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a3b0e8d6e04a4c9dbd5e92ae9ecd5f0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  baseStepOffset: 19
   tutorials:
   - {fileID: 155103716}
   - {fileID: 1464267076}

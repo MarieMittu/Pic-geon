@@ -130,7 +130,7 @@ public class LimitedCamera : MonoBehaviour
             // photo
             if (Input.GetMouseButtonDown(0))
             {
-                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex > 7))
+                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex > 7))
                 {
                     if (focusMode)
                     {
@@ -168,12 +168,12 @@ public class LimitedCamera : MonoBehaviour
             }
         }
 
-        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex == 17)
+        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex == 17)
         {
             DetectBirdsOnPhoto(false);
             Debug.Log("DETECTING " + isRightMomentForPhoto);
         }
-        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex >10 && TutorialManager.sharedInstance.currentIndex < 18)
+        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex >10 && TutorialManager.sharedInstance.GlobalIndex < 18)
         {
             CheckRealBirdInFocus();
         }
@@ -240,14 +240,14 @@ public class LimitedCamera : MonoBehaviour
             realBirdInFocus |= b.GetComponent<MeshRenderer>().isVisible && IsWithinFocusedArea(b) && !IsInPeriphery(b) && !isObstructed(b);
             if (!realBirdInFocus)
             {
-                if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex < 14)
+                if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex < 14)
                 {
                     Debug.Log("NOOrealfocus");
                     TutorialManager.sharedInstance.lookingAtNormal = false;
                 }
             } else
             {
-                if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.currentIndex < 14)
+                if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex < 14)
                 {
                     Debug.Log("realfocus");
                     TutorialManager.sharedInstance.lookingAtNormal = true;

@@ -7,6 +7,11 @@ public class TutorialManager : MonoBehaviour
 
     public static TutorialManager sharedInstance;
 
+    [Header("Tutorial Settings")]
+    public int baseStepOffset = 0; // Set to 0 for part1, 19 for part2
+    
+
+
     public GameObject[] tutorials;
     public float focusTimer = 6; // time needed to remain focused on normal bird to proceed
     public GameObject[] normalMarkers;
@@ -21,7 +26,7 @@ public class TutorialManager : MonoBehaviour
     private bool isSwitching = false;
     private Dictionary<int, int> tutorialSwitchMap;
 
-  
+    public int GlobalIndex => baseStepOffset + currentIndex;
 
     private void Awake()
     {
@@ -58,21 +63,21 @@ public class TutorialManager : MonoBehaviour
         }
         if ((Input.GetAxis("Mouse X") != 0) || (Input.GetAxis("Mouse Y") != 0))
         {
-            ShowNextTutorial(3);
+            ShowNextTutorialGlobal(3);
         }
         if (Input.mouseScrollDelta != Vector2.zero)
         {
-            if (currentIndex == 3)
+            if (GlobalIndex == 3)
             {
-                ShowNextTutorial(4);
-            } else if (currentIndex == 9)
+                ShowNextTutorialGlobal(4);
+            } else if (GlobalIndex == 9)
             {
-                ShowNextTutorial(10);
+                ShowNextTutorialGlobal(10);
             }
         }
         if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.S))
         {
-            ShowNextTutorial(6);
+            ShowNextTutorialGlobal(6);
         }
         if (Input.GetKeyDown(KeyCode.F))
         {
@@ -80,10 +85,10 @@ public class TutorialManager : MonoBehaviour
         }
         if (Input.GetMouseButtonDown(1))
         {
-            if (currentIndex == 7) ShowNextTutorial(8);
-            if (currentIndex == 10)
+            if (GlobalIndex == 7) ShowNextTutorialGlobal(8);
+            if (GlobalIndex == 10)
             {
-                ShowNextTutorial(11);
+                ShowNextTutorialGlobal(11);
                 foreach (GameObject marker in normalMarkers)
                 {
                     marker.SetActive(true);
@@ -95,7 +100,7 @@ public class TutorialManager : MonoBehaviour
   
             
 
-        if (currentIndex == 11)
+        if (GlobalIndex == 11)
         {
             if (lookingAtNormal)
             {
@@ -103,7 +108,7 @@ public class TutorialManager : MonoBehaviour
 
                 if (focusTimer <= 0)
                 {
-                    ShowNextTutorial(12);
+                    ShowNextTutorialGlobal(12);
                     
                     lookingAtNormal = false;
                 }
@@ -111,19 +116,19 @@ public class TutorialManager : MonoBehaviour
             
         }
 
-        if (currentIndex == 14)
+        if (GlobalIndex == 14)
         {
             foreach (GameObject marker in normalMarkers)
             {
                 marker.SetActive(false);
             }
-            ShowNextTutorial(15);
+            ShowNextTutorialGlobal(15);
 
         }
 
         if (hintRobot)
         {
-            if (currentIndex == 15)
+            if (GlobalIndex == 15)
             {
 
                 robotMarker.SetActive(true);
@@ -134,31 +139,40 @@ public class TutorialManager : MonoBehaviour
         if (showRobot)
         {
            
-            if (currentIndex == 15)
+            if (GlobalIndex == 15)
             {
-                ShowNextTutorial(16);
+                ShowNextTutorialGlobal(16);
             }
-            if (currentIndex == 16)
+            if (GlobalIndex == 16)
             {
-                ShowNextTutorial(17);
+                ShowNextTutorialGlobal(17);
                 
             }
         } else
         {
-            if (currentIndex == 17)
+            if (GlobalIndex == 17)
             {
                 robotMarker.SetActive(false);
-                ShowNextTutorial(18);
+                ShowNextTutorialGlobal(18);
 
             }
         }
-        if (currentIndex == 18)
+        if (GlobalIndex == 18)
         {
             Invoke("GoToWinScene", 3f);
         }
 
 
     }
+
+
+
+    public void ShowNextTutorialGlobal(int globalIndex)
+    {
+        int localIndex = globalIndex - baseStepOffset;
+        ShowNextTutorial(localIndex);
+    }
+
 
     private void ActivateTutorial(int index)
     {
@@ -176,9 +190,10 @@ public class TutorialManager : MonoBehaviour
 
     private void SwitchTutorial()
     {
-        if (tutorialSwitchMap.TryGetValue(currentIndex, out int nextIndex))
+        if (tutorialSwitchMap.TryGetValue(GlobalIndex, out int nextGlobalIndex))
         {
-            ActivateTutorial(nextIndex);
+            int localIndex = nextGlobalIndex - baseStepOffset;
+            ActivateTutorial(localIndex);
         }
     }
         private void ShowNextTutorial(int index)
