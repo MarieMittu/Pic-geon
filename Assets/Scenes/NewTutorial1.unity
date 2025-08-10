@@ -13610,7 +13610,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8321431436670227217, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -13688,6 +13688,7 @@ MonoBehaviour:
   showRobot: 0
   hintRobot: 0
   lookingAtNormal: 0
+  snappedPicture: 0
 --- !u!1 &2102887776
 GameObject:
   m_ObjectHideFlags: 0

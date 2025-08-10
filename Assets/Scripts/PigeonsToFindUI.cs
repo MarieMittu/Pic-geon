@@ -13,7 +13,7 @@ public class PigeonsToFindUI : MonoBehaviour
 
     public void Start()
     {
-        if (MissionManager.sharedInstance.isTutorial) return;
+        //if (MissionManager.sharedInstance.isTutorial) return;
         numBirds = MissionManager.sharedInstance.GetRequiredPhotos();
         float spacing = 40;
         for (int i = 0; i < numBirds; i++)
