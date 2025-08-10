@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/NextLevelScene.unity
     guid: 8b1d5505a95c9430ca1bd6f0e9748a1e
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/OldTutorialScene.unity
     guid: 9c48818bab6664638af7e39c713bb937
   - enabled: 1
@@ -41,4 +41,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/IdleVideo.unity
     guid: bedc3e37dcb82ca489dd8f3e035a591d
+  - enabled: 1
+    path: Assets/Scenes/NewTutorial1.unity
+    guid: db9bc4aed666cde478de02151d5a31ea
+  - enabled: 1
+    path: Assets/Scenes/NewTutorial2.unity
+    guid: 2e91d802f9c091c45b07a652b591497b
   m_configObjects: {}

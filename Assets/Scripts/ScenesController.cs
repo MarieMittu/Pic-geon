@@ -42,9 +42,9 @@ public class ScenesController : MonoBehaviour
 
     public void StartGame()
     {
-        MissionManager.sharedInstance.SetMission(1);
+        MissionManager.sharedInstance.SetMission(0);
         MissionManager.sharedInstance.StartSelectedMission();
-        SceneManager.LoadScene("TutorialScene");
+        SceneManager.LoadScene("NewTutorial1");
         Cursor.lockState = CursorLockMode.Locked;
         Time.timeScale = 1f;
     }
@@ -67,6 +67,9 @@ public class ScenesController : MonoBehaviour
         Debug.Log("pressing next lvl");
         switch (MissionManager.sharedInstance.currentMission)
         {
+            case 1:
+                Invoke("LoadTutorialPartTwo", 1f);
+                break;
             case 2:
                 Invoke("LoadMissionOne", 1f);
                 break;
@@ -79,6 +82,15 @@ public class ScenesController : MonoBehaviour
         }
 
       
+    }
+
+    public void LoadTutorialPartTwo()
+    {
+        MissionManager.sharedInstance.SetMission(1);
+        MissionManager.sharedInstance.StartSelectedMission();
+        SceneManager.LoadScene("NewTutorial2");
+        Cursor.lockState = CursorLockMode.Locked;
+        Time.timeScale = 1f;
     }
 
     public void LoadMissionOne()
