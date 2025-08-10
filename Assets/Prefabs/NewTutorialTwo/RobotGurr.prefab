@@ -3055,11 +3055,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startRange: 5
   finalRange: 10
+  isTransitioning: 0
   animator: {fileID: 7063825414732274203}
   shallWeLog: 0
   agent: {fileID: 0}
-  centrePoint: {x: 8.5, y: 4.63, z: -12.2}
-  rectangleSize: {x: 25, y: 0, z: 45}
+  centrePoint: {x: 15, y: 7.85, z: -6.25}
+  rectangleSize: {x: 20, y: 0, z: 20}
   walkRotationAngle: -35.63
   isSpying: 0
   hasBeenCaught: 0
