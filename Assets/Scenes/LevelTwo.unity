@@ -681,7 +681,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.083333336
+  m_VoxelSize: 0.016666668
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 399236f72c6fa4f7a9adabad6f171170, type: 2}
   m_BuildHeightMesh: 0
@@ -4789,7 +4789,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.083333336
+  m_VoxelSize: 0.016666668
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 1197f8d89baa74648b874e6a6fe31bb8, type: 2}
   m_BuildHeightMesh: 0
@@ -6036,7 +6036,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9035b8d5197de46a79fbe094a7b3c6c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentMission: 3
+  currentMission: 4
   maxMissions: 3
   selectedMission: 1
   requiredPhotosForMissions: 01000000010000000200000003000000

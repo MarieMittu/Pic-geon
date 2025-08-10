@@ -279,6 +279,7 @@ public class TutorialManager : MonoBehaviour
 
     private void GoToWinScene()
     {
-        GameManager.sharedInstance.TriggerNextLevel();
+        //MissionManager.sharedInstance.NextMission();
+        GameManager.sharedInstance.ControlEvidence();
     }
 }

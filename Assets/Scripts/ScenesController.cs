@@ -67,16 +67,16 @@ public class ScenesController : MonoBehaviour
         Debug.Log("pressing next lvl");
         switch (MissionManager.sharedInstance.currentMission)
         {
-            case 1:
+            case 2:
                 Invoke("LoadTutorialPartTwo", 1f);
                 break;
-            case 2:
+            case 3:
                 Invoke("LoadMissionOne", 1f);
                 break;
-            case 3:
+            case 4:
                 Invoke("LoadMissionTwo", 1f);
                 break;
-            case 4:
+            case 5:
                 Invoke("LoadMissionThree", 1f);
                 break;
         }

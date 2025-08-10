@@ -57,12 +57,14 @@ public class AbilityManager : MonoBehaviour
         switch (MissionManager.sharedInstance.currentMission)
         {
             case 1:
-                Debug.Log("");
+                abilities = null;
+                Debug.Log("Fwork NO");
                 break;
             case 2: // tutorial
                 abilities = new Ability[] {
                     new Ability("Thermal Vision", KeyCode.F, 10, 0.3f, imageEffectScript.SetThermalVision)
                 };
+                Debug.Log("Fwork");
                 break;
             case 3: // lvl one: plaza
                 abilities = new Ability[] {
@@ -91,7 +93,7 @@ public class AbilityManager : MonoBehaviour
             var ability = abilities[i];
             if (Input.GetKeyDown(ability.key))
             {
-                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex > 21))
+                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex > 5))
                 {
                     // if this ability is already active
                     if (activeAbilityIndex == i)
