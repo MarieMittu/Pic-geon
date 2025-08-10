@@ -56,22 +56,25 @@ public class AbilityManager : MonoBehaviour
         }
         switch (MissionManager.sharedInstance.currentMission)
         {
-            case 1: // tutorial
+            case 1:
+                Debug.Log("");
+                break;
+            case 2: // tutorial
                 abilities = new Ability[] {
                     new Ability("Thermal Vision", KeyCode.F, 10, 0.3f, imageEffectScript.SetThermalVision)
                 };
                 break;
-            case 2: // lvl one: plaza
+            case 3: // lvl one: plaza
                 abilities = new Ability[] {
                     new Ability("Thermal Vision", KeyCode.F, 10, 0.3f, imageEffectScript.SetThermalVision)
                 };
                 break;
-            case 3: // lvl two: rooftop
+            case 4: // lvl two: rooftop
                 abilities = new Ability[] {
                     new Ability("Xray Vision", KeyCode.F, 10, 0.3f, xrayEffectScript.ActivateXRay)
                 };
                 break;
-            case 4: // lvl three: train station
+            case 5: // lvl three: train station
                 abilities = new Ability[] {
                     new Ability("Night Vision", KeyCode.F, 20, 1/20.0f, nightVisionScript.ActivateNightVision)
                 };
@@ -88,7 +91,7 @@ public class AbilityManager : MonoBehaviour
             var ability = abilities[i];
             if (Input.GetKeyDown(ability.key))
             {
-                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex > 5))
+                if (!MissionManager.sharedInstance.isTutorial || (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex > 21))
                 {
                     // if this ability is already active
                     if (activeAbilityIndex == i)

@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
    {
         if (hasEnoughCorrectPhotos)
         {
-            if (MissionManager.sharedInstance.currentMission < 4)
+            if (MissionManager.sharedInstance.currentMission < 5)
             {
                 MissionManager.sharedInstance.NextMission();
                 TriggerNextLevel();

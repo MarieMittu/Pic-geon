@@ -42,7 +42,7 @@ public class ScenesController : MonoBehaviour
 
     public void StartGame()
     {
-        MissionManager.sharedInstance.SetMission(0);
+        MissionManager.sharedInstance.SetMission(1);
         MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("NewTutorial1");
         Cursor.lockState = CursorLockMode.Locked;
@@ -86,7 +86,7 @@ public class ScenesController : MonoBehaviour
 
     public void LoadTutorialPartTwo()
     {
-        MissionManager.sharedInstance.SetMission(1);
+        MissionManager.sharedInstance.SetMission(2);
         MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("NewTutorial2");
         Cursor.lockState = CursorLockMode.Locked;
@@ -95,7 +95,7 @@ public class ScenesController : MonoBehaviour
 
     public void LoadMissionOne()
     {
-        MissionManager.sharedInstance.SetMission(2);
+        MissionManager.sharedInstance.SetMission(3);
         MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("LevelOne");
         Cursor.lockState = CursorLockMode.Locked;
@@ -104,7 +104,7 @@ public class ScenesController : MonoBehaviour
 
     public void LoadMissionTwo()
     {
-        MissionManager.sharedInstance.SetMission(3);
+        MissionManager.sharedInstance.SetMission(4);
         MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("LevelTwo");
         Cursor.lockState = CursorLockMode.Locked;
@@ -113,7 +113,7 @@ public class ScenesController : MonoBehaviour
 
     public void LoadMissionThree()
     {
-        MissionManager.sharedInstance.SetMission(4);
+        MissionManager.sharedInstance.SetMission(5);
         MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("LevelThree"); 
         Cursor.lockState = CursorLockMode.Locked;
@@ -149,15 +149,18 @@ public class ScenesController : MonoBehaviour
                 Invoke("StartGame", 1f);
                 break;
                 case 2:
-                Invoke("LoadMissionOne", 1f);
+                Invoke("LoadTutorialPartTwo", 1f);
                 break;
                 case 3:
-                Invoke("LoadMissionTwo", 1f);
+                Invoke("LoadMissionOne", 1f);
                 break;
                 case 4:
+                Invoke("LoadMissionTwo", 1f);
+                break;
+                case 5:
                 Invoke("LoadMissionThree", 1f);
                 break;
-            }
+        }
              
     }
 

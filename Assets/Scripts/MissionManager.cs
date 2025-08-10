@@ -8,11 +8,11 @@ public class MissionManager : MonoBehaviour
     public static MissionManager sharedInstance;
 
     public int currentMission = 1;
-    public int maxMissions = 4;
+    public int maxMissions = 5;
     public int selectedMission = 1;
 
-    public int[] requiredPhotosForMissions = { 1, 1, 2, 3 };
-    public int[] tapeLimitForMissions = { 11, 9, 8, 7 };
+    public int[] requiredPhotosForMissions = { 1, 1, 1, 2, 3 };
+    public int[] tapeLimitForMissions = { 11, 11, 9, 8, 7 };
 
     private HashSet<int> unlockedMissions = new HashSet<int> { 1 };
 
@@ -60,7 +60,7 @@ public class MissionManager : MonoBehaviour
 
     public void NextMission()
     {
-        isTutorial = false;
+        if (currentMission > 1) isTutorial = false;
         if (currentMission < maxMissions)
         {
             currentMission++;

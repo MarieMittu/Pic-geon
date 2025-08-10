@@ -282,7 +282,7 @@ public class LimitedCamera : MonoBehaviour
             Debug.Log("decetcTest script " + robotScript.isSpying);
             Debug.Log("decetcTestBIG " + rb.GetComponent<MeshRenderer>() + " isspy " + robotScript.isSpying);
             if (rb.GetComponent<MeshRenderer>().isVisible && MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex == 29) TutorialManager.sharedInstance.ShowNextTutorialGlobal(30);
-            if (rb.GetComponent<MeshRenderer>() && (robotScript.isSpying || (MissionManager.sharedInstance.currentMission == 3 && xrayScript.IsXRayActive()))) //add gear xray cindition
+            if (rb.GetComponent<MeshRenderer>() && (robotScript.isSpying || (MissionManager.sharedInstance.currentMission == 4 && xrayScript.IsXRayActive()))) //add gear xray cindition
             {
                 Debug.Log("decetcTest obstructed");
                 // test if pigeon is obstructed
