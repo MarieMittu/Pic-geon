@@ -47,7 +47,20 @@ public class TutorialManager : MonoBehaviour
             { 6, 7 },
             { 8, 9 },
             { 12, 13 },
-            { 13, 14 }
+            { 13, 14 },
+            //part 2
+            { 19, 20 },
+            { 20, 21 },
+            { 21, 22 },
+            { 23, 24 },
+            { 24, 25 },
+            { 27, 28 },
+            { 28, 29 },
+            { 31, 32 },
+            { 32, 33 },
+            { 33, 34 },
+            { 34, 35 },
+            { 35, 36 },
         };
 
         ActivateTutorial(0);
@@ -79,9 +92,10 @@ public class TutorialManager : MonoBehaviour
         {
             ShowNextTutorialGlobal(6);
         }
+
         if (Input.GetKeyDown(KeyCode.F))
         {
-            //ShowNextTutorial(7);
+            ShowNextTutorialGlobal(23);
         }
         if (Input.GetMouseButtonDown(1))
         {
@@ -162,7 +176,34 @@ public class TutorialManager : MonoBehaviour
             Invoke("GoToWinScene", 3f);
         }
 
+        if (GlobalIndex == 25)
+        {
+            foreach (GameObject marker in normalMarkers)
+            {
+                marker.SetActive(true);
+            }
+            PositionNormalMarkers();
+            ShowNextTutorialGlobal(26);
+        }
 
+        if (GlobalIndex == 26 && Input.GetMouseButtonDown(0))
+        {
+            foreach (GameObject marker in normalMarkers)
+            {
+                marker.SetActive(false);
+            }
+            ShowNextTutorialGlobal(27);
+        }
+
+        if (GlobalIndex == 29)
+        {
+            robotMarker.SetActive(true);
+            PositionRobotMarker();
+        }
+        if (GlobalIndex == 31)
+        {
+            robotMarker.SetActive(false);
+        }
     }
 
 
@@ -196,7 +237,8 @@ public class TutorialManager : MonoBehaviour
             ActivateTutorial(localIndex);
         }
     }
-        private void ShowNextTutorial(int index)
+
+    private void ShowNextTutorial(int index)
     {
         if (currentIndex == index - 1 && !isSwitching)
         {

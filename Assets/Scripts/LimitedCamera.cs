@@ -168,7 +168,7 @@ public class LimitedCamera : MonoBehaviour
             }
         }
 
-        if (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex == 17)
+        if (MissionManager.sharedInstance.isTutorial && (TutorialManager.sharedInstance.GlobalIndex == 17 || TutorialManager.sharedInstance.GlobalIndex == 30))
         {
             DetectBirdsOnPhoto(false);
             Debug.Log("DETECTING " + isRightMomentForPhoto);
@@ -274,7 +274,7 @@ public class LimitedCamera : MonoBehaviour
         {
             Debug.Log("decetcTest behaviour?");
             // is a visible pigeon showing suspicious behaviour?
-            var robotScript = MissionManager.sharedInstance.isTutorial ? rb.GetComponent<RobotTutorial>() : rb.GetComponent<AIRobotController>();
+            var robotScript = (MissionManager.sharedInstance.isTutorial && TutorialManager.sharedInstance.GlobalIndex < 19) ? rb.GetComponent<RobotTutorial>() : rb.GetComponent<AIRobotController>();
             Debug.Log("decetcTest script " + robotScript.isSpying);
             Debug.Log("decetcTestBIG " + rb.GetComponent<MeshRenderer>() + " isspy " + robotScript.isSpying);
             if (rb.GetComponent<MeshRenderer>() && (robotScript.isSpying || (MissionManager.sharedInstance.currentMission == 3 && xrayScript.IsXRayActive()))) //add gear xray cindition
@@ -312,6 +312,10 @@ public class LimitedCamera : MonoBehaviour
                                         {
                                             TutorialManager.sharedInstance.showRobot = false;
                                             Debug.Log("CHANGE SHOW ROBOT");
+                                            if (TutorialManager.sharedInstance.GlobalIndex == 30)
+                                            {
+                                                TutorialManager.sharedInstance.ShowNextTutorialGlobal(31);
+                                            }
                                         }
                                     }
                                     else
