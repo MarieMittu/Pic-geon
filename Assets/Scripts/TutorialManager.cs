@@ -188,7 +188,7 @@ public class TutorialManager : MonoBehaviour
             {
                 marker.SetActive(true);
             }
-            PositionNormalMarkers();
+            //PositionNormalMarkers();
             ShowNextTutorialGlobal(26);
         }
 
@@ -204,7 +204,7 @@ public class TutorialManager : MonoBehaviour
         if (GlobalIndex == 29)
         {
             robotMarker.SetActive(true);
-            PositionRobotMarker();
+            //PositionRobotMarker();
         }
         if (GlobalIndex == 31)
         {
