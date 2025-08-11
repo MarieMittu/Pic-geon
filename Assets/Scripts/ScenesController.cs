@@ -16,6 +16,8 @@ public class ScenesController : MonoBehaviour
     [SerializeField] GameObject submitButton;
     [SerializeField] GameObject controlsScreen;
 
+    public static int gameOverReasonIndex = -1;
+
     public bool isPaused = false;
     public bool isAlerting = false;
 
@@ -127,8 +129,9 @@ public class ScenesController : MonoBehaviour
         Time.timeScale = 1f;
     }
 
-    public void GameOver()
+    public void GameOver(int index)
     {
+        gameOverReasonIndex = index;
         SceneManager.LoadScene("GameOverScene");
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 1f;

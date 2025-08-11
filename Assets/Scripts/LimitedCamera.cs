@@ -406,11 +406,11 @@ public class LimitedCamera : MonoBehaviour
         {
             if (MissionManager.sharedInstance.currentMission < 4)
             {
-                GameManager.sharedInstance.TriggerGameOver(); //only in levels before the last
+                GameManager.sharedInstance.TriggerGameOver(1); //only in levels before the last
             }
             else if (correctPhotosAmount < MissionManager.sharedInstance.GetRequiredPhotos())
             {
-                GameManager.sharedInstance.TriggerGameOver();
+                GameManager.sharedInstance.TriggerGameOver(1);
             }
         }
     }
@@ -419,7 +419,7 @@ public class LimitedCamera : MonoBehaviour
     {
         if (GameManager.sharedInstance.missionDuration <= 0)
         {
-            GameManager.sharedInstance.TriggerGameOver();
+            GameManager.sharedInstance.TriggerGameOver(2);
         }
     }
 
@@ -431,7 +431,7 @@ public class LimitedCamera : MonoBehaviour
         }
         else
         {
-            GameManager.sharedInstance.TriggerGameOver();
+            GameManager.sharedInstance.TriggerGameOver(3);
         }
     }
 

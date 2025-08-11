@@ -145,9 +145,9 @@ public class GameManager : MonoBehaviour
     }
 
 
-    public void TriggerGameOver()
+    public void TriggerGameOver(int index)
     {
-        FindObjectOfType<ScenesController>().GameOver();
+        FindObjectOfType<ScenesController>().GameOver(index);
     }
 
     public void TriggerVictory()
@@ -193,7 +193,7 @@ public class GameManager : MonoBehaviour
             
         } else
         {
-            TriggerGameOver();
+            TriggerGameOver(3); 
         }
    }
 
