@@ -3059,8 +3059,8 @@ MonoBehaviour:
   animator: {fileID: 7063825414732274203}
   shallWeLog: 0
   agent: {fileID: 0}
-  centrePoint: {x: 15, y: 7.85, z: -6.25}
-  rectangleSize: {x: 20, y: 0, z: 20}
+  centrePoint: {x: 11.9, y: 7.84, z: -2.8}
+  rectangleSize: {x: 15, y: 0, z: 15}
   walkRotationAngle: -35.63
   isSpying: 0
   hasBeenCaught: 0
