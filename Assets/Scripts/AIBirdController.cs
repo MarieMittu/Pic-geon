@@ -81,6 +81,7 @@ public class AIBirdController : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
@@ -89,7 +90,8 @@ public class AIBirdController : MonoBehaviour
         stateTime = 2;
         rb = gameObject.GetComponent<Rigidbody>();
 
-        agent = GetComponent<NavMeshAgent>();
+        
+        
 
         InitializeStates();
     }
@@ -154,6 +156,16 @@ public class AIBirdController : MonoBehaviour
 
     private void Update()
     {
+        if (agent.enabled)
+        {
+            if (agent.pathStatus == NavMeshPathStatus.PathInvalid || agent.pathStatus == NavMeshPathStatus.PathPartial)
+            {
+                blockStateTransition = false;
+                blockAutoAnimation = false;
+            }
+        }
+       
+
         var action = currentState.stateAction;
         if (action != null) action();
         PerformActionsSequence();
@@ -234,7 +246,7 @@ public class AIBirdController : MonoBehaviour
     public void WalkAround()
     {
         // start new path
-        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
+        if (agent.enabled && agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending) //done with path
         {
             if (blockStateTransition)
             {
@@ -320,6 +332,7 @@ public class AIBirdController : MonoBehaviour
 
     protected void Fly()
     {
+        
         GameObject[] flightPaths = GameObject.FindGameObjectsWithTag("FlightPath");
         if (closestStart.Equals(Vector3.negativeInfinity))
         {

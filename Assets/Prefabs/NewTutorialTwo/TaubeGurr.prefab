@@ -3336,7 +3336,6 @@ GameObject:
   - component: {fileID: 2055626822848014079}
   - component: {fileID: 6002145695028023682}
   - component: {fileID: 6253888996438481972}
-  - component: {fileID: 5124988165817037319}
   m_Layer: 0
   m_Name: TaubeGurr
   m_TagString: RealBird
@@ -3482,7 +3481,7 @@ MonoBehaviour:
   shallWeLog: 0
   agent: {fileID: 0}
   centrePoint: {x: 11.9, y: 7.84, z: -2.8}
-  rectangleSize: {x: 15, y: 0, z: 15}
+  rectangleSize: {x: 10, y: 0, z: 10}
   walkRotationAngle: -35.63
 --- !u!195 &7137864355522252569
 NavMeshAgent:
@@ -3491,7 +3490,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5930485210797420366}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 2.5
   m_Speed: 0.5
@@ -3596,27 +3595,6 @@ MonoBehaviour:
   - {fileID: 6750499321662849110}
   antenna: []
   gears: []
---- !u!114 &5124988165817037319
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5930485210797420366}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 89ef9aead5f804522835171ab09654d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startRange: 5
-  finalRange: 10
-  isTransitioning: 0
-  animator: {fileID: 6599039391191308793}
-  shallWeLog: 0
-  agent: {fileID: 0}
-  centrePoint: {x: 15, y: 7.85, z: -6.25}
-  rectangleSize: {x: 20, y: 0, z: 20}
-  walkRotationAngle: -35.63
 --- !u!1 &6132054888949743500
 GameObject:
   m_ObjectHideFlags: 0

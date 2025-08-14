@@ -3060,7 +3060,7 @@ MonoBehaviour:
   shallWeLog: 0
   agent: {fileID: 0}
   centrePoint: {x: 11.9, y: 7.84, z: -2.8}
-  rectangleSize: {x: 15, y: 0, z: 15}
+  rectangleSize: {x: 10, y: 0, z: 10}
   walkRotationAngle: -35.63
   isSpying: 0
   hasBeenCaught: 0
@@ -3071,7 +3071,7 @@ NavMeshAgent:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3268138461105073101}
-  m_Enabled: 1
+  m_Enabled: 0
   m_AgentTypeID: 0
   m_Radius: 2.5
   m_Speed: 0.3

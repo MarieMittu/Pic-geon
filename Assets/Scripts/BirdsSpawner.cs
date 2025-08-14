@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BirdsSpawner : MonoBehaviour
 {
@@ -27,6 +28,9 @@ public class BirdsSpawner : MonoBehaviour
             selectedBird.transform.rotation = position.rotation;
 
             selectedBird.SetActive(true);
+
+            selectedBird.GetComponent<NavMeshAgent>().enabled = true;
+
             Debug.Log("num of birds");
         }
         
@@ -43,6 +47,7 @@ public class BirdsSpawner : MonoBehaviour
             selectedRobot.transform.rotation = position.rotation;
 
             selectedRobot.SetActive(true);
+            selectedRobot.GetComponent<AIRobotController>().agent.enabled = true;
         }
 
     }
