@@ -64,7 +64,11 @@ public class TutorialManager : MonoBehaviour
             { 35, 36 },
         };
 
-        ActivateTutorial(0);
+        int defaultStep = baseStepOffset;
+
+        int savedStep = PlayerPrefs.GetInt("TutorialIndex", defaultStep);
+
+        ActivateTutorial(savedStep - baseStepOffset);
     }
 
     // Update is called once per frame
@@ -104,13 +108,18 @@ public class TutorialManager : MonoBehaviour
             if (GlobalIndex == 10)
             {
                 ShowNextTutorialGlobal(11);
-                foreach (GameObject marker in normalMarkers)
-                {
-                    marker.SetActive(true);
-                }
+               
                 //PositionNormalMarkers();
             }
                
+        }
+
+        if (GlobalIndex >= 10 && GlobalIndex < 15)
+        {
+            foreach (GameObject marker in normalMarkers)
+            {
+                marker.SetActive(true);
+            }
         }
 
         foreach (GameObject marker in normalMarkers)
@@ -154,6 +163,11 @@ public class TutorialManager : MonoBehaviour
             }
         }
 
+        if (GlobalIndex >= 15 && GlobalIndex < 18)
+        {
+            robotMarker.SetActive(true);
+        }
+
         if (robotMarker.activeInHierarchy) PositionRobotMarker();
 
         if (showRobot)
@@ -184,12 +198,17 @@ public class TutorialManager : MonoBehaviour
 
         if (GlobalIndex == 25)
         {
+         
+            //PositionNormalMarkers();
+            ShowNextTutorialGlobal(26);
+        }
+
+        if (GlobalIndex >= 25 && GlobalIndex < 27)
+        {
             foreach (GameObject marker in normalMarkers)
             {
                 marker.SetActive(true);
             }
-            //PositionNormalMarkers();
-            ShowNextTutorialGlobal(26);
         }
 
         if (GlobalIndex == 26 && snappedPicture == true) 
@@ -201,7 +220,7 @@ public class TutorialManager : MonoBehaviour
             ShowNextTutorialGlobal(27);
         }
 
-        if (GlobalIndex == 29)
+        if (GlobalIndex >= 29 && GlobalIndex < 32)
         {
             robotMarker.SetActive(true);
             //PositionRobotMarker();

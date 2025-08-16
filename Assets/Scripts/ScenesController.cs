@@ -44,6 +44,12 @@ public class ScenesController : MonoBehaviour
 
     public void StartGame()
     {
+        PlayerPrefs.DeleteKey("TutorialIndex");
+        ResumeTutorialPartOne();
+    }
+
+    public void ResumeTutorialPartOne() // retry
+    {
         MissionManager.sharedInstance.SetMission(1);
         MissionManager.sharedInstance.StartSelectedMission();
         SceneManager.LoadScene("NewTutorial1");
@@ -87,6 +93,12 @@ public class ScenesController : MonoBehaviour
     }
 
     public void LoadTutorialPartTwo()
+    {
+        PlayerPrefs.DeleteKey("TutorialIndex");
+        ResumeTutorialPartTwo();
+    }
+
+    public void ResumeTutorialPartTwo() // retry
     {
         MissionManager.sharedInstance.SetMission(2);
         MissionManager.sharedInstance.StartSelectedMission();
@@ -132,6 +144,10 @@ public class ScenesController : MonoBehaviour
     public void GameOver(int index)
     {
         gameOverReasonIndex = index;
+        if (MissionManager.sharedInstance.isTutorial)
+        {
+            PlayerPrefs.SetInt("TutorialIndex", TutorialManager.sharedInstance.GlobalIndex);
+        }
         SceneManager.LoadScene("GameOverScene");
         Cursor.lockState = CursorLockMode.None;
         Time.timeScale = 1f;
@@ -149,10 +165,10 @@ public class ScenesController : MonoBehaviour
         switch (MissionManager.sharedInstance.currentMission)
             {
                 case 1:
-                Invoke("StartGame", 1f);
+                Invoke("ResumeTutorialPartOne", 1f);
                 break;
                 case 2:
-                Invoke("LoadTutorialPartTwo", 1f);
+                Invoke("ResumeTutorialPartTwo", 1f);
                 break;
                 case 3:
                 Invoke("LoadMissionOne", 1f);
