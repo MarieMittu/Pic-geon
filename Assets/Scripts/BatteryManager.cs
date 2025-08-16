@@ -59,7 +59,7 @@ public class BatteryManager : MonoBehaviour
         {
             //try here with no 1st charge and exlain activate
             
-                if (!isFirstTime || MissionManager.sharedInstance.isTutorial || (isFirstTime && Input.GetMouseButtonDown(0))) charge -= amount;
+                if (!isFirstTime || MissionManager.sharedInstance.isTutorial || (isFirstTime && Input.GetMouseButtonDown(1))) charge -= amount;
                 usedCharge = amount;
 
 
