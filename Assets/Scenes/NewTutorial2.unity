@@ -8018,7 +8018,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Look, these show when you captured evidence.
+  m_Text: Look, these get crossed out when you captured evidence.
 --- !u!222 &1021902869
 CanvasRenderer:
   m_ObjectHideFlags: 0

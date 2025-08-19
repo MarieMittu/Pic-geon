@@ -681,7 +681,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.016666668
+  m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 399236f72c6fa4f7a9adabad6f171170, type: 2}
   m_BuildHeightMesh: 0
@@ -4119,9 +4119,10 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 'Some birds may carry suspicious items,
+  m_Text: 'Some birds have metallic objects stored inside of them,
 
-    photos of those are also evidence!'
+    photos of
+    those are also evidence!'
 --- !u!222 &848761326
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -4789,7 +4790,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.016666668
+  m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 1197f8d89baa74648b874e6a6fe31bb8, type: 2}
   m_BuildHeightMesh: 0
