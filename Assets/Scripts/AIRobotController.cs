@@ -15,7 +15,7 @@ public class AIRobotController : AIBirdController
     {
         CheckIfSpying();
 
-        CheckAudio();
+        //CheckAudio();
 
         var action = currentState.stateAction;
         if (action != null) action();

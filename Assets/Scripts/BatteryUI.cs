@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BatteryUI : MonoBehaviour
 {
@@ -32,6 +33,10 @@ public class BatteryUI : MonoBehaviour
             var slotE = emptySlots.GetChild(i);
             var slotH = halfsSlots.GetChild(i);
             var slotF = fullSlots.GetChild(i);
+            var color = level <= 4 ? Color.red : Color.white;
+            slotE.GetComponent<RawImage>().color = color;
+            slotH.GetComponent<RawImage>().color = color;
+            slotF.GetComponent<RawImage>().color = color;
             if (i > batteryLevel/2)
             {
                 slotE.gameObject.SetActive(true);
