@@ -8811,6 +8811,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 374811606248542196, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 470959311578168007, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
       propertyPath: m_Name
       value: GUICanvas
@@ -8822,6 +8826,42 @@ PrefabInstance:
     - target: {fileID: 579924178277019612, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
       propertyPath: tapeLimit
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1353590176989020467, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_MatchWidthOrHeight
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2502554859110210247, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2502554859110210247, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2502554859110210247, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2502554859110210247, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2502554859110210247, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 65.70999
+      objectReference: {fileID: 0}
+    - target: {fileID: 2502554859110210247, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -19.199997
+      objectReference: {fileID: 0}
+    - target: {fileID: 4744656539327882991, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5683171693152660375, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6706539124547346181, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
       propertyPath: m_Pivot.x
@@ -8907,6 +8947,18 @@ PrefabInstance:
       propertyPath: abilityExplanation
       value: 
       objectReference: {fileID: 1540062114}
+    - target: {fileID: 8140719338704225932, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8501147969664639296, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8634432883506394281, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:

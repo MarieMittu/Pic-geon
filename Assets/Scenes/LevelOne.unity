@@ -1070,7 +1070,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.016666668
+  m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 399236f72c6fa4f7a9adabad6f171170, type: 2}
   m_BuildHeightMesh: 0
@@ -6283,7 +6283,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.016666668
+  m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: 694c1e578d322482aac6f1bce09d6479, type: 2}
   m_BuildHeightMesh: 0
@@ -6512,10 +6512,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 835948706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 4.25, y: -1}
-  m_SizeDelta: {x: -40.5, y: -36}
+  m_SizeDelta: {x: 797.5, y: 450}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1585445415
 MonoBehaviour:
@@ -7732,10 +7732,10 @@ RectTransform:
   - {fileID: 128430845}
   m_Father: {fileID: 835948706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -93, y: -49}
-  m_SizeDelta: {x: -418.23, y: 225.9487}
+  m_SizeDelta: {x: 419.77, y: 225.9487}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1921799569
 MonoBehaviour:
