@@ -6346,6 +6346,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 458710657342211716, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: verticalPadding
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 458710657342211716, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
+      propertyPath: screenHeightRatio
+      value: 1.7
+      objectReference: {fileID: 0}
     - target: {fileID: 470959311578168007, guid: 16b89f270c5748a448d347887b53b04d, type: 3}
       propertyPath: m_Name
       value: GUICanvas
